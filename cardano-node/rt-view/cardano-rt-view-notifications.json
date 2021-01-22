@@ -1,0 +1,29 @@
+{
+    "nsCheckPeriodInSec": 120,
+    "nsEventsToNotify": {
+        "errorsEvents": {
+            "aboutCriticals": true,
+            "aboutWarnings": true,
+            "aboutEmergencies": true,
+            "aboutAlerts": true,
+            "aboutErrors": true
+        },
+        "blockchainEvents": {
+            "aboutMissedSlots": true,
+            "aboutCannotForge": true
+        }
+    },
+    "nsHowToNotify": {
+        "emailSettings": {
+            "emServerPort": 587,
+            "emSubject": "Cardano RTView Notification",
+            "emEmailTo": "",
+            "emServerHost": "",
+            "emUsername": "",
+            "emSSL": "TLS",
+            "emPassword": "",
+            "emEmailFrom": ""
+        }
+    },
+    "nsEnabled": true
+}

@@ -76,28 +76,54 @@ RUN cd /root \
 ARG GOVERSION=1.15.6
 RUN cd /tmp \
 	&& wget https://golang.org/dl/go$GOVERSION.linux-amd64.tar.gz \
-	&& tar -C /usr/local -xzf go$GOVERSION.linux-amd64.tar.gz 
+	&& tar -C /usr/local -xzf go$GOVERSION.linux-amd64.tar.gz \
+        && rm go$GOVERSION.linux-amd64.tar.gz
+
+ARG RTVIEWVERSION=0.3.0
+RUN cd /tmp \
+	&& wget https://github.com/input-output-hk/cardano-rt-view/releases/download/${RTVIEWVERSION}/cardano-rt-view-${RTVIEWVERSION}-linux-x86_64.tar.gz \
+	&& mkdir /usr/local/rt-view \
+	&& tar -C /usr/local/rt-view -xzf cardano-rt-view-${RTVIEWVERSION}-linux-x86_64.tar.gz \
+	&& rm cardano-rt-view-${RTVIEWVERSION}-linux-x86_64.tar.gz
+
+RUN mkdir -p /etc/cardano
 
 # Build the final stage and copy the build artifacts from the previous stage.
-FROM registry.gitlab.com/viper-staking/docker-containers/debian-base:latest
+FROM adakailabs/ubuntu-base:latest
 COPY --from=build /usr/local/lib/libsodium* /usr/local/lib/
 COPY --from=build /opt/bin/cardano-cli /usr/local/bin/
 COPY --from=build /opt/bin/cardano-node /usr/local/bin/
 COPY --from=build /usr/local/bin/node_exporter /usr/local/bin
+COPY --from=build /usr/local/rt-view /usr/local/rt-view
+
 ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Copy over other resources from the build context.
+COPY rt-view /etc/cardano
+COPY config /etc/cardano
+
 COPY entrypoint.sh /usr/local/bin/
 
 # Create a directory for the node config files and blockchain database. 
 # This needs to be mounted to a host volume on container run.
 USER lovelace
-RUN mkdir ${HOME}/cardano-node/
+RUN mkdir ${HOME}/cardano-node/ \
+	&& mkdir -p /home/lovelace/.config/ \
+        && chown lovelace /home/lovelace/.config/
+
+COPY cardano-rt-view.json /home/lovelace/.config/cardano-rt-view.json        
+
+USER root
+RUN chown lovelace /home/lovelace/.config/cardano-rt-view.json \
+	&& chgrp lovelace /home/lovelace/.config/cardano-rt-view.json
 
 # Expose prometheus monitoring ports
 EXPOSE 9100
 EXPOSE 12798
+EXPOSE 6666
+
+USER lovelace
 
 # Set cardano-node as the entrypoint and by default just print the version.
 ENTRYPOINT ["entrypoint.sh"]

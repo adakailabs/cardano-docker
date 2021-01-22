@@ -3,12 +3,13 @@ LABEL maintainer="Adakailabs (info@adakailabs.com)"
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
+        && apt-get upgrade -y \
 	&& apt-get install -y \
 	wget \
 	git \
 	tmux \
         emacs-nox \
- && rm -rf /var/lib/apt/lists/*
+	&& rm -rf /var/lib/apt/lists/*
 
 # Setup default user environment
 ARG USERNAME="lovelace"
@@ -19,15 +20,15 @@ RUN groupadd -g $GROUPID -r $USERNAME \
 	&& mkdir /home/$USERNAME
 
 COPY ./shared-terminal-settings/dotfiles /home/${USERNAME}/dotfiles
+COPY profile.sh /etc/profile.d/00-aliases.sh
 
 RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
 	&& chown -R ${USERNAME}:${USERNAME} /usr/local \
 	&& echo ${USERNAME}:${USERNAME} | chpasswd \
-	&& chsh -s /usr/bin/zsh ${USERNAME}
+	&& chsh -s /bin/bash ${USERNAME}
 
 
-RUN touch /etc/profile.d/00-aliases.sh \
-	&& echo "alias ls='ls --color'" >> /etc/profile.d/00-aliases.sh
+SHELL ["/bin/bash", "-c"]
 
 USER ${USERNAME}
 
