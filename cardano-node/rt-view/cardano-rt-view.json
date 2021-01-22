@@ -31,7 +31,7 @@
         ],
         [
             "FileSK",
-            "/home/lovelace/.local/share/cardano-rt-view-logs/cardano-rt-view.log"
+            "/home/lovelace/cardano-node/log/cardano-rt-view.log"
         ]
     ],
     "options": {
@@ -48,7 +48,7 @@
     "setupScribes": [
         {
             "scMaxSev": "Emergency",
-            "scName": "/home/lovelace/.local/share/cardano-rt-view-logs/cardano-rt-view.log",
+            "scName": "/home/lovelace/cardano-node/log/cardano-rt-view.log",
             "scRotation": {
                 "rpLogLimitBytes": 50000,
                 "rpKeepFilesNum": 10,

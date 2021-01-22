@@ -23,7 +23,7 @@ nohup node_exporter --web.listen-address=":9100" &
 #  -v,--version             Show version
 #  --supported-nodes        Show supported versions of Cardano node
 
-nohup /usr/local/rt-view/cardano-rt-view --config /etc/cardano/rt-view --static /usr/local/rt-view/cardano-rt-view/static
+nohup /usr/local/rt-view/cardano-rt-view --port 8666 --config /etc/cardano/rt-view/cardano-rt-view.json --static /usr/local/rt-view/static & 
 
 # Start cardano-node, passing all CMD args to it
 echo "Starting cardano-node with arguments:"

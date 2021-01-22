@@ -100,8 +100,8 @@ ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Copy over other resources from the build context.
-COPY rt-view /etc/cardano
-COPY config /etc/cardano
+COPY rt-view /etc/cardano/rt-view
+COPY config /etc/cardano/config
 
 COPY entrypoint.sh /usr/local/bin/
 
