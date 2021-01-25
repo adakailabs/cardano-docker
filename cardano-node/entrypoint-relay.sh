@@ -12,6 +12,6 @@ cardano-node run \
 	     --socket-path /home/lovelace/cardano-node/db/node.socket \
 	     --port 3001 \
 	     --host-addr 0.0.0.0 \
-	     --config /home/lovelace/cardano-node/config/config.json \
-	     --topology /home/lovelace/cardano-node/config/topology.json
+	     --config /etc/cardano/config/config.json \
+	     --topology /etc/cardano/config/topology.json
 

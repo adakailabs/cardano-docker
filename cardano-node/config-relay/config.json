@@ -47,6 +47,10 @@
     [
       "StdoutSK",
       "stdout"
+    ],
+    [
+      "FileSK",
+      "/home/lovelace/cardano-node/log/cardano-Rocinante01Relay-relay.log"
     ]
   ],
   "hasEKG": 12788,
@@ -69,12 +73,18 @@
       "scKind": "StdoutSK",
       "scName": "stdout",
       "scRotation": null
+    },
+    {
+      "scFormat": "ScText",
+      "scKind": "FileSK",
+      "scName": "/home/lovelace/cardano-node/log/cardano-Rocinante01Relay-relay.log",
+      "scRotation": null
     }
   ],
     "traceForwardTo": {
 	"tag": "RemoteSocket",
 	"contents": [
-	    "0.0.0.0",
+	    "monitor",
 	    "6660"
 	]
     },

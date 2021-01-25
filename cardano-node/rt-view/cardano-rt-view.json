@@ -17,7 +17,7 @@
             "remoteAddr": {
                 "tag": "RemoteSocket",
                 "contents": [
-                    "0.0.0.0",
+                    "relay",
                     "6660"
                 ]
             },

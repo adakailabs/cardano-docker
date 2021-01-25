@@ -1,10 +1,6 @@
 #!/bin/bash
 set -e
 
-# Start prometheus monitoring in the background
-echo "Starting node_exporter..."
-nohup node_exporter --web.listen-address=":9100" &
-
 # cardano-rt-view - real-time view for cardano node.
 
 # Usage: cardano-rt-view [--config FILEPATH] [--notifications FILEPATH] 
@@ -24,8 +20,3 @@ nohup node_exporter --web.listen-address=":9100" &
 #  --supported-nodes        Show supported versions of Cardano node
 
 nohup /usr/local/rt-view/cardano-rt-view --port 8666 --config /etc/cardano/rt-view/cardano-rt-view.json --static /usr/local/rt-view/static & 
-
-# Start cardano-node, passing all CMD args to it
-echo "Starting cardano-node with arguments:"
-echo "$@"
-exec cardano-node $@
