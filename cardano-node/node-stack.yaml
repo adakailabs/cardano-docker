@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+    relay:
+      image: adakailabs/cardano-relay:21.01.00 
+      ports:
+        - "3100:3100"
+	- "12798:12798"
+      volumes:
+        - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
