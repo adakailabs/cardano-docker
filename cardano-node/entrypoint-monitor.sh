@@ -19,4 +19,4 @@ set -e
 #  -v,--version             Show version
 #  --supported-nodes        Show supported versions of Cardano node
 
-nohup /usr/local/rt-view/cardano-rt-view --port 8666 --config /etc/cardano/rt-view/cardano-rt-view.json --static /usr/local/rt-view/static & 
+exec /usr/local/rt-view/cardano-rt-view --port 8666 --config /etc/cardano/rt-view/cardano-rt-view.json --static /usr/local/rt-view/static 

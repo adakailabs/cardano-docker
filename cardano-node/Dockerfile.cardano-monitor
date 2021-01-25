@@ -14,7 +14,7 @@ ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 # Copy over other resources from the build context.
 COPY rt-view /etc/cardano/rt-view
 
-COPY entrypoint.sh /usr/local/bin/
+COPY entrypoint-monitor.sh /usr/local/bin/
 
 # Create a directory for the node config files and blockchain database. 
 # This needs to be mounted to a host volume on container run.
