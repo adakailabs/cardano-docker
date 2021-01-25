@@ -8,6 +8,9 @@ services:
         - "12798:12798"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      labels:                                                                                                                                                                                                                                                        
+        - type=relay
+
     monitor:
       image: adakailabs/cardano-monitor:21.01.00 
       ports:
@@ -15,3 +18,5 @@ services:
         - "8666:8666"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      labels:                                                                                                                                                                                                                                                        
+        - type=rt-view
