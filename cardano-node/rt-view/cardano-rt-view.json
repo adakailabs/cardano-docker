@@ -21,7 +21,27 @@
                     "6660"
                 ]
             },
-            "nodeName": "node-1"
+            "nodeName": "producer-1"
+        },
+	{
+            "remoteAddr": {
+                "tag": "RemoteSocket",
+                "contents": [
+                    "0.0.0.0",
+                    "6661"
+                ]
+            },
+            "nodeName": "relay-1"
+        },
+	{
+            "remoteAddr": {
+                "tag": "RemoteSocket",
+                "contents": [
+                    "0.0.0.0",
+                    "6662"
+                ]
+            },
+            "nodeName": "relay-2"
         }
     ],
     "defaultScribes": [
