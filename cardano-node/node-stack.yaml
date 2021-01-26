@@ -6,6 +6,7 @@ services:
       ports:
         - "3100:3100"
         - "12798:12798"
+        - "9100:9100"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
       deploy:
@@ -18,6 +19,19 @@ services:
       ports:
         - "6660:6660"
         - "8666:8666"
+        - "9100:9100"
+      volumes:
+        - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      deploy:
+        placement:
+          constraints:
+            - node.labels.com.adakailabs.monitor == true
+
+    prometheus:
+      image: adakailabs/cardano-prometheus:21.01.00
+      ports:
+        - "9100:9100"
+        - "9090:9090"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
       deploy:

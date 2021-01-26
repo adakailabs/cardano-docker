@@ -8,7 +8,8 @@ RUN apt-get update \
 	wget \
 	git \
 	tmux \
-        emacs-nox \
+	emacs-nox \
+        curl \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Setup default user environment
@@ -26,7 +27,6 @@ RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
 	&& chown -R ${USERNAME}:${USERNAME} /usr/local \
 	&& echo ${USERNAME}:${USERNAME} | chpasswd \
 	&& chsh -s /bin/bash ${USERNAME}
-
 
 SHELL ["/bin/bash", "-c"]
 

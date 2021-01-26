@@ -2,7 +2,6 @@ ARG CARDANO_NODE_BASE=adakailabs/cardano-base:latest
 FROM $CARDANO_NODE_BASE AS build
 LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
 
-
 # Build the final stage and copy the build artifacts from the previous stage.
 FROM adakailabs/ubuntu-base:latest
 COPY --from=build /usr/local/lib/libsodium* /usr/local/lib/
