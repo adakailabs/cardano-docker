@@ -8,8 +8,10 @@ services:
         - "12798:12798"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-      labels:                                                                                                                                                                                                                                                        
-        - type=relay
+      deploy:
+        placement:
+          constraints:
+            - node.labels.com.adakailabs.relay == true
 
     monitor:
       image: adakailabs/cardano-monitor:21.01.00 
@@ -18,5 +20,8 @@ services:
         - "8666:8666"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-      labels:                                                                                                                                                                                                                                                        
-        - type=rt-view
+      deploy:
+        placement:
+          constraints:
+            - node.labels.com.adakailabs.monitor == true
+
