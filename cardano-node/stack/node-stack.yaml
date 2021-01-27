@@ -16,21 +16,21 @@ services:
         placement:
           constraints:
             - node.labels.com.adakailabs.relay0 == true
-    relay1:
-      image: adakailabs/cardano-relay:21.01.00
-      command:
-        - "relay1"
-        - "1"
-      ports:
-        - "3100:3100"
-        - "12798:12798"
-        - "9100:9100"
-      volumes:
-        - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-      deploy:
-        placement:
-          constraints:
-            - node.labels.com.adakailabs.relay1 == true
+#    relay1:
+#      image: adakailabs/cardano-relay:21.01.00
+#      command:
+#        - "relay1"
+#        - "1"
+#      ports:
+#        - "3100:3100"
+#        - "12798:12798"
+#        - "9100:9100"
+#      volumes:
+#        - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+#      deploy:
+#        placement:
+#          constraints:
+#            - node.labels.com.adakailabs.relay1 == true
 
     producer0:
       image: adakailabs/cardano-relay:21.01.00
