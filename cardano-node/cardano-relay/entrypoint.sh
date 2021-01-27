@@ -30,16 +30,24 @@ Prom Port    : $PROMETHEUS_NODE_EXPORT_PORT
 RT View Port : $RT_VIEW_PORT
 -----------------------------------------------
 "
+ERA1=shelley
+ERA2=byron
+
+ERA1_JSON=mainnet-${ERA1}-genesis.json
+ERA2_JSON=mainnet-${ERA2}-genesis.json
+
 
 mkdir -p /home/lovelace/cardano-node/${NAME}/config
-
+CONFIG_DIR=/home/lovelace/cardano-node/${NAME}/config
+GENESIS1=$CONFIG_DIR/$ERA1_JSON
+GENESIS2=$CONFIG_DIR/$ERA2_JSON
 CONFIG=/home/lovelace/cardano-node/${NAME}/config/config.json
 TOPOLOGY=/home/lovelace/cardano-node/${NAME}/config/topology.json
 
 
 # Start prometheus monitoring in the background
 echo "Starting node_exporter..."
-nohup node_exporter --web.listen-address=":9100" &
+nohup node_exporter --web.listen-address=":910${ID}" &
 
 
 if [ -f "$CONFIG" ]; then
@@ -56,6 +64,20 @@ if [ -f "$TOPOLOGY" ]; then
 else 
     echo echo "$TOPOLOGY NOT found, copying from /etc/cardano-node"
     cp /etc/cardano/config/topology.json $TOPOLOGY
+fi
+
+if [ -f "$GENESIS1" ]; then
+    echo "$GENESIS1 found."
+else 
+    echo echo "$GENESIS1 NOT found, copying from /etc/cardano-node"
+    cp /etc/cardano/config/$ERA1_JSON $GENESIS1
+fi
+
+if [ -f "$GENESIS2" ]; then
+    echo "$GENESIS2 found."
+else 
+    echo echo "$GENESIS2 NOT found, copying from /etc/cardano-node"
+    cp /etc/cardano/config/$ERA2_JSON $GENESIS2
 fi
 
 cardano-node run \
