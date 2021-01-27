@@ -12,26 +12,12 @@ ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Copy over other resources from the build context.
-COPY rt-view /etc/cardano/rt-view
+COPY rt-view-config /etc/cardano/rt-view
 
-COPY entrypoint-monitor.sh /usr/local/bin/
+COPY entrypoint.sh /usr/local/bin/
 
-# Create a directory for the node config files and blockchain database. 
-# This needs to be mounted to a host volume on container run.
-USER lovelace
-RUN mkdir ${HOME}/cardano-node/ \
-	&& mkdir -p /home/lovelace/.config/ \
-        && chown lovelace /home/lovelace/.config/
-
-COPY cardano-rt-view.json /home/lovelace/.config/cardano-rt-view.json        
-
-USER root
-RUN chown lovelace /home/lovelace/.config/cardano-rt-view.json \
-	&& chgrp lovelace /home/lovelace/.config/cardano-rt-view.json
 
 # Expose prometheus monitoring ports
-EXPOSE 6666
-EXPOSE 8666
 
 USER lovelace
 

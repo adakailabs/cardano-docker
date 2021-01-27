@@ -1,0 +1,26 @@
+[
+    { "remoteAddr":
+      {
+	  "tag": "RemoteSocket",
+	  "contents":
+	  [ "0.0.0.0", "6660" ]
+      },
+      "nodeName": "relay0"
+    },
+    { "remoteAddr":
+      { "tag": "RemoteSocket",
+	"contents": [ "0.0.0.0", "6661" ]
+      },
+      "nodeName": "relay1"
+    },
+    { "remoteAddr":
+      { "tag": "RemoteSocket",
+	"contents": [ "0.0.0.0", "6662" ]
+      }, "nodeName": "relay2"
+    },
+    { "remoteAddr":
+      { "tag": "RemoteSocket",
+	"contents":
+	[ "0.0.0.0", "6663" ]
+      }, "nodeName": "relay3" }
+    ,}

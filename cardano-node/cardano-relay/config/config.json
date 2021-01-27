@@ -85,7 +85,7 @@
 	"tag": "RemoteSocket",
 	"contents": [
 	    "monitor",
-	    "6660"
+	    "{{rtk-view-port}}"
 	]
     },
     "options": {

@@ -1,3 +1,4 @@
+ARG PROMETHEUS_NODE_EXPORT_PORT=9100
 ARG CARDANO_NODE_BASE=adakailabs/cardano-base:latest
 FROM $CARDANO_NODE_BASE AS build
 LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
@@ -13,9 +14,9 @@ ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Copy over other resources from the build context.
-COPY config-relay /etc/cardano/config
+COPY config_tmp /etc/cardano/config
 
-COPY entrypoint-relay.sh /usr/local/bin/
+COPY entrypoint.sh /usr/local/bin/
 
 # Create a directory for the node config files and blockchain database. 
 # This needs to be mounted to a host volume on container run.
@@ -25,12 +26,12 @@ RUN mkdir ${HOME}/cardano-node/ \
         && chown lovelace /home/lovelace/.config/
 
 # Expose prometheus monitoring ports
-EXPOSE 9100
+EXPOSE $PROMETHEUS_NODE_EXPORT_PORT
 EXPOSE 12798
 EXPOSE 3001
 
 USER lovelace
 
 # Set cardano-node as the entrypoint and by default just print the version.
-ENTRYPOINT ["entrypoint-relay.sh"]
+ENTRYPOINT ["entrypoint.sh"]
 CMD ["--version"]

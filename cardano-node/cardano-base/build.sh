@@ -4,11 +4,9 @@ set -o errexit
 set -o nounset
 
 # Current version
-VERSION=$(cat cardano_base_version)
+VERSION=$(cat version)
 IMAGE="adakailabs/cardano-base:${VERSION}"
 
 docker login 
-docker build --file Dockerfile.cardano-base -t ${IMAGE} .
+docker build --file Dockerfile -t ${IMAGE} .
 docker push ${IMAGE}
-
-# Current version
