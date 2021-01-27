@@ -83,7 +83,7 @@ fi
 cardano-node run \
 		    --database-path /home/lovelace/cardano-node/${NAME}/db/ \
 		    --socket-path /home/lovelace/cardano-node/${NAME}/db/node.socket \
-		    --port 3001 --host-addr 0.0.0.0 \
+		    --port 30${1}1 --host-addr 0.0.0.0 \
 		    --config $CONFIG \
 		    --topology $TOPOLOGY
 

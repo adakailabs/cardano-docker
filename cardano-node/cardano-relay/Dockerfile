@@ -18,9 +18,6 @@ COPY config /etc/cardano/config
 COPY entrypoint.sh /usr/local/bin/
 
 # Expose prometheus monitoring ports
-EXPOSE 12798
-EXPOSE 3001
-
 USER lovelace
 
 # Set cardano-node as the entrypoint and by default just print the version.

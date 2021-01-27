@@ -22,9 +22,9 @@ services:
 #        - "relay1"
 #        - "1"
 #      ports:
-#        - "3100:3100"
+#        - "3110:3110"
 #        - "12798:12798"
-#        - "9100:9100"
+#        - "9101:9101"
 #      volumes:
 #        - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
 #      deploy:
@@ -38,9 +38,9 @@ services:
         - "producer0"
         - "2"
       ports:
-        - "3100:3100"
+        - "3120:3120"
         - "12798:12798"
-        - "9100:9100"
+        - "9102:9102"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
       deploy:
