@@ -50,7 +50,7 @@
     ],
     [
       "FileSK",
-      "/home/lovelace/cardano-node/log/cardano-Rocinante01Relay-relay.log"
+      "/home/lovelace/cardano-node/{{node-name}}/log/{{node-name}}.log"
     ]
   ],
   "hasEKG": 12788,
@@ -77,7 +77,7 @@
     {
       "scFormat": "ScText",
       "scKind": "FileSK",
-      "scName": "/home/lovelace/cardano-node/log/cardano-Rocinante01Relay-relay.log",
+      "scName": "/home/lovelace/cardano-node/{{node-name}}/log/{{node-name}}.log",
       "scRotation": null
     }
   ],
@@ -85,7 +85,7 @@
 	"tag": "RemoteSocket",
 	"contents": [
 	    "monitor",
-	    "{{rtk-view-port}}"
+	    "666{{node-id}}"
 	]
     },
     "options": {

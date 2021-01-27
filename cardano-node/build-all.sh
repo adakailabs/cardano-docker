@@ -1,5 +1,9 @@
 #!/bin/bash
+cd cardano-base
+./build.sh
+cd ../cardano-relay 
+./build.sh &&
 
-cd cardano-base  && ./build.sh 
-cd cardano-relay && ./build.sh 9100 6660
-cd cardano-monitor && ./build.sh 2 
+# create image that will support 2 relays and 1 producer
+cd ../cardano-monitor
+./build.sh && cd ..
