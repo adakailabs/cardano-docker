@@ -7,11 +7,11 @@ set -o nounset
 
 if [ $1 == "" ]; then
     echo "WARN: instances  not specified, using default"
-    INSTANCES="1"
+    RELAY_INSTANCES="1"
 fi
 
-INSTANCES=$1
-LAST=$(($INSTANCES-1))
+RELAY_INSTANCES=$1
+LAST=$(($RELAY_INSTANCES-1))
 echo $LAST
 
 # Current version
@@ -24,43 +24,36 @@ echo "building cardano image: ${IMAGE_BASE}"
 CONFIG="["
 
 
-for (( i=0; i<=$INSTANCES; i++ ))
+for (( i=0; i<=$RELAY_INSTANCES; i++ ))
 do
 
-    C=$(cat <<-END
-        {
-            "remoteAddr": {
-                "tag": "RemoteSocket",
-                "contents": [
-                   "0.0.0.0",
-                    "666$i"
-                ]
-            },
-            "nodeName": "relay$i"
-        }
-END
-     )
+    C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"666$i\"]},\"nodeName\": \"relay$i\"}"
 
-if [[ $i -eq 0 ]]
-then
-    CONFIG="$CONFIG $C"
-else
-
-    if [[ $i -eq $INSTANCES ]]
+    if [[ $i -eq 0 ]]
     then
-	CONFIG="$CONFIG ]"
+	CONFIG="$CONFIG $C"
     else
-	CONFIG=$CONFIG,$C
+
+	if [[ $i -eq $RELAY_INSTANCES ]]
+	then
+	    CONFIG="$CONFIG ]"
+	else
+	    CONFIG=$CONFIG,$C
+	fi
     fi
-    
-fi
-    
 done
 
 
-echo $CONFIG  | python -m json.tool
+rm -rf rt-view-config_tmp
+cp -r  rt-view-config rt-view-config_tmp
 
+sed -i -e "s/{{traceAcceptAt}}/${CONFIG}/g" rt-view-config_tmp/cardano-rt-view.json
+cat  rt-view-config_tmp/cardano-rt-view.json | python -m json.tool > rt-view-config_tmp/cardano-rt-view.json.new
+mv rt-view-config_tmp/cardano-rt-view.json.new rt-view-config_tmp/cardano-rt-view.json 
 
-#docker login 
-#docker build  --file Dockerfile.cardano-monitor --build-arg CARDANO_NODE_BASE=${IMAGE_BASE} -t ${IMAGE} .
-#docker push ${IMAGE}
+echo "done"
+
+docker login 
+docker build  --file Dockerfile.cardano-monitor --build-arg CARDANO_NODE_BASE=${IMAGE_BASE} -t ${IMAGE} .
+rm -rf rt-view-config_tmp
+docker push ${IMAGE}

@@ -12,18 +12,7 @@
     "hasGraylog": null,
     "hasGUI": null,
     "traceForwardTo": null,
-    "traceAcceptAt": [
-        {
-            "remoteAddr": {
-                "tag": "RemoteSocket",
-                "contents": [
-                    "0.0.0.0",
-                    "6660"
-                ]
-            },
-            "nodeName": "relay-1"
-        }
-    ],
+    "traceAcceptAt":{{traceAcceptAt}},
     "defaultScribes": [
         [
             "StdoutSK",
