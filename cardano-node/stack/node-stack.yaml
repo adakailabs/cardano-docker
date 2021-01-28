@@ -8,7 +8,7 @@ services:
         - "0"
       ports:
         - "3100:3100"
-        - "12798:12798"
+        - "12700:12700"
         - "9100:9100"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
@@ -16,21 +16,21 @@ services:
         placement:
           constraints:
             - node.labels.com.adakailabs.relay0 == true
-#    relay1:
-#      image: adakailabs/cardano-relay:21.01.00
-#      command:
-#        - "relay1"
-#        - "1"
-#      ports:
-#        - "3110:3110"
-#        - "12798:12798"
-#        - "9101:9101"
-#      volumes:
-#        - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-#      deploy:
-#        placement:
-#          constraints:
-#            - node.labels.com.adakailabs.relay1 == true
+    relay1:
+      image: adakailabs/cardano-relay:21.01.00
+      command:
+        - "relay1"
+        - "1"
+      ports:
+        - "3101:3101"
+        - "12701:12701"
+        - "9101:9101"
+      volumes:
+        - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      deploy:
+        placement:
+          constraints:
+            - node.labels.com.adakailabs.relay1 == true
 
     producer0:
       image: adakailabs/cardano-relay:21.01.00
@@ -38,8 +38,8 @@ services:
         - "producer0"
         - "2"
       ports:
-        - "3120:3120"
-        - "12798:12798"
+        - "3102:3102"
+        - "12702:12702"
         - "9102:9102"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
@@ -55,6 +55,8 @@ services:
         - "1" # 1 producer
       ports:
         - "6660:6660"
+        - "6661:6661"
+        - "6662:6662"
         - "8666:8666"
 
       volumes:
@@ -66,6 +68,9 @@ services:
 
     prometheus:
       image: adakailabs/cardano-prometheus:21.01.00
+      command:
+        - "2" # 2 relays
+        - "1" # 1 producer
       ports:
         - "9090:9090"
       volumes:
