@@ -47,7 +47,8 @@ echo "----------------------------------------"
 for (( i=0; i<=$RELAY_INSTANCES; i++ ))
 do
 
-    C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"666$i\"]},\"nodeName\": \"relay$i\"}"
+    RT_VIEW_PORT=$(printf '66%02d' "${i}")
+    C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"${RT_VIEW_PORT}\"]},\"nodeName\": \"relay$i\"}"
 
     if [[ $i -eq 0 ]]
     then
@@ -76,8 +77,8 @@ done
 for (( i=0; i<=$PRODUCER_INSTANCES; i++ ))
 do
     j=$(($RELAY_INSTANCES+$i))
-    
-    C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"666$j\"]},\"nodeName\": \"producer$i\"}"
+    RT_VIEW_PORT=$(printf '66%02d' "${j}")
+    C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"${RT_VIEW_PORT}\"]},\"nodeName\": \"producer$i\"}"
 
     if [[ $i -eq 0 ]]
     then
