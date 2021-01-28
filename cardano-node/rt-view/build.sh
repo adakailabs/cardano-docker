@@ -6,7 +6,7 @@ set -o nounset
 # Current version
 BASE_VERSION=$(cat ../cardano-base/version)
 IMAGE_BASE="adakailabs/cardano-base:${BASE_VERSION}"
-VERSION=$(cat ../cardano-base/version)
+VERSION=$(cat version)
 IMAGE="adakailabs/cardano-monitor:${VERSION}"
 
 echo "building cardano image: ${IMAGE_BASE}"

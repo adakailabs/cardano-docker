@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 
 # Current version
-VERSION=$(cat prometheus_version)
+VERSION=$(cat version)
 IMAGE="adakailabs/cardano-prometheus:${VERSION}"
 
 echo "prometheus image: ${IMAGE}"

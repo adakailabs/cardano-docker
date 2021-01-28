@@ -22,5 +22,5 @@ COPY entrypoint.sh /usr/local/bin/
 USER lovelace
 
 # Set cardano-node as the entrypoint and by default just print the version.
-ENTRYPOINT ["entrypoint-monitor.sh"]
+ENTRYPOINT ["entrypoint.sh"]
 CMD ["--version"]
