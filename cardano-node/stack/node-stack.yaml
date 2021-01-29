@@ -1,5 +1,11 @@
 version: '3.7'
 
+secrets:
+    my_secret:
+      file: ./test-secret
+#    my_other_secret:
+#      external: true
+
 services:
     relay0:
       image: adakailabs/cardano-relay:21.01.00
@@ -34,6 +40,9 @@ services:
 
     producer0:
       image: adakailabs/cardano-relay:21.01.00
+      secrets:
+        - my_secret
+ #       - my_other_secret
       command:
         - "producer0"
         - "2"
@@ -68,6 +77,7 @@ services:
 
     prometheus:
       image: adakailabs/cardano-prometheus:21.01.00
+
       command:
         - "2" # 2 relays
         - "1" # 1 producer
