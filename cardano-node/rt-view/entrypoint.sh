@@ -34,7 +34,7 @@ fi
 
 RELAY_INSTANCES=$1
 
-if [ $1 == "" ]; then
+if [ $2 == "" ]; then
     echo "WARN: producer instances  not specified, using default"
     PRODUCER_INSTANCES="1"
 fi

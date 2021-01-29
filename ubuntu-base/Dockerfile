@@ -9,7 +9,8 @@ RUN apt-get update \
 	git \
 	tmux \
 	emacs-nox \
-        curl \
+	curl \
+        python \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Setup default user environment

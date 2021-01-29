@@ -13,5 +13,4 @@ echo "building cardano image: ${IMAGE_BASE}"
 
 docker login 
 docker build  --file Dockerfile --build-arg CARDANO_NODE_BASE=${IMAGE_BASE} -t ${IMAGE} .
-rm -rf rt-view-config_tmp
 docker push ${IMAGE}
