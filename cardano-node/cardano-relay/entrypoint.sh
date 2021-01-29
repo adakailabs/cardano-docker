@@ -57,7 +57,11 @@ nohup node_exporter --web.listen-address=":${NODE_EXPORTER_PORT}" &
 
 
 if [ -f "$CONFIG" ]; then
-    echo "$CONFIG found."
+    echo "$CONFIG found, replacing"
+    cp /etc/cardano/config/config.json $CONFIG
+    sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
+    sed -i "s/{{node-id}}/${ID}/g" $CONFIG
+    sed -i "s/{{prometheus-port}}/${PROMETHEUS_PORT}/g" $CONFIG
 else 
     echo echo "$CONFIG NOT found, copying from /etc/cardano-node"
     cp /etc/cardano/config/config.json $CONFIG
@@ -69,6 +73,7 @@ fi
 
 if [ -f "$TOPOLOGY" ]; then
     echo "$TOPOLOGY found."
+    cp /etc/cardano/config/topology.json $TOPOLOGY
 else 
     echo echo "$TOPOLOGY NOT found, copying from /etc/cardano-node"
     cp /etc/cardano/config/topology.json $TOPOLOGY
@@ -76,6 +81,7 @@ fi
 
 if [ -f "$GENESIS1" ]; then
     echo "$GENESIS1 found."
+    cp /etc/cardano/config/$ERA1_JSON $GENESIS1
 else 
     echo echo "$GENESIS1 NOT found, copying from /etc/cardano-node"
     cp /etc/cardano/config/$ERA1_JSON $GENESIS1
@@ -83,6 +89,7 @@ fi
 
 if [ -f "$GENESIS2" ]; then
     echo "$GENESIS2 found."
+    cp /etc/cardano/config/$ERA2_JSON $GENESIS2
 else 
     echo echo "$GENESIS2 NOT found, copying from /etc/cardano-node"
     cp /etc/cardano/config/$ERA2_JSON $GENESIS2

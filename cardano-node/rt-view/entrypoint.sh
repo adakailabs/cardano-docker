@@ -44,7 +44,7 @@ PRODUCER_INSTANCES=$2
 CONFIG="["
 echo "----------------------------------------"
 
-for (( i=0; i<=$RELAY_INSTANCES; i++ ))
+for (( i=0; i<$RELAY_INSTANCES; i++ ))
 do
 
     RT_VIEW_PORT=$(printf '66%02d' "${i}")
@@ -55,49 +55,59 @@ do
 	CONFIG="$CONFIG $C"
     else
 
-	if [[ $i -eq $RELAY_INSTANCES ]]
+	if [[ $i -eq $(($RELAY_INSTANCES-1)) ]]
 	then
 
 	    if [[ 0 -eq $PRODUCER_INSTANCES ]]
             then
-		CONFIG="$CONFIG ]"
+		CONFIG="$CONFIG, $C ]"
 		echo "RELAY NAME         : relay$i"
 	    else
-		CONFIG="$CONFIG ,"
+		CONFIG="$CONFIG, $C "
 		echo "RELAY NAME         : relay$i"
 	    fi
 	else
-	    CONFIG=$CONFIG,$C
+	    CONFIG="$CONFIG , $C"
 	    echo "RELAY NAME         : relay$i"
 	fi
     fi
     
 done
 
-for (( i=0; i<=$PRODUCER_INSTANCES; i++ ))
-do
-    j=$(($RELAY_INSTANCES+$i))
-    RT_VIEW_PORT=$(printf '66%02d' "${j}")
-    C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"${RT_VIEW_PORT}\"]},\"nodeName\": \"producer$i\"}"
+if [[ 0 -ne $PRODUCER_INSTANCES ]]
+   then
 
-    if [[ $i -eq 0 ]]
-    then
-	CONFIG="$CONFIG $C"
-    else
-
-	if [[ $i -eq $PRODUCER_INSTANCES ]]
-	then
-	    CONFIG="$CONFIG ]"
-	    echo "PRODUCER NAME      : producer$i"
-	else
-	    CONFIG=$CONFIG,$C
-            echo "PRODUCER NAME      : producer$i"
-	fi
-    fi
-
-done
-
+       for (( i=0; i<$PRODUCER_INSTANCES; i++ ))
+       do
+	   j=$(($RELAY_INSTANCES+$i))
+	   RT_VIEW_PORT=$(printf '66%02d' "${j}")
+	   C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"${RT_VIEW_PORT}\"]},\"nodeName\": \"producer$i\"}"
+	   
+	   if [[ $i -eq 0 ]]
+	   then
+	       CONFIG="$CONFIG , $C"
+	       if [[ 1 -eq $PRODUCER_INSTANCES ]]
+	       then
+		   CONFIG="$CONFIG ]"
+		   echo "PRODUCER NAME      : producer$i"
+	       fi
+	   else
+	       if [[ $i -eq $(($PRODUCER_INSTANCES-1)) ]]
+	       then
+		   CONFIG="$CONFIG, $C]"
+		   echo "PRODUCER NAME      : producer$i"
+	       else
+		   CONFIG="$CONFIG,$C"
+		   echo "PRODUCER NAME      : producer$i"
+	       fi
+	   fi
+	   
+       done
+fi
 sed -i -e "s/{{traceAcceptAt}}/${CONFIG}/g" $CONFIG_FILE_TMP
+
+cat $CONFIG_FILE_TMP
+
 cat $CONFIG_FILE_TMP | python -m json.tool >  $CONFIG_FILE_LOCAL
 
 echo "
@@ -109,4 +119,4 @@ CONFIG PATH        : $CONFIG_FILE_LOCAL
 "
 
 
-exec /usr/local/rt-view/cardano-rt-view --port 8666 --config $CONFIG_FILE_LOCAL --static /usr/local/rt-view/static 
+#exec /usr/local/rt-view/cardano-rt-view --port 8666 --config $CONFIG_FILE_LOCAL --static /usr/local/rt-view/static 
