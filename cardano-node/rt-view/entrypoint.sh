@@ -128,4 +128,4 @@ CONFIG PATH        : $CONFIG_FILE_LOCAL
 "
 
 
-#exec /usr/local/rt-view/cardano-rt-view --port 8666 --config $CONFIG_FILE_LOCAL --static /usr/local/rt-view/static 
+exec /usr/local/rt-view/cardano-rt-view --port 8666 --config $CONFIG_FILE_LOCAL --static /usr/local/rt-view/static 
