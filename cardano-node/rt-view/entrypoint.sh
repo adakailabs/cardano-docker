@@ -53,6 +53,15 @@ do
     if [[ $i -eq 0 ]]
     then
 	CONFIG="$CONFIG $C"
+	if [[ $i -eq $(($RELAY_INSTANCES-1)) ]]
+        then
+            if [[ 0 -eq $PRODUCER_INSTANCES ]]
+            then
+		CONFIG="$CONFIG ]"
+	    else
+		CONFIG="$CONFIG "
+	    fi
+	fi    
     else
 
 	if [[ $i -eq $(($RELAY_INSTANCES-1)) ]]
