@@ -60,13 +60,13 @@ if [ -f "$CONFIG" ]; then
     echo "$CONFIG found, replacing"
     cp /etc/cardano/config/config.json $CONFIG
     sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
-    sed -i "s/{{node-id}}/${ID}/g" $CONFIG
+    sed -i "s/{{node-id}}/${RT_VIEW_PORT}/g" $CONFIG
     sed -i "s/{{prometheus-port}}/${PROMETHEUS_PORT}/g" $CONFIG
 else 
     echo echo "$CONFIG NOT found, copying from /etc/cardano-node"
     cp /etc/cardano/config/config.json $CONFIG
     sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
-    sed -i "s/{{node-id}}/${ID}/g" $CONFIG
+    sed -i "s/{{node-id}}/${RT_VIEW_PORT}/g" $CONFIG
     sed -i "s/{{prometheus-port}}/${PROMETHEUS_PORT}/g" $CONFIG
     
 fi
