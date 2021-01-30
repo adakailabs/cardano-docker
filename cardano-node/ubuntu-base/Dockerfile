@@ -23,7 +23,7 @@ RUN groupadd -g $GROUPID -r $USERNAME \
 
 RUN export HOME=/home/${USERNAME}/ \
 	&& git clone https://github.com/lagarciag/dotfiles.git ${HOME}/.dotfiles \
-	&& cd ${HOME}/.dotfiles
+	&& cd ${HOME}/.dotfiles \
 	&& ./setup.sh
 
 RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
