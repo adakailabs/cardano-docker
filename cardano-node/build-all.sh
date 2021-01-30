@@ -3,8 +3,10 @@
 set -o errexit
 set -o nounset
 
+cd ubuntu-base
+./build.sh
 
-cd cardano-base
+cd ../cardano-base
 ./build.sh
 cd ../cardano-relay 
 ./build.sh &&
