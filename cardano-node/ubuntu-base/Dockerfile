@@ -17,14 +17,16 @@ RUN apt-get update \
 ARG USERNAME="lovelace"
 ARG USERID="1000"
 ARG GROUPID="1024"
+ARG HOME="/home/${USERNAME}"
+
 RUN groupadd -g $GROUPID -r $USERNAME \
 	&& useradd --no-log-init -r --gid $GROUPID -u $USERID $USERNAME \
-	&& mkdir /home/$USERNAME
+	&& mkdir /home/$USERNAME \
+	&& echo "added new user" 
 
-RUN export HOME=/home/${USERNAME}/ \
-	&& git clone https://github.com/lagarciag/dotfiles.git ${HOME}/.dotfiles \
-	&& cd ${HOME}/.dotfiles \
-	&& ./setup.sh
+RUN git clone https://github.com/lagarciag/dotfiles.git /home/$USERNAME/.dotfiles \
+	&& cd /home/$USERNAME/.dotfiles \
+	&& USER=${USERNAME} ./setup.sh
 
 RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
 	&& chown -R ${USERNAME}:${USERNAME} /usr/local \
