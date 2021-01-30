@@ -3,6 +3,18 @@
 # This script automatically downloads and installs docker and git
 ##############################################################################
 
+# Login as root
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
+$GITHUB_USER="lagarciag"
+$NEW_USER="lovelace"
+$HOME="/home/${NEW_USER}"
+
+
+
 echo "This script was developed on Ubuntu 20.04"
 echo "You are running the following version of Linux:"
 head -1 /etc/os-release
@@ -21,8 +33,8 @@ echo "The following version of Docker has been installed:"
 docker --version
 
 # Add the current user to the docker group
-echo "Adding user \"`whoami`\" to the docker group"
+echo "Adding user ${USER} to the docker group"
 sudo groupadd docker
-sudo usermod -aG docker `whoami`
+sudo usermod -aG docker ${USER}
 
 echo "Docker installation has been completed. You must reboot before running the setup script."
