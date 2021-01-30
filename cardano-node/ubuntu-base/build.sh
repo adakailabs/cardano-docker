@@ -1,4 +1,4 @@
 docker login 
 docker build -t adakailabs/ubuntu-base:latest .
 docker push adakailabs/ubuntu-base:latest
-docker run -it adakailabs/ubuntu-base:latest bash
+#docker run -it adakailabs/ubuntu-base:latest bash
