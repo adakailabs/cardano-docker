@@ -21,8 +21,10 @@ RUN groupadd -g $GROUPID -r $USERNAME \
 	&& useradd --no-log-init -r --gid $GROUPID -u $USERID $USERNAME \
 	&& mkdir /home/$USERNAME
 
-COPY ./shared-terminal-settings/dotfiles /home/${USERNAME}/dotfiles
-COPY profile.sh /etc/profile.d/00-aliases.sh
+RUN export HOME=/home/${USERNAME}/ \
+	&& git clone https://github.com/lagarciag/dotfiles.git ${HOME}/.dotfiles \
+	&& cd ${HOME}/.dotfiles
+	&& ./setup.sh
 
 RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
 	&& chown -R ${USERNAME}:${USERNAME} /usr/local \
@@ -32,9 +34,3 @@ RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
 SHELL ["/bin/bash", "-c"]
 
 USER ${USERNAME}
-
-# Install and setup environment for default user
-RUN ln -s /home/${USERNAME}/dotfiles/tmux-shared /home/${USERNAME}/.tmux.conf \
-	&& ln -s /home/${USERNAME}/dotfiles/emacs-shared /home/${USERNAME}/.emacs \
-	&& ln -s /home/${USERNAME}/dotfiles/emacsd-shared /home/${USERNAME}/.emacs.d \
-	&& git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
