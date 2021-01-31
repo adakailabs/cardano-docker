@@ -81,6 +81,14 @@ systemctl restart ssh
 
 # Setup the firewall
 ufw allow 2222/tcp  # ssh port
+
+# docker swarn related
+ufw allow 2376/tcp
+ufw allow 2377/tcp
+ufw allow 7946/tcp
+ufw allow 7946/udp
+ufw allow 4789/udp
+
 ufw enable
 
 # Reboot

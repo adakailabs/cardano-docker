@@ -1,6 +1,8 @@
 #!/bin/bash
-set -e
 
+echo "starting prometheus..." 
+
+set -e
 
 if [ $1 == "" ]; then
     echo "WARN: relay instances  not specified, using default"
@@ -16,11 +18,12 @@ fi
 
 PRODUCER_INSTANCES=$2
 
-CONFIG_DIR="/home/lovelace/cardano-node/prometheus/"
+CONFIG_DIR="/prometheus/"
 CONFIG_FILE_ETC=/etc/prometheus/prometheus.yml
 CONFIG_FILE_LOCAL="$CONFIG_DIR/prometheus.yml"
 CONFIG_FILE_TMP=/tmp/prometheus.yml
 
+echo "CONFIG: $CONFIG_DIR"
 
 mkdir -p $CONFIG_DIR \
       && cp $CONFIG_FILE_ETC $CONFIG_FILE_TMP
@@ -94,4 +97,6 @@ CONFIG PATH        : $CONFIG_FILE_LOCAL
 ----------------------------------------
 "
 
-exec prometheus --config.file=$CONFIG_FILE_LOCAL
+
+
+exec prometheus --config.file=$CONFIG_FILE_LOCAL --storage.tsdb.path=/prometheus --web.console.libraries=/usr/share/prometheus/console_libraries --web.console.templates=/usr/share/prometheus/consoles

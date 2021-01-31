@@ -24,6 +24,7 @@ RUN groupadd -g $GROUPID -r $USERNAME \
 	&& mkdir /home/$USERNAME \
 	&& echo "added new user" 
 
+
 RUN git clone https://github.com/lagarciag/dotfiles.git /home/$USERNAME/.dotfiles \
 	&& cd /home/$USERNAME/.dotfiles \
 	&& USER=${USERNAME} ./setup.sh
