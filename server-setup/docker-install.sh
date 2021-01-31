@@ -9,9 +9,9 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-$GITHUB_USER="lagarciag"
-$NEW_USER="lovelace"
-$HOME="/home/${NEW_USER}"
+GITHUB_USER="lagarciag"
+NEW_USER="lovelace"
+HOME="/home/${NEW_USER}"
 
 
 
