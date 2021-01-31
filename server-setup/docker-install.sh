@@ -3,6 +3,8 @@
 # This script automatically downloads and installs docker and git
 ##############################################################################
 
+set -e 
+
 # Login as root
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root"

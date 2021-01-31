@@ -21,14 +21,13 @@ head -1 /etc/os-release
 
 # Update and install needed packages
 apt update
-apt -y upgrade
-apt -y install git tmux ufw htop chrony curl rsync emacs-nox wget 
+DEBIAN_FRONTEND=noninteractive apt -y upgrade
+DEBIAN_FRONTEND=noninteractive apt -y install git tmux ufw htop chrony curl rsync emacs-nox wget 
 
 # Create the lovelace user (do not switch user)
 groupadd -g 1024 lovelace
 useradd -m -u 1000 -g lovelace -s /bin/bash lovelace
 usermod -aG sudo lovelace
-usermod -aG docker lovelace
 passwd lovelace
 
 USER=${NEW_USER} ./docker-install.sh 
