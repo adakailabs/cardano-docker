@@ -36,7 +36,7 @@ docker --version
 
 # Add the current user to the docker group
 echo "Adding user ${NEW_USER} to the docker group"
-sudo groupadd docker
+#sudo groupadd docker
 sudo usermod -aG docker ${NEW_USER}
 
 echo "Docker installation has been completed. You must reboot before running the setup script."

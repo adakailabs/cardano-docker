@@ -15,6 +15,7 @@ GITHUB_USER="lagarciag"
 NEW_USER="lovelace"
 HOME="/home/${NEW_USER}"
 
+
 echo "This script was developed on Ubuntu 20.04 "
 echo "You are running the following version of Linux:"
 head -1 /etc/os-release
@@ -25,23 +26,24 @@ DEBIAN_FRONTEND=noninteractive apt -y upgrade
 DEBIAN_FRONTEND=noninteractive apt -y install git tmux ufw htop chrony curl rsync emacs-nox wget 
 
 # Create the lovelace user (do not switch user)
-groupadd -g 1024 lovelace
-useradd -m -u 1000 -g lovelace -s /bin/bash lovelace
+#groupadd -g 1024 lovelace
+#useradd -m -u 1000 -g lovelace -s /bin/bash lovelace
 usermod -aG sudo lovelace
 passwd lovelace
+
+# Create the directories for the node
+mkdir -P $HOME/cardano-node
 
 USER=${NEW_USER} ./docker-install.sh 
 
 git clone https://github.com/lagarciag/dotfiles.git ${HOME}/.dotfiles
 cd ${HOME}/.dotfiles
-USER=${NEW_USER} HOME=${HOME} ./setup.sh./setup.sh
+USER=${NEW_USER} HOME=${HOME} ./setup.sh
 
 
-# Create the directories for the node
-mkdir /home/lovelace/cardano-node
 
-chown -R lovelace:lovelace /home/lovelace/cardano-node
-chmod -R 774
+chown -R lovelace:lovelace $HOME/cardano-node
+chmod -R 774 $HOME/cardano-node
 
 # Configure chrony (use the Google time server)
 cat > /etc/chrony/chrony.conf << EOM
