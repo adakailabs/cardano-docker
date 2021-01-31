@@ -1,6 +1,8 @@
 #!/bin/bash
 # This script sets up the node for use as a stake pool.
 
+set -e 
+
 trap 'echo "$BASH_COMMAND"' DEBUG
 
 # Login as root
@@ -33,7 +35,7 @@ USER=${NEW_USER} ./docker-install.sh
 
 git clone https://github.com/lagarciag/dotfiles.git ${HOME}/.dotfiles
 cd ${HOME}/.dotfiles
-USER=${NEW_USER} ./setup.sh./setup.sh
+USER=${NEW_USER} HOME=${HOME} ./setup.sh./setup.sh
 
 
 # Create the directories for the node
