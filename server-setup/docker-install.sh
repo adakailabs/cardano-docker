@@ -33,8 +33,8 @@ echo "The following version of Docker has been installed:"
 docker --version
 
 # Add the current user to the docker group
-echo "Adding user ${USER} to the docker group"
+echo "Adding user ${NEW_USER} to the docker group"
 sudo groupadd docker
-sudo usermod -aG docker ${USER}
+sudo usermod -aG docker ${NEW_USER}
 
 echo "Docker installation has been completed. You must reboot before running the setup script."
