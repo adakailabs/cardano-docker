@@ -26,13 +26,14 @@ DEBIAN_FRONTEND=noninteractive apt -y upgrade
 DEBIAN_FRONTEND=noninteractive apt -y install git tmux ufw htop chrony curl rsync emacs-nox wget 
 
 # Create the lovelace user (do not switch user)
-#groupadd -g 1024 lovelace
-#useradd -m -u 1000 -g lovelace -s /bin/bash lovelace
+groupadd -g 1024 lovelace
+useradd -m -u 1000 -g lovelace -s /bin/bash lovelace
 usermod -aG sudo lovelace
 passwd lovelace
 
 # Create the directories for the node
-mkdir -P $HOME/cardano-node
+mkdir -p $HOME/cardano-node
+mkdir -p $HOME/.ssh
 
 USER=${NEW_USER} ./docker-install.sh 
 
