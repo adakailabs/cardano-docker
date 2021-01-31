@@ -34,7 +34,7 @@ USER=${NEW_USER} ./docker-install.sh
 
 git clone https://github.com/lagarciag/dotfiles.git ${HOME}/.dotfiles
 cd ${HOME}/.dotfiles
-USER=${NEW_USER} HOME=${HOME} ./setup.sh./setup.sh
+USER=${NEW_USER} HOME=${HOME} ./setup.sh
 
 
 # Create the directories for the node
