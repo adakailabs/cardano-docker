@@ -11,9 +11,9 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-$GITHUB_USER="lagarciag"
-$NEW_USER="lovelace"
-$HOME="/home/${NEW_USER}"
+GITHUB_USER="lagarciag"
+NEW_USER="lovelace"
+HOME="/home/${NEW_USER}"
 
 echo "This script was developed on Ubuntu 20.04 "
 echo "You are running the following version of Linux:"
@@ -43,17 +43,6 @@ mkdir /home/lovelace/cardano-node
 
 chown -R lovelace:lovelace /home/lovelace/cardano-node
 chmod -R 774
-
-# Install go compiler
-export GOBIN=/usr/local/bin
-export GOPATH=/tmp/go
-goversion=1.15.6
-wget https://golang.org/dl/go${goversion}.linux-amd64.tar.gz \
-    && tar -C /usr/local -xzf go${goversion}.linux-amd64.tar.gz \
-    && rm go${goversion}.linux-amd64.tar.gz  \
-    && go get -v -d github.com/adakailabs/gocard \
-    && cd ${GOPATH}/src/github.com/adakailabs/gocard \
-    && make install 
 
 # Configure chrony (use the Google time server)
 cat > /etc/chrony/chrony.conf << EOM
