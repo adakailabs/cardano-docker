@@ -72,9 +72,8 @@ cp /etc/fstab /etc/fstab.back
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 # Setup SSH
-curl https://github.com/${"GITHUB_USER"}.keys | tee -a ~/.ssh/authorized_keys
-cp -r ~/.ssh /home/lovelace
-chown -R lovelace:lovelace /home/lovelace/.ssh
+curl https://github.com/${GITHUB_USER}.keys | tee -a $HOME/.ssh/authorized_keys
+chown -R lovelace:lovelace $HOME/.ssh
 sed -i.bak1 's/#Port 22/Port 2222/g' /etc/ssh/sshd_config
 sed -i.bak2 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 echo 'AllowUsers lovelace' >> /etc/ssh/sshd_config
