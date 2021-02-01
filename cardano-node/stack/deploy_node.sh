@@ -1,10 +1,15 @@
 #!/bin/bash
 
+set -e 
 set -o errexit
 set -o nounset
 
-#docker pull adakailabs/cardano-relay:21.01.00
-#docker pull adakailabs/cardano-monitor:21.01.02
-#docker pull adakailabs/cardano-prometheus:21.01.00
+CARDANO_REALY_VERSION=$(cat ../cardano-relay/version)
+PROMETHEUS_VERSION=$(cat ../prometheus/version)
+CARDANO_RT_VIEW_VERSION=$(cat ../rt-view/version)
+
+docker pull "adakailabs/cardano-relay:$CARDANO_REALY_VERSION"
+docker pull "adakailabs/cardano-monitor:$CARDANO_RT_VIEW_VERSION"
+docker pull "adakailabs/cardano-prometheus:$PROMETHEUS_VERSION"
 
 docker stack deploy -c node-stack.yaml cardano
