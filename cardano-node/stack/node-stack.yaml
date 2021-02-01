@@ -14,8 +14,6 @@ services:
         - "0"
       ports:
         - "3100:3100"
-#        - "12700:12700"
-#        - "9100:9100"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
       deploy:
@@ -29,8 +27,6 @@ services:
         - "1"
       ports:
         - "3101:3101"
-#        - "12701:12701"
-#        - "9101:9101"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
       deploy:
@@ -46,10 +42,6 @@ services:
       command:
         - "producer0"
         - "2"
-#      ports:
-#        - "3102:3102"
-#        - "12702:12702"
-#        - "9102:9102"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
       deploy:
@@ -63,9 +55,6 @@ services:
         - "2" # 2 relays
         - "1" # 1 producer
       ports:
-#        - "6600:6600"
-#        - "6601:6601"
-#        - "6602:6602"
         - "8666:8666"
 
       volumes:
