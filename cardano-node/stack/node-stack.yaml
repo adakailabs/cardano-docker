@@ -1,6 +1,11 @@
 version: '3.7'
 
+volumes:
+  grafana-storage:
+
 secrets:
+    grafana_admin_password:
+      file: ./grafana_admin_password.txt	
     my_secret:
       file: ./test-secret
 #    my_other_secret:
@@ -38,7 +43,6 @@ services:
       image: adakailabs/cardano-relay:latest
       secrets:
         - my_secret
- #       - my_other_secret
       command:
         - "producer0"
         - "2"
@@ -66,7 +70,7 @@ services:
 
     prometheus:
       image: adakailabs/cardano-prometheus:latest
-
+      
       command:
         - "2" # 2 relays
         - "1" # 1 producer
@@ -74,6 +78,22 @@ services:
         - "9090:9090"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      deploy:
+        placement:
+          constraints:
+            - node.labels.com.adakailabs.monitor == true
+    grafana:
+      image: grafana/grafana:latest
+      secrets:
+        - grafana_admin_password
+      user: 1000:1000
+      ports:
+        - "3000:3000"
+      volumes:
+        - grafana-storage:/var/lib/grafana
+      environment:
+      #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
+         - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
       deploy:
         placement:
           constraints:

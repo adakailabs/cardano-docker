@@ -34,6 +34,15 @@ passwd lovelace
 # Create the directories for the node
 mkdir -p $HOME/cardano-node
 mkdir -p $HOME/.ssh
+mkdir -p $HOME/grafana/etc/grafana
+mkdir -p $HOME/grafana/usr/share/grafana
+mkdir -p $HOME/grafana/var/log/grafana
+mkdir -p $HOME/grafana/var/lib/grafana/plugins
+mkdir -p $HOME/grafana/etc/grafana/provisioning
+
+
+
+
 
 USER=${NEW_USER} ./docker-install.sh 
 
