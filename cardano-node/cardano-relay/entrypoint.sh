@@ -32,11 +32,13 @@ GENESIS1=$CONFIG_DIR/$ERA1_JSON
 GENESIS2=$CONFIG_DIR/$ERA2_JSON
 CONFIG=/home/lovelace/cardano-node/${NAME}/config/config.json
 TOPOLOGY=/home/lovelace/cardano-node/${NAME}/config/topology.json
-PROMETHEUS_PORT=$(printf '127%02d' "${ID}")
-CARDANO_PORT=$(printf '31%02d' "${ID}")
-PROMETHEUS_NODE_EXPORT_PORT=$(printf '91%02d' "${ID}")
+#PROMETHEUS_PORT=$(printf '127%02d' "${ID}")
+PROMETHEUS_PORT="12798"
+#CARDANO_PORT=$(printf '31%02d' "${ID}")
+CARDANO_PORT="3001"
+#PROMETHEUS_NODE_EXPORT_PORT=$(printf '91%02d' "${ID}")
+PROMETHEUS_NODE_EXPORT_PORT="9100"
 RT_VIEW_PORT=$(printf '66%02d' "${ID}")
-
 
 echo "
 -----------------------------------------------
