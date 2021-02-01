@@ -20,7 +20,6 @@ docker build  \
        --file Dockerfile \
        --build-arg CARDANO_NODE_BASE=${IMAGE_BASE} \
        -t ${IMAGE} .
-
 docker push ${IMAGE}
 
 
