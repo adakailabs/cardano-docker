@@ -48,12 +48,9 @@ Cardano Port : $CARDANO_PORT
 -----------------------------------------------
 "
 
-
-
-
 # Start prometheus monitoring in the background
 echo "Starting node_exporter..."
-nohup node_exporter --web.listen-address=":${NODE_EXPORTER_PORT}" &
+nohup node_exporter --web.listen-address=":${PROMETHEUS_NODE_EXPORT_PORT}" &
 
 
 if [ -f "$CONFIG" ]; then
