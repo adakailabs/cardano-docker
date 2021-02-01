@@ -8,7 +8,7 @@ secrets:
 
 services:
     relay0:
-      image: adakailabs/cardano-relay:21.01.00
+      image: adakailabs/cardano-relay:latest
       command:
         - "relay0"
         - "0"
@@ -23,7 +23,7 @@ services:
           constraints:
             - node.labels.com.adakailabs.relay0 == true
     relay1:
-      image: adakailabs/cardano-relay:21.01.00
+      image: adakailabs/cardano-relay:latest
       command:
         - "relay1"
         - "1"
@@ -39,7 +39,7 @@ services:
             - node.labels.com.adakailabs.relay1 == true
 
     producer0:
-      image: adakailabs/cardano-relay:21.01.00
+      image: adakailabs/cardano-relay:latest
       secrets:
         - my_secret
  #       - my_other_secret
@@ -76,7 +76,7 @@ services:
             - node.labels.com.adakailabs.monitor == true
 
     prometheus:
-      image: adakailabs/cardano-prometheus:21.01.00
+      image: adakailabs/cardano-prometheus:latest
 
       command:
         - "2" # 2 relays
