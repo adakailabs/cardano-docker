@@ -46,7 +46,7 @@ services:
       command:
         - "producer0"
         - "2"
-      ports:
+#      ports:
 #        - "3102:3102"
 #        - "12702:12702"
 #        - "9102:9102"
