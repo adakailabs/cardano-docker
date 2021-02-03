@@ -129,13 +129,15 @@ shelley_operational_certificate : $shelley_operational_certificate
 --------------------------------------------------------------------------"
 
 cmd_args="$database_path $socket_path $port $host_address $config $topology $shelley_kes_key $shelley_vrf_key $shelley_operational_certificate"
+ls -rtl $secrets_path
 
 else
 cmd_args="$database_path $socket_path $port $host_address $config $topology"    
 fi     
 set -u
-
-ls -rtl $secrets_path
+echo "**********************************************************************"
+echo $cmd_args
+echo "**********************************************************************"
 
 cardano-node run $cmd_args 
 
