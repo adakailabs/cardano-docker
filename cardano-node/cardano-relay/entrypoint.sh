@@ -7,7 +7,7 @@ NAME="relay"
 ID="0"
 
 if [ -z $1  ]; then
-    echo "WARN: using default type: relay"
+    echo "WARN: using default type: producer"
 else
     NAME=$1
 fi
@@ -25,19 +25,21 @@ ERA2=byron
 ERA1_JSON=mainnet-${ERA1}-genesis.json
 ERA2_JSON=mainnet-${ERA2}-genesis.json
 
+BASE_PATH="/home/lovelace/cardano-node/${NAME}"
+TOPOLOGY=$BASE_PATH/config/topology.json
+CONFIG=$BASE_PATH/config/config.json
 
-mkdir -p /home/lovelace/cardano-node/${NAME}/config
-CONFIG_DIR=/home/lovelace/cardano-node/${NAME}/config
+mkdir -p $BASE_PATH/secrets 
+mkdir -p $BASE_PATH/config
+
+CONFIG_DIR=$BASE_PATH/config
 GENESIS1=$CONFIG_DIR/$ERA1_JSON
 GENESIS2=$CONFIG_DIR/$ERA2_JSON
-CONFIG=/home/lovelace/cardano-node/${NAME}/config/config.json
-TOPOLOGY=/home/lovelace/cardano-node/${NAME}/config/topology.json
-#PROMETHEUS_PORT=$(printf '127%02d' "${ID}")
+
 PROMETHEUS_PORT="12798"
-#CARDANO_PORT=$(printf '31%02d' "${ID}")
 CARDANO_PORT="3001"
-#PROMETHEUS_NODE_EXPORT_PORT=$(printf '91%02d' "${ID}")
 PROMETHEUS_NODE_EXPORT_PORT="9100"
+
 RT_VIEW_PORT=$(printf '66%02d' "${ID}")
 
 echo "
@@ -56,7 +58,7 @@ nohup node_exporter --web.listen-address=":${PROMETHEUS_NODE_EXPORT_PORT}" &
 
 
 if [ -f "$CONFIG" ]; then
-    echo "$CONFIG found, replacing"
+    echo "$CONFIG found, copying from /etc/cardano-node"
     cp /etc/cardano/config/config.json $CONFIG
     sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
     sed -i "s/{{node-id}}/${RT_VIEW_PORT}/g" $CONFIG
@@ -94,13 +96,47 @@ else
     cp /etc/cardano/config/$ERA2_JSON $GENESIS2
 fi
 
-echo $CARDANO_PORT
-echo $PROMETHEUS_PORT
 
-cardano-node run \
-		    --database-path /home/lovelace/cardano-node/${NAME}/db/ \
-		    --socket-path /home/lovelace/cardano-node/${NAME}/db/node.socket \
-		    --port $CARDANO_PORT --host-addr 0.0.0.0 \
-		    --config $CONFIG \
-		    --topology $TOPOLOGY
+secrets_path="/run/secrets"
+shelley_kes_key_file="$secrets_path/kes_key.skey"
+shelley_vrf_key_file="$secrets_path/vrf_skey.skey"
+shelley_operational_certificate_file="$secrets_path/operational_certificate.cert"
+
+
+database_path="--database-path $BASE_PATH/db/"
+socket_path="--socket-path $BASE_PATH/db/node.socket"
+port="--port $CARDANO_PORT "
+host_address="--host-addr 0.0.0.0"
+config="--config $CONFIG"
+topology="--topology $TOPOLOGY"
+shelley_kes_key="--shelley-kes-key $shelley_kes_key_file"
+shelley_vrf_key="--shelley-vrf-key $shelley_vrf_key_file"
+shelley_operational_certificate="--shelley-operational-certificate $shelley_operational_certificate_file"
+
+echo "
+--------------------------------------------------------------------------
+database_path                   : $database_path
+socket_path                     : $socket_path
+port                            : $port          
+host_address                    : $host_address
+config                          : $config
+topology                        : $topology"
+set +u 
+if [ -z $3  ]; then
+echo "shelley_kes_key                 : $shelley_kes_key
+shelley-vrf-key                 : $shelley_vrf_key
+shelley_operational_certificate : $shelley_operational_certificate
+--------------------------------------------------------------------------"
+
+cmd_args="$database-path $socket_path $port $host_address $config $topology $shelley_kes_key $shelley_vrf_key $shelley_operational_certificate"
+
+else
+cmd_args="$database-path $socket_path $port $host_address $config $topology"    
+fi     
+set -u
+
+ls -rtl $secrets_path
+
+cardano-node run $cmd_args 
+
 

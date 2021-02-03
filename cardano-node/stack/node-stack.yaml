@@ -6,10 +6,12 @@ volumes:
 secrets:
     grafana_admin_password:
       file: ./grafana_admin_password.txt	
-    my_secret:
-      file: ./test-secret
-#    my_other_secret:
-#      external: true
+    kes_key.skey:
+      file: ./secrets/pool_kes.skey
+    vrf_skey.skey:
+      file: ./secrets/pool_vrf.skey
+    operational_certificate.cert:
+      file: ./secrets/pool.cert
 
 services:
     relay0:
@@ -17,6 +19,7 @@ services:
       command:
         - "relay0"
         - "0"
+        - "no" #not a producer
       ports:
         - "3100:3100"
       volumes:
@@ -30,6 +33,7 @@ services:
       command:
         - "relay1"
         - "1"
+        - "no" #not a producer
       ports:
         - "3101:3101"
       volumes:
@@ -42,7 +46,9 @@ services:
     producer0:
       image: adakailabs/cardano-relay:latest
       secrets:
-        - my_secret
+        - kes_key.skey
+        - vrf_skey.skey
+        - operational_certificate.cert
       command:
         - "producer0"
         - "2"
@@ -74,6 +80,7 @@ services:
       command:
         - "2" # 2 relays
         - "1" # 1 producer
+        - "no" #not a producer
       ports:
         - "9090:9090"
       volumes:
@@ -98,4 +105,3 @@ services:
         placement:
           constraints:
             - node.labels.com.adakailabs.monitor == true
-

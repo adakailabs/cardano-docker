@@ -16,3 +16,7 @@ config_tmp
 # Dependency directories (remove the comment below to include it)
 # vendor/
 *~
+*.cert
+*.key
+*.skey
+secrets
