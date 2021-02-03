@@ -28,30 +28,41 @@ services:
         placement:
           constraints:
             - node.labels.com.adakailabs.relay0 == true
-    relay1:
-      image: adakailabs/cardano-relay:latest
-      command:
-        - "relay1"
-        - "1"
-        - "no" #not a producer
-      ports:
-        - "3101:3101"
-      volumes:
-        - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-      deploy:
-        placement:
-          constraints:
-            - node.labels.com.adakailabs.relay1 == true
+    # relay1:
+    #   image: adakailabs/cardano-relay:latest
+    #   command:
+    #     - "relay1"
+    #     - "1"
+    #     - "no" #not a producer
+    #   ports:
+    #     - "3101:3101"
+    #   volumes:
+    #     - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    #   deploy:
+    #     placement:
+    #       constraints:
+    #         - node.labels.com.adakailabs.relay1 == true
 
     producer0:
       image: adakailabs/cardano-relay:latest
+      user: lovelace
       secrets:
-        - kes_key.skey
-        - vrf_skey.skey
-        - operational_certificate.cert
+        - source: kes_key.skey
+          uid: '1000'
+          gid: '1000'
+          mode: 0400
+        - source: vrf_skey.skey
+          uid: '1000'
+          gid: '1000'
+          mode: 0400
+        - source: operational_certificate.cert
+          uid: '1000'
+          gid: '1000'
+          mode: 0400
       command:
         - "producer0"
         - "2"
+        - "no"
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
       deploy:
