@@ -128,10 +128,10 @@ shelley-vrf-key                 : $shelley_vrf_key
 shelley_operational_certificate : $shelley_operational_certificate
 --------------------------------------------------------------------------"
 
-cmd_args="$database-path $socket_path $port $host_address $config $topology $shelley_kes_key $shelley_vrf_key $shelley_operational_certificate"
+cmd_args="$database_path $socket_path $port $host_address $config $topology $shelley_kes_key $shelley_vrf_key $shelley_operational_certificate"
 
 else
-cmd_args="$database-path $socket_path $port $host_address $config $topology"    
+cmd_args="$database_path $socket_path $port $host_address $config $topology"    
 fi     
 set -u
 
