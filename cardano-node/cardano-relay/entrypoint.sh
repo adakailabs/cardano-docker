@@ -26,8 +26,6 @@ ERA1_JSON=mainnet-${ERA1}-genesis.json
 ERA2_JSON=mainnet-${ERA2}-genesis.json
 
 BASE_PATH="/home/lovelace/cardano-node/${NAME}"
-TOPOLOGY=$BASE_PATH/config/topology.json
-CONFIG=$BASE_PATH/config/config.json
 
 mkdir -p $BASE_PATH/secrets 
 mkdir -p $BASE_PATH/config
@@ -35,6 +33,11 @@ mkdir -p $BASE_PATH/config
 CONFIG_DIR=$BASE_PATH/config
 GENESIS1=$CONFIG_DIR/$ERA1_JSON
 GENESIS2=$CONFIG_DIR/$ERA2_JSON
+
+TOPOLOGY=$BASE_PATH/config/${NAME}-topology.json
+CONFIG=$BASE_PATH/config/${NAME}-config.json
+
+
 
 PROMETHEUS_PORT="12798"
 CARDANO_PORT="3001"
@@ -59,13 +62,13 @@ nohup node_exporter --web.listen-address=":${PROMETHEUS_NODE_EXPORT_PORT}" &
 
 if [ -f "$CONFIG" ]; then
     echo "$CONFIG found, copying from /etc/cardano-node"
-    cp /etc/cardano/config/config.json $CONFIG
+    cp /etc/cardano/config/${NAME}-config.json $CONFIG
     sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
     sed -i "s/{{node-id}}/${RT_VIEW_PORT}/g" $CONFIG
     sed -i "s/{{prometheus-port}}/${PROMETHEUS_PORT}/g" $CONFIG
 else 
     echo echo "$CONFIG NOT found, copying from /etc/cardano-node"
-    cp /etc/cardano/config/config.json $CONFIG
+    cp /etc/cardano/config/${NAME}-config.json $CONFIG
     sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
     sed -i "s/{{node-id}}/${RT_VIEW_PORT}/g" $CONFIG
     sed -i "s/{{prometheus-port}}/${PROMETHEUS_PORT}/g" $CONFIG
@@ -74,10 +77,10 @@ fi
 
 if [ -f "$TOPOLOGY" ]; then
     echo "$TOPOLOGY found."
-    cp /etc/cardano/config/topology.json $TOPOLOGY
+    cp /etc/cardano/config/${NAME}-topology.json $TOPOLOGY
 else 
     echo echo "$TOPOLOGY NOT found, copying from /etc/cardano-node"
-    cp /etc/cardano/config/topology.json $TOPOLOGY
+    cp /etc/cardano/config/${NAME}-topology.json $TOPOLOGY
 fi
 
 if [ -f "$GENESIS1" ]; then
