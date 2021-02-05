@@ -1,12 +1,12 @@
 {
     "Producers": [
     {
-      "addr": "producer0",
+      "addr": "{{relay-other-addr}}",
       "port": 3001,
       "valency": 1
     },
     {
-      "addr": "relay1",
+      "addr": "{{producer-addr}}",
       "port": 3001,
       "valency": 1
     },

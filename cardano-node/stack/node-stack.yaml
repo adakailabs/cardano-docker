@@ -1,3 +1,6 @@
+#./entrypoint.sh 
+
+
 version: '3.7'
 
 volumes:
@@ -17,9 +20,11 @@ services:
     relay0:
       image: adakailabs/cardano-relay:latest
       command:
-        - "relay0"
-        - "0"
-        - "no" #not a producer
+        - "--type relay"
+        - "--id 0"
+        - "--producer_addr producer"
+        - "--relay_this_addr relay0"
+        - "--relay_other_addr relay1"
       ports:
         - "3100:3100"
       volumes:
@@ -28,20 +33,22 @@ services:
         placement:
           constraints:
             - node.labels.com.adakailabs.relay0 == true
-    # relay1:
-    #   image: adakailabs/cardano-relay:latest
-    #   command:
-    #     - "relay1"
-    #     - "1"
-    #     - "no" #not a producer
-    #   ports:
-    #     - "3101:3101"
-    #   volumes:
-    #     - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-    #   deploy:
-    #     placement:
-    #       constraints:
-    #         - node.labels.com.adakailabs.relay1 == true
+     relay1:
+       image: adakailabs/cardano-relay:latest
+       command:
+          - "--type relay"
+          - "--id 1"
+          - "--producer_addr producer"
+          - "--relay_this_addr relay1"
+          - "--relay_other_addr relay0"
+       ports:
+         - "3101:3101"
+       volumes:
+         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+       deploy:
+         placement:
+           constraints:
+             - node.labels.com.adakailabs.relay1 == true
 
     producer0:
       image: adakailabs/cardano-relay:latest
@@ -60,9 +67,12 @@ services:
           gid: '1000'
           mode: 0400
       command:
-        - "producer0"
-        - "2"
-        - "no"
+        - "--type producer"
+        - "--id 0"
+        - "--producer_addr producer"
+        - "--relay_this_addr relay0"
+        - "--relay_other_addr relay1"
+        - "--test" 
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
       deploy:
