@@ -19,9 +19,11 @@ argsparse_use_option id "node id (0, 1, 2, ...)"  value
 
 argsparse_use_option type "node type (producer or relay)"  value
 
-argsparse_use_option relay_this_addr "relay 0 IP address or name"  value
-argsparse_use_option relay_other_addr "relay 1 IP address or name"  value
-argsparse_use_option producer_addr "relay 0 IP address or name"  value
+argsparse_use_option relay_this_private_addr "path to file containing relay 0 IP address or name"  value
+argsparse_use_option relay_this_public_addr "path to file containing relay 0 relay 0 IP address or name"  value
+argsparse_use_option relay_other_private_addr "path to file containing relay 0 relay 1 IP address or name"  value
+argsparse_use_option relay_other_public_addr "path to file containing relay 0 relay 1 IP address or name"  value
+argsparse_use_option producer_addr "path to file containing relay 0 relay 0 IP address or name"  value
 
 
 argsparse_use_option test "run in test mode" 
@@ -70,21 +72,40 @@ else
     exit 0
 fi
 
-if argsparse_is_option_set "relay_this_addr"
+if argsparse_is_option_set "relay_this_private_addr"
 then
-    echo "relay_this address is ${program_options[relay_this_addr]}"
+    echo "relay_this address is ${program_options[relay_this_private_addr]}"
 else
-    echo "relay_this addr must must be specified"
+    echo "relay_this private  addr must must be specified"
+    exit 0
+fi
+if argsparse_is_option_set "relay_this_public_addr"
+then
+    echo "relay_this address is ${program_options[relay_this_public_addr]}"
+else
+    echo "relay_this public  addr must must be specified"
     exit 0
 fi
 
-if argsparse_is_option_set "relay_other_addr"
+
+
+if argsparse_is_option_set "relay_other_public_addr"
 then
-    echo "relay_other address is ${program_options[relay_other_addr]}"
+    echo "relay_other address is ${program_options[relay_other_public_addr]}"
 else
-    echo "relay_other addr must must be specified"
+    echo "relay_other public addr must must be specified"
     exit 0
 fi
+
+
+if argsparse_is_option_set "relay_other_private_addr"
+then
+    echo "relay_other address is ${program_options[relay_other_private_addr]}"
+else
+    echo "relay_other private addr must must be specified"
+    exit 0
+fi
+
 
 PRODUCER_TYPE="producer"
 
@@ -122,21 +143,25 @@ PROMETHEUS_NODE_EXPORT_PORT="9100"
 
 RT_VIEW_PORT=$(printf '66%02d' "${ID}")
 
-PRODUCER0_ADDR=${program_options["producer_addr"]}
-RELAY_THIS_ADDR=${program_options["relay_this_addr"]}
-RELAY_OTHER_ADDR=${program_options["relay_other_addr"]}
+PRODUCER0_ADDR=`cat ${program_options["producer_addr"]}`
+RELAY_THIS_PUBLIC_ADDR=`cat ${program_options["relay_this_public_addr"]}`
+RELAY_OTHER_PUBLIC_ADDR=`cat ${program_options["relay_other_public_addr"]}`
+RELAY_THIS_PRIVATE_ADDR=`cat ${program_options["relay_this_private_addr"]}`
+RELAY_OTHER_PRIVATE_ADDR=` cat ${program_options["relay_other_private_addr"]}`
 
 
 echo "
 -----------------------------------------------
-Node Name    : $NAME
-Prom Port    : $PROMETHEUS_NODE_EXPORT_PORT
-Prometh Port : $PROMETHEUS_PORT
-RT View Port : $RT_VIEW_PORT
-Cardano Port : $CARDANO_PORT
-Producer Addr: $PRODUCER0_ADDR
-Relay This   : $RELAY_THIS_ADDR
-Relay Other  : $RELAY_OTHER_ADDR
+Node Name           : $NAME
+Node Exporter Port  : $PROMETHEUS_NODE_EXPORT_PORT
+Prometheus Port     : $PROMETHEUS_PORT
+RT View Port        : $RT_VIEW_PORT
+Cardano Port        : $CARDANO_PORT
+Producer Addr       : $PRODUCER0_ADDR
+Relay This Public   : $RELAY_THIS_PUBLIC_ADDR
+Relay Other Public  : $RELAY_OTHER_PUBLIC_ADDR
+Relay This Private  : $RELAY_THIS_PRIVATE_ADDR
+Relay Other Private : $RELAY_OTHER_PRIVATE_ADDR
 -----------------------------------------------
 "
 
@@ -168,8 +193,10 @@ else
 fi
 
 cp $TOPOLOGY_ETC $TOPOLOGY
-sed -i "s/{{relay-this-addr}}/${RELAY_THIS_ADDR}/g" $TOPOLOGY
-sed -i "s/{{relay-other-addr}}/${RELAY_OTHER_ADDR}/g" $TOPOLOGY
+sed -i "s/{{relay-this-public-addr}}/${RELAY_THIS_PUBLIC_ADDR}/g" $TOPOLOGY
+sed -i "s/{{relay-other-public-addr}}/${RELAY_OTHER_PUBLIC_ADDR}/g" $TOPOLOGY
+sed -i "s/{{relay-this-private-addr}}/${RELAY_THIS_PRIVATE_ADDR}/g" $TOPOLOGY
+sed -i "s/{{relay-other-private-addr}}/${RELAY_OTHER_PRIVATE_ADDR}/g" $TOPOLOGY
 sed -i "s/{{producer-addr}}/${PRODUCER0_ADDR}/g" $TOPOLOGY
 
 
@@ -227,7 +254,7 @@ echo "--------------------------------------------------------------------------
 
 
 cmd_args="$database_path $socket_path $port $host_address $config $topology $shelley_kes_key $shelley_vrf_key $shelley_operational_certificate"
-ls -rtl $secrets_path
+#ls -rtl $secrets_path
 
 else
 cmd_args="$database_path $socket_path $port $host_address $config $topology"    

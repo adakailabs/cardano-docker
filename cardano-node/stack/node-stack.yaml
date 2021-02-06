@@ -15,6 +15,16 @@ secrets:
       file: ./secrets/pool_vrf.skey
     operational_certificate.cert:
       file: ./secrets/pool.cert
+    producer_private_host_name:
+      file: ./secrets/producer_private_host_name.txt
+    relay0_private_host_name:
+      file: ./secrets/relay0_private_host_name.txt
+    relay0_public_host_name:
+      file: ./secrets/relay0_public_host_name.txt
+    relay1_private_host_name:
+      file: ./secrets/relay1_private_host_name.txt
+    relay1_public_host_name:
+      file: ./secrets/relay1_public_host_name.txt                  
 
 services:
     relay0:
@@ -22,9 +32,9 @@ services:
       command:
         - "--type relay"
         - "--id 0"
-        - "--producer_addr producer"
-        - "--relay_this_addr relay0"
-        - "--relay_other_addr relay1"
+        - "--producer_addr /run/secrets/producer_private_host_name"
+        - "--relay_other_private_addr /run/secrets/relay0_private_host_name"
+        - "--relay_other_public_addr /run/secrets/relay0_public_host_name"
       ports:
         - "3100:3100"
       volumes:
@@ -38,9 +48,9 @@ services:
        command:
           - "--type relay"
           - "--id 1"
-          - "--producer_addr producer"
-          - "--relay_this_addr relay1"
-          - "--relay_other_addr relay0"
+          - "--producer_addr /run/secrets/producer_private_host_name"
+          - "--relay_other_private_addr /run/secrets/relay0_private_host_name"
+          - "--relay_other_public_addr /run/secrets/relay0_public_host_name"          
        ports:
          - "3101:3101"
        volumes:
@@ -69,9 +79,10 @@ services:
       command:
         - "--type producer"
         - "--id 0"
-        - "--producer_addr producer"
-        - "--relay_this_addr relay0"
-        - "--relay_other_addr relay1"
+        - "--relay_other_private_addr /run/secrets/relay0_private_host_name"
+        - "--relay_other_public_addr /run/secrets/relay0_public_host_name"          
+        - "--relay_other_private_addr /run/secrets/relay0_private_host_name"
+        - "--relay_other_public_addr /run/secrets/relay0_public_host_name"          
         - "--test" 
       volumes:
         - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
