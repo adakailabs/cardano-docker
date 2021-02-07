@@ -17,6 +17,14 @@ COPY config /etc/cardano/config
 
 COPY entrypoint.sh /usr/local/bin/
 
+RUN cd /tmp && \
+	wget http://argsparse.livna.org/bash-argsparse-1.8.tar.gz \
+	&& tar -xvzf bash-argsparse-1.8.tar.gz \
+	&& cp bash-argsparse-1.8/argsparse-completion.sh /usr/local/bin \
+	&& cp bash-argsparse-1.8/argsparse.sh /usr/local/bin \
+	&& rm -rf  bash-argsparse* \
+	&& cd /home/lovelace
+
 # Expose prometheus monitoring ports
 USER lovelace
 

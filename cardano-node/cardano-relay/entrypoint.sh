@@ -100,18 +100,18 @@ RT_VIEW_PORT=$(printf '66%02d' "${ID}")
 
 if [ $ID==0 ]
 then
-    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name.txt`
-    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name.txt`
-    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name.txt`
-    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay0_private_host_name.txt`
-    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay1_private_host_name.txt`
+    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name`
+    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name`
+    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name`
+    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay0_private_host_name`
+    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay1_private_host_name`
     
 else
-    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name.txt`
-    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name.txt`
-    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name.txt`
-    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay1_private_host_name.txt`
-    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay0_private_host_name.txt`
+    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name`
+    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name`
+    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name`
+    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay1_private_host_name`
+    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay0_private_host_name`
 fi
 
 
