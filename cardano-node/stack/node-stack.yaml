@@ -32,14 +32,10 @@ services:
       command:
         - "--type relay"
         - "--id 0"
-        #- "--producer_addr /run/secrets/producer_private_host_name"
-        - "--producer_addr ../stack/secrets/producer_private_host_name.txt"
-        - "--relay_other_public_addr ../stack/secrets/relay1_public_host_name.txt"
-        - "--relay_other_private_addr ../stack/secrets/relay1_private_host_name.txt"
-        - "--relay_this_public_addr ../stack/secrets/relay0_public_host_name.txt"
-        - "--relay_this_private_addr ../stack/secrets/relay0_private_host_name.txt"
-        
-      restart: always
+        - "--secrets_path ../stack/secrets"
+        #- "--secrets_path /run/secrets"
+
+        restart: always
       ports:
         - "3100:3100"
       volumes:
@@ -53,11 +49,8 @@ services:
        command:
           - "--type relay"
           - "--id 1"
-          - "--producer_addr ../stack/secrets/producer_private_host_name.txt"
-          - "--relay_other_public_addr ../stack/secrets/relay0_public_host_name.txt"
-          - "--relay_other_private_addr ../stack/secrets/relay0_private_host_name.txt"
-          - "--relay_this_public_addr ../stack/secrets/relay1_public_host_name.txt"
-          - "--relay_this_private_addr ../stack/secrets/relay1_private_host_name.txt"
+          - "--secrets_path ../stack/secrets"
+          #- "--secrets_path /run/secrets"
           
        restart: always
        ports:
@@ -86,13 +79,10 @@ services:
           gid: '1000'
           mode: 0400
       command:
-        - "--type relay"
-        - "--id 2"
-        - "--producer_addr ../stack/secrets/producer_private_host_name.txt"
-        - "--relay_other_public_addr ../stack/secrets/relay0_public_host_name.txt"
-        - "--relay_other_private_addr ../stack/secrets/relay0_private_host_name.txt"
-        - "--relay_this_public_addr ../stack/secrets/relay1_public_host_name.txt"
-        - "--relay_this_private_addr ../stack/secrets/relay1_private_host_name.txt"
+        - "--type producer"
+        - "--id 0"
+        - "--secrets_path ../stack/secrets"
+        #- "--secrets_path /run/secrets"
 
       restart: always        
       volumes:
