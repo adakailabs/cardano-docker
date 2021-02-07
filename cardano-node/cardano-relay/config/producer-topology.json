@@ -12,7 +12,7 @@
     },
     {
       "addr": "{{relay-this-public-addr}}",
-      "port": 3001,
+      "port": 3000,
       "valency": 1
     },
     {
