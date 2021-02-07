@@ -5,26 +5,13 @@ set -e
 # Load argsparse library.
 . argsparse.sh
 
-# Declaring an option not accepting a value and not having a
-# single-char equivalent.
-argsparse_use_option name "node name (relay_this, relay_other, producer0)" value
+argsparse_use_option secrets_path "secrets dir"  value
 
-# Declaring an option not accepting a value but with a single-char
-# equivalent.
-
-# "short" is a property, and "o" is the value of the "short" property
-# for this option. Argsparse can handle other properties, see other
-# tutorials.
 argsparse_use_option id "node id (0, 1, 2, ...)"  value
 
 argsparse_use_option type "node type (producer or relay)"  value
 
-argsparse_use_option relay_this_private_addr "path to file containing relay 0 IP address or name"  value
-argsparse_use_option relay_this_public_addr "path to file containing relay 0 relay 0 IP address or name"  value
-argsparse_use_option relay_other_private_addr "path to file containing relay 0 relay 1 IP address or name"  value
-argsparse_use_option relay_other_public_addr "path to file containing relay 0 relay 1 IP address or name"  value
-argsparse_use_option producer_addr "path to file containing relay 0 relay 0 IP address or name"  value
-
+argsparse_use_option mock "run in mock mode"
 
 argsparse_use_option test "run in test mode" 
 
@@ -33,9 +20,9 @@ printf -v argsparse_usage_description "%s\n" \
 	"Try command lines such as:" \
 	" $0" \
 	" $0 -h" \
-	" $0 --name nodeName" \
 	" $0 --id nodeID "\
 	" $0 --type nodeType "\
+	" $0 --mock " \
 	" $0 --test "\	
 	
 # Command line parsing is done here.
@@ -64,48 +51,17 @@ else
     exit 0
 fi
 
-if argsparse_is_option_set "producer_addr"
+if argsparse_is_option_set "secrets_path"
 then
-    echo "producer addr is ${program_options[producer_addr]}"
-else
-    echo "producer addr must must be specified"
-    exit 0
-fi
+    echo "path to secrets ${program_options[secrets_path]}"
 
-if argsparse_is_option_set "relay_this_private_addr"
-then
-    echo "relay_this address is ${program_options[relay_this_private_addr]}"
 else
-    echo "relay_this private  addr must must be specified"
-    exit 0
-fi
-if argsparse_is_option_set "relay_this_public_addr"
-then
-    echo "relay_this address is ${program_options[relay_this_public_addr]}"
-else
-    echo "relay_this public  addr must must be specified"
+    echo "path to secrets must be specified"
     exit 0
 fi
 
 
-
-if argsparse_is_option_set "relay_other_public_addr"
-then
-    echo "relay_other address is ${program_options[relay_other_public_addr]}"
-else
-    echo "relay_other public addr must must be specified"
-    exit 0
-fi
-
-
-if argsparse_is_option_set "relay_other_private_addr"
-then
-    echo "relay_other address is ${program_options[relay_other_private_addr]}"
-else
-    echo "relay_other private addr must must be specified"
-    exit 0
-fi
-
+secrets_path=${program_options[secrets_path]}
 
 PRODUCER_TYPE="producer"
 
@@ -125,7 +81,6 @@ ERA2_JSON=mainnet-${ERA2}-genesis.json
 
 BASE_PATH="/home/lovelace/cardano-node/${NAME}"
 
-mkdir -p $BASE_PATH/secrets 
 mkdir -p $BASE_PATH/config
 
 CONFIG_DIR=$BASE_PATH/config
@@ -143,11 +98,22 @@ PROMETHEUS_NODE_EXPORT_PORT="9100"
 
 RT_VIEW_PORT=$(printf '66%02d' "${ID}")
 
-PRODUCER0_ADDR=`cat ${program_options["producer_addr"]}`
-RELAY_THIS_PUBLIC_ADDR=`cat ${program_options["relay_this_public_addr"]}`
-RELAY_OTHER_PUBLIC_ADDR=`cat ${program_options["relay_other_public_addr"]}`
-RELAY_THIS_PRIVATE_ADDR=`cat ${program_options["relay_this_private_addr"]}`
-RELAY_OTHER_PRIVATE_ADDR=` cat ${program_options["relay_other_private_addr"]}`
+if [ $ID==0 ]
+then
+    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name.txt`
+    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name.txt`
+    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name.txt`
+    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay0_private_host_name.txt`
+    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay1_private_host_name.txt`
+    
+else
+    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name.txt`
+    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name.txt`
+    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name.txt`
+    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay1_private_host_name.txt`
+    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay0_private_host_name.txt`
+fi
+
 
 
 echo "
@@ -168,10 +134,10 @@ Relay Other Private : $RELAY_OTHER_PRIVATE_ADDR
 # Start prometheus monitoring in the background
 echo "Starting node_exporter..."
 
-if argsparse_is_option_set "test"
+if argsparse_is_option_set "mock"
 then
     echo "*****************************************************"
-    echo "              running in testing mode"
+    echo "              running in mocking mode"
     echo "*****************************************************"
 else
 nohup node_exporter --web.listen-address=":${PROETHEUS_NODE_EXPORT_PORT}" &
@@ -217,7 +183,7 @@ else
 fi
 
 
-secrets_path="/run/secrets"
+
 shelley_kes_key_file="$secrets_path/kes_key.skey"
 shelley_vrf_key_file="$secrets_path/vrf_skey.skey"
 shelley_operational_certificate_file="$secrets_path/operational_certificate.cert"
@@ -260,10 +226,16 @@ else
 cmd_args="$database_path $socket_path $port $host_address $config $topology"    
 fi     
 
-
 if argsparse_is_option_set "test"
 then
     cmd_args="$database_path $socket_path $port $host_address $config $topology"
+    echo "**********************************************************************"
+    echo $cmd_args
+    echo "**********************************************************************"
+fi
+
+if argsparse_is_option_set "mock"
+then
     echo "**********************************************************************"
     echo $cmd_args
     echo "**********************************************************************"
