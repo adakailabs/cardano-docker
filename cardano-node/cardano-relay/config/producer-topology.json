@@ -1,22 +1,12 @@
 {
   "Producers": [
     {
-      "addr": "{{relay-this-private-addr}}",
-      "port": 3001,
-      "valency": 1
-    },
-    {
-      "addr": "{{relay-other-private-addr}}",
-      "port": 3001,
-      "valency": 1
-    },
-    {
       "addr": "{{relay-this-public-addr}}",
       "port": 3000,
       "valency": 1
     },
     {
-      "addr": "{{relay-other-public-addr}}",
+      "addr": "{{relay-other-private-addr}}",
       "port": 3001,
       "valency": 1
     }      
