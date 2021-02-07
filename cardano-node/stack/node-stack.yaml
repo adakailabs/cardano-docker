@@ -31,9 +31,12 @@ services:
   relay0:
     image: adakailabs/cardano-relay:latest
     command:
-      - "--type relay"
-      - "--id 0"
-      - "--secrets_path /run/secrets"
+      - "--type"
+      - "relay"
+      - "--id"
+      - "0"
+      - "--secrets_path"
+      - "/run/secrets"
     secrets:
       - producer_private_host_name
       - relay0_private_host_name
@@ -47,7 +50,7 @@ services:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
       restart_policy:
-        condition: always
+        condition: any
       placement:
         constraints:
           - node.labels.com.adakailabs.relay0 == true
@@ -56,9 +59,12 @@ services:
   relay1:
     image: adakailabs/cardano-relay:latest
     command:
-      - "--type relay"
-      - "--id 1"
-      - "--secrets_path /run/secrets"
+      - "--type"
+      - "relay"
+      - "--id"
+      - "1"
+      - "--secrets_path"
+      - "/run/secrets"
     secrets:
       - producer_private_host_name
       - relay0_private_host_name
@@ -72,7 +78,7 @@ services:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
       restart_policy:
-        condition: always
+        condition: any
       placement:
         constraints:
           - node.labels.com.adakailabs.relay1 == true
@@ -95,9 +101,12 @@ services:
         gid: '1000'
         mode: 0400
     command:
-      - "--type producer"
-      - "--id 0"
-      - "--secrets_path /run/secrets"
+      - "--type"
+      - "producer"
+      - "--id"
+      - "0"
+      - "--secrets_path"
+      - "/run/secrets"
       - "--test" 
     ports:
       - "3102:3101"
@@ -108,12 +117,12 @@ services:
       - relay1_private_host_name
       - relay1_public_host_name
 
-    restart: always        
+    restart: any       
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
       restart_policy:
-        condition: always      
+        condition: any     
       placement:
         constraints:
           - node.labels.com.adakailabs.producer0 == true
@@ -130,7 +139,7 @@ services:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
       restart_policy:
-        condition: always      
+        condition: any     
       placement:
         constraints:
           - node.labels.com.adakailabs.monitor == true
@@ -148,7 +157,7 @@ services:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
       restart_policy:
-        condition: always      
+        condition: any     
       placement:
         constraints:
           - node.labels.com.adakailabs.monitor == true
@@ -168,7 +177,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
     deploy:
       restart_policy:
-        condition: always      
+        condition: any     
       placement:
         constraints:
           - node.labels.com.adakailabs.monitor == true
