@@ -1,14 +1,19 @@
 {
     "Producers": [
 	{
+	    "addr": "{{producer-addr}}",
+	    "port": 3001,
+	    "valency": 1
+	},
+	{
 	    "addr": "relays-new.cardano-mainnet.iohk.io",
 	    "port": 3001,
 	    "valency": 2
 	},
 	{
-	    "addr": "{{relay-other-private-addr}}",
+	    "addr": "relays.stakepool247.eu",
 	    "port": 3001,
 	    "valency": 1
-	}
+	}	
     ]
 }
