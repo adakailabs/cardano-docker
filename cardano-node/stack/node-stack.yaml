@@ -117,7 +117,6 @@ services:
       - relay1_private_host_name
       - relay1_public_host_name
 
-    restart: any       
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
