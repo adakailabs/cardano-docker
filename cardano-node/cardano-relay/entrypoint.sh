@@ -96,7 +96,15 @@ PROMETHEUS_PORT="12798"
 CARDANO_PORT="3001"
 PROMETHEUS_NODE_EXPORT_PORT="9100"
 
-RT_VIEW_PORT=$(printf '66%02d' "${ID}")
+
+
+if [[ $TYPE == $PRODUCER_TYPE ]];then
+    RT_VIEW_PORT="6602"
+else
+    RT_VIEW_PORT=$(printf '66%02d' "${ID}")
+fi    
+
+
 
 if [ $ID==0 ]
 then
