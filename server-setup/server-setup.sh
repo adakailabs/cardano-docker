@@ -25,6 +25,12 @@ apt update
 DEBIAN_FRONTEND=noninteractive apt -y upgrade
 DEBIAN_FRONTEND=noninteractive apt -y install git tmux ufw htop chrony curl rsync emacs-nox wget 
 
+wget http://argsparse.livna.org/bash-argsparse-1.8.tar.gz \
+    && tar -xvzf bash-argsparse-1.8.tar.gz \
+    && cp bash-argsparse-1.8/argsparse-completion.sh /usr/local/bin \
+    && cp bash-argsparse-1.8/argsparse.sh /usr/local/bin \
+    && rm -rf  bash-argsparse* 
+
 # Create the lovelace user (do not switch user)
 groupadd -g 1024 lovelace
 useradd -m -u 1000 -g lovelace -s /bin/bash lovelace
@@ -80,6 +86,7 @@ swapon /swapfile
 cp /etc/fstab /etc/fstab.back
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
+
 # Setup SSH
 curl https://github.com/${GITHUB_USER}.keys | tee -a $HOME/.ssh/authorized_keys
 chown -R lovelace:lovelace $HOME/.ssh
@@ -101,4 +108,4 @@ ufw allow 4789/udp
 ufw enable
 
 # Reboot
-shutdown -r 0                                                                                                                                                                                                                         87        87,14         Bot
+shutdown -r 0                                                                                                                                                                                              
