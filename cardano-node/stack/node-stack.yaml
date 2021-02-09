@@ -111,8 +111,6 @@ services:
       - "--secrets_path"
       - "/run/secrets"
       - "--test" 
-    ports:
-      - "3002:3001"
     secrets:
       - producer_private_host_name
       - relay0_private_host_name
