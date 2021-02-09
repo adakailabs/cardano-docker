@@ -3,6 +3,11 @@
 
 set -e 
 
+GITHUB_USER="lagarciag"
+NEW_USER="lovelace"
+HOME="/home/${NEW_USER}"
+
+
 trap 'echo "$BASH_COMMAND"' DEBUG
 
 # Login as root
