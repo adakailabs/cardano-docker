@@ -47,9 +47,6 @@ mkdir -p $HOME/grafana/var/lib/grafana/plugins
 mkdir -p $HOME/grafana/etc/grafana/provisioning
 
 
-
-
-
 USER=${NEW_USER} ./docker-install.sh 
 
 git clone https://github.com/lagarciag/dotfiles.git ${HOME}/.dotfiles
@@ -87,25 +84,7 @@ cp /etc/fstab /etc/fstab.back
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 
-# Setup SSH
-curl https://github.com/${GITHUB_USER}.keys | tee -a $HOME/.ssh/authorized_keys
-chown -R lovelace:lovelace $HOME/.ssh
-sed -i.bak1 's/#Port 22/Port 2222/g' /etc/ssh/sshd_config
-sed -i.bak2 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
-echo 'AllowUsers lovelace' >> /etc/ssh/sshd_config
-systemctl restart ssh
-
-# Setup the firewall
-ufw allow 2222/tcp  # ssh port
-
-# docker swarn related
-ufw allow 2376/tcp
-ufw allow 2377/tcp
-ufw allow 7946/tcp
-ufw allow 7946/udp
-ufw allow 4789/udp
-
-ufw enable
+./firewall.sh 
 
 # Reboot
 shutdown -r 0                                                                                                                                                                                              
