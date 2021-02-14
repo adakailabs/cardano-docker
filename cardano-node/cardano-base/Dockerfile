@@ -86,4 +86,14 @@ RUN cd /tmp \
 	&& tar -C /usr/local/rt-view -xzf cardano-rt-view-${RTVIEWVERSION}-linux-x86_64.tar.gz \
 	&& rm cardano-rt-view-${RTVIEWVERSION}-linux-x86_64.tar.gz
 
+RUN cd /tmp && \
+	wget http://argsparse.livna.org/bash-argsparse-1.8.tar.gz \
+	&& tar -xvzf bash-argsparse-1.8.tar.gz \
+	&& cp bash-argsparse-1.8/argsparse-completion.sh /usr/local/bin \
+	&& cp bash-argsparse-1.8/argsparse.sh /usr/local/bin \
+	&& rm -rf  bash-argsparse* 
+
+RUN git clone https://gitlab.com/viper-staking/cardano-tools.git cardano \
+	&& mv cardano /usr/local
+
 RUN mkdir -p /etc/cardano

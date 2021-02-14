@@ -17,3 +17,8 @@ set -e
 		--secrets_path ../stack/secrets \
 		--type producer \
 		--mock 
+
+./entrypoint.sh --standalone --mock
+
+
+./entrypoint.sh --standalone --mock --testnet

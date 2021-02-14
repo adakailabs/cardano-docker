@@ -8,6 +8,9 @@ COPY --from=build /usr/local/lib/libsodium* /usr/local/lib/
 COPY --from=build /opt/bin/cardano-cli /usr/local/bin/
 COPY --from=build /opt/bin/cardano-node /usr/local/bin/
 COPY --from=build /usr/local/bin/node_exporter /usr/local/bin
+COPY --from=build /usr/local/bin/argsparse* /usr/local/bin/
+COPY --from=build /usr/local/cardano/ /usr/local/cardano/
+
 
 ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
@@ -17,17 +20,12 @@ COPY config /etc/cardano/config
 
 COPY entrypoint.sh /usr/local/bin/
 
-RUN cd /tmp && \
-	wget http://argsparse.livna.org/bash-argsparse-1.8.tar.gz \
-	&& tar -xvzf bash-argsparse-1.8.tar.gz \
-	&& cp bash-argsparse-1.8/argsparse-completion.sh /usr/local/bin \
-	&& cp bash-argsparse-1.8/argsparse.sh /usr/local/bin \
-	&& rm -rf  bash-argsparse* \
-	&& cd /home/lovelace
-
 # Expose prometheus monitoring ports
+USER root
+RUN chown -R lovelace:lovelace /usr/local/cardano/
 USER lovelace
 
 # Set cardano-node as the entrypoint and by default just print the version.
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["--version"]
+CMD ["--standalone" ]
+
