@@ -2,15 +2,8 @@
 #set -x
 set -e
 
-MAINNET_MAGIC=764824073
-TESTNET_MAGIC=1097911063
-
 # Load argsparse library.
 . argsparse.sh
-
-argsparse_use_option testnet "run in testnet mode"
-
-argsparse_use_option standalone "run in standalone mode"
 
 argsparse_use_option secrets_path "secrets dir"  value
 
@@ -40,43 +33,22 @@ printf "Options reporting:\n"
 argsparse_report
 printf "End of argsparse report.\n\n"
 
-if argsparse_is_option_set "standalone"
-then
-    echo "standalone is set" 
-    STANDALONE=${program_options[type]}
-    TYPE="relay"
-    ID=0
-fi
 
 if argsparse_is_option_set "id"
 then
     echo "id is ${program_options[id]}"
-    ID=${program_options[id]}
 else
-    if argsparse_is_option_set "standalone"
-    then
-	echo "standalone is set"
-    else
-	echo "id option must be specified"q
-	echo "type option must be specified"
-	exit 0
-    fi    
+    echo "id option must be specified"
+    exit 0
 fi
-
-
 
 if argsparse_is_option_set "type"
 then
     echo "type is ${program_options[type]}"
     TYPE=${program_options[type]}
 else
-    if argsparse_is_option_set "standalone"
-    then
-	echo "standalone is set"
-    else
     echo "type option must be specified"
     exit 0
-    fi
 fi
 
 if argsparse_is_option_set "secrets_path"
@@ -84,25 +56,9 @@ then
     echo "path to secrets ${program_options[secrets_path]}"
 
 else
-    if argsparse_is_option_set "standalone"
-    then
-	echo "standalone is set"
-    else
-	echo "type secrets_path must be specified"
-	exit 0
-    fi
+    echo "path to secrets must be specified"
+    exit 0
 fi
-
-if argsparse_is_option_set "testnet"
-then
-    echo "running in testnet mode"
-    NET="testnet"
-else
-    echo "running in mainnet mode"
-    NET="mainnet"
-fi
-
-
 
 
 secrets_path=${program_options[secrets_path]}
@@ -112,16 +68,16 @@ PRODUCER_TYPE="producer"
 if [[ $TYPE == $PRODUCER_TYPE ]];then
     NAME=${program_options[type]}
 else
-    NAME="${TYPE}${ID}"
+    NAME="${program_options[type]}${program_options[id]}"
 fi    
 
-
+ID=${program_options[id]}
 
 ERA1=shelley
 ERA2=byron
 
-ERA1_JSON=${NET}-${ERA1}-genesis.json
-ERA2_JSON=${NET}-${ERA2}-genesis.json
+ERA1_JSON=mainnet-${ERA1}-genesis.json
+ERA2_JSON=mainnet-${ERA2}-genesis.json
 
 BASE_PATH="/home/lovelace/cardano-node/${NAME}"
 
@@ -131,16 +87,8 @@ CONFIG_DIR=$BASE_PATH/config
 GENESIS1=$CONFIG_DIR/$ERA1_JSON
 GENESIS2=$CONFIG_DIR/$ERA2_JSON
 
-
-
 TOPOLOGY=$BASE_PATH/config/${NAME}-topology.json
-TOPOLOGY_ETC=/etc/cardano/configuration/cardano/mainnet-topology.json
-
-if argsparse_is_option_set "testnet"
-then
-    TOPOLOGY_ETC=/etc/cardano/configuration/cardano/testnet-topology.json
-fi
-
+TOPOLOGY_ETC=/etc/cardano/config/${NAME}-topology.json
 
 CONFIG=$BASE_PATH/config/${TYPE}-config.json
 
@@ -156,22 +104,16 @@ else
     RT_VIEW_PORT=$(printf '66%02d' "${ID}")
 fi    
 
+
+
 if [ $ID==0 ]
 then
-    if argsparse_is_option_set "standalone"
-    then    
-	PRODUCER0_ADDR="0.0.0.0"
-	RELAY_THIS_PUBLIC_ADDR="0.0.0.0"
-	RELAY_OTHER_PUBLIC_ADDR="0.0.0.0"
-	RELAY_THIS_PRIVATE_ADDR="0.0.0.0"
-	RELAY_OTHER_PRIVATE_ADDR="0.0.0.0"
-    else
-	PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name`
-	RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name`
-	RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name`
-	RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay0_private_host_name`
-	RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay1_private_host_name`
-    fi
+    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name`
+    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name`
+    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name`
+    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay0_private_host_name`
+    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay1_private_host_name`
+    
 else
     PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name`
     RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name`
@@ -209,28 +151,20 @@ else
 nohup node_exporter --web.listen-address=":${PROETHEUS_NODE_EXPORT_PORT}" &
 fi
 
-echo "$CONFIG found, copying from /etc/cardano-node"
-cp /etc/cardano/configuration/cardano/mainnet-config.json $CONFIG
-
-if argsparse_is_option_set "testnet"
-then
-    cp /etc/cardano/configuration/cardano/testnet-config.json $CONFIG
-fi
-
-sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
-sed -i "s/{{node-id}}/${RT_VIEW_PORT}/g" $CONFIG
-sed -i "s/{{prometheus-port}}/${PROMETHEUS_PORT}/g" $CONFIG
-
-if argsparse_is_option_set "testnet"
-then
-    sed -i "s/\"ApplicationVersion\": 1/\"ApplicationVersion\": 0/g" $CONFIG
-    sed -i "s/mainnet/testnet/g" $CONFIG
-    sed -i "s/\"ByronGenesisHash\":.*\"/\"ByronGenesisHash\": \"96fceff972c2c06bd3bb5243c39215333be6d56aaf4823073dca31afe5038471\"/g" $CONFIG
-    sed -i "s/\"ShelleyGenesisHash\":.*\"/\"ShelleyGenesisHash\": \"39bf1f46577653eb3062eaf03e5dd31144661ea20b673d2fe5d91654697fb23d\"/g" $CONFIG
-    sed -i "s/RequiresNoMagic/RequiresMagic/g" $CONFIG
+if [ -f "$CONFIG" ]; then
+    echo "$CONFIG found, copying from /etc/cardano-node"
+    cp /etc/cardano/config/${TYPE}-config.json $CONFIG
+    sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
+    sed -i "s/{{node-id}}/${RT_VIEW_PORT}/g" $CONFIG
+    sed -i "s/{{prometheus-port}}/${PROMETHEUS_PORT}/g" $CONFIG
+else 
+    echo echo "$CONFIG NOT found, copying from /etc/cardano-node"
+    cp /etc/cardano/config/${TYPE}-config.json $CONFIG
+    sed -i "s/{{node-name}}/${NAME}/g" $CONFIG
+    sed -i "s/{{node-id}}/${RT_VIEW_PORT}/g" $CONFIG
+    sed -i "s/{{prometheus-port}}/${PROMETHEUS_PORT}/g" $CONFIG
     
 fi
-
 
 cp $TOPOLOGY_ETC $TOPOLOGY
 sed -i "s/{{relay-this-public-addr}}/${RELAY_THIS_PUBLIC_ADDR}/g" $TOPOLOGY
@@ -256,8 +190,6 @@ else
     cp /etc/cardano/config/$ERA2_JSON $GENESIS2
 fi
 
-
-#echo "export CARDANO_NODE_SOCKET_PATH=/home/lovelace/cardano-node/${NAME}/db/node.socket" >> /etc/profile.d/00-env.sh
 
 
 shelley_kes_key_file="$secrets_path/kes_key.skey"
