@@ -19,7 +19,7 @@ set -e
 
 mkdir -p $CONFIG_DST
 
-TRACE_FORWARD_TO="{\"tag\": \"RemoteSocket\",\"contents\": [\"monitor\",\"${NAME}\"]}"
+TRACE_FORWARD_TO="{\"tag\": \"RemoteSocket\",\"contents\": [\"monitor\",\"${RT_VIEW_PORT}\"]}"
 
 DEFAULT_SCRIBES="[[\"StdoutSK\",\"stdout\"],[\"FileSK\",\"${CARDANO_BASE_DIR}/log/${NAME}.log\"]]"
 
