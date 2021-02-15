@@ -26,6 +26,8 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /opt
 
+
+
 # Build and install the IOHK fork of libsodium.
 RUN git clone https://github.com/input-output-hk/libsodium \
 	&& cd libsodium \
@@ -47,6 +49,8 @@ ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 ARG CARDANO_VERSION=1.25.0
 ARG CARDANO_BUILD=5544808
 
+COPY scripts/* /usr/local/bin/	  
+
 RUN mkdir -p ./ctmp \
 	&& cd ctmp \
 	&& mkdir -p /etc/cardano/config \
@@ -54,9 +58,9 @@ RUN mkdir -p ./ctmp \
 	&& wget https://hydra.iohk.io/build/$CARDANO_BUILD/download/1/cardano-node-${CARDANO_VERSION}-linux.tar.gz \
 	&& tar -xvzf cardano-node-${CARDANO_VERSION}-linux.tar.gz \
 	&& rm cardano-node-${CARDANO_VERSION}-linux.tar.gz \
-	&& mv configuration /etc/cardano/ \
 	&& mv * /opt/bin/ \
-	&& cd .. && rm -rf ctmp 	  
+	&& cd .. && rm -rf ctmp \
+	&& download_config.sh 	  
 
 # Install Prometheus Node Exporter
 ARG VERSION=1.0.1

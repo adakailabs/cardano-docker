@@ -61,7 +61,7 @@ else
 fi
 
 
-secrets_path=${program_options[secrets_path]}
+SECRETS_PATH=${program_options[secrets_path]}
 
 PRODUCER_TYPE="producer"
 
@@ -108,18 +108,18 @@ fi
 
 if [ $ID==0 ]
 then
-    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name`
-    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name`
-    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name`
-    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay0_private_host_name`
-    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay1_private_host_name`
+    PRODUCER0_ADDR=`cat $SECRETS_PATH/producer_private_host_name`
+    RELAY_THIS_PUBLIC_ADDR=`cat $SECRETS_PATH/relay0_public_host_name`
+    RELAY_OTHER_PUBLIC_ADDR=`cat $SECRETS_PATH/relay1_public_host_name`
+    RELAY_THIS_PRIVATE_ADDR=`cat $SECRETS_PATH/relay0_private_host_name`
+    RELAY_OTHER_PRIVATE_ADDR=` cat $SECRETS_PATH/relay1_private_host_name`
     
 else
-    PRODUCER0_ADDR=`cat $secrets_path/producer_private_host_name`
-    RELAY_THIS_PUBLIC_ADDR=`cat $secrets_path/relay1_public_host_name`
-    RELAY_OTHER_PUBLIC_ADDR=`cat $secrets_path/relay0_public_host_name`
-    RELAY_THIS_PRIVATE_ADDR=`cat $secrets_path/relay1_private_host_name`
-    RELAY_OTHER_PRIVATE_ADDR=` cat $secrets_path/relay0_private_host_name`
+    PRODUCER0_ADDR=`cat $SECRETS_PATH/producer_private_host_name`
+    RELAY_THIS_PUBLIC_ADDR=`cat $SECRETS_PATH/relay1_public_host_name`
+    RELAY_OTHER_PUBLIC_ADDR=`cat $SECRETS_PATH/relay0_public_host_name`
+    RELAY_THIS_PRIVATE_ADDR=`cat $SECRETS_PATH/relay1_private_host_name`
+    RELAY_OTHER_PRIVATE_ADDR=` cat $SECRETS_PATH/relay0_private_host_name`
 fi
 
 

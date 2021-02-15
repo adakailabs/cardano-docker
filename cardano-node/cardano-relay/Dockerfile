@@ -18,7 +18,7 @@ ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 # Copy over other resources from the build context.
 COPY config /etc/cardano/config
 
-COPY entrypoint.sh /usr/local/bin/
+COPY scripts/* /usr/local/bin/
 
 # Expose prometheus monitoring ports
 USER root
