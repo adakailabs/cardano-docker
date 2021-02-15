@@ -1,0 +1,197 @@
+#./entrypoint.sh 
+
+
+version: '3.7'
+
+volumes:
+  grafana-storage:
+
+secrets:
+  grafana_admin_password:
+    file: ./secrets/grafana_admin_password.txt	
+  kes_key.skey:
+    file: ./secrets/pool_kes.skey
+  vrf_skey.skey:
+    file: ./secrets/pool_vrf.skey
+  operational_certificate.cert:
+    file: ./secrets/pool.cert
+  producer_private_host_name:
+    file: ./secrets/producer_private_host_name
+  relay0_private_host_name:
+    file: ./secrets/relay0_private_host_name
+  relay0_public_host_name:
+    file: ./secrets/relay0_public_host_name
+  relay1_private_host_name:
+    file: ./secrets/relay1_private_host_name
+  relay1_public_host_name:
+    file: ./secrets/relay1_public_host_name
+
+services:
+  #---------------------------------------------------------------------------------
+  relay0:
+    image: adakailabs/cardano-relay:latest
+    command:
+      - "--type"
+      - "relay"
+      - "--id"
+      - "0"
+      - "--secrets_path"
+      - "/run/secrets"
+      - "--testnet"
+    secrets:
+      - producer_private_host_name
+      - relay0_private_host_name
+      - relay0_public_host_name
+      - relay1_private_host_name
+      - relay1_public_host_name
+      
+    ports:
+      - "3000:3001"
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.relay0 == true
+          
+  #---------------------------------------------------------------------------------
+  relay1:
+    image: adakailabs/cardano-relay:latest
+    command:
+      - "--type"
+      - "relay"
+      - "--id"
+      - "1"
+      - "--secrets_path"
+      - "/run/secrets"
+      - "--testnet"
+    secrets:
+      - producer_private_host_name
+      - relay0_private_host_name
+      - relay0_public_host_name
+      - relay1_private_host_name
+      - relay1_public_host_name
+          
+    ports:
+      - "3001:3001"
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.relay1 == true
+
+  #---------------------------------------------------------------------------------
+  producer0:
+    image: adakailabs/cardano-relay:latest
+    user: lovelace
+    depends_on:
+      - "relay0"
+      - "relay1"
+    secrets:
+      - source: kes_key.skey
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: vrf_skey.skey
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: operational_certificate.cert
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+    command:
+      - "--type"
+      - "producer"
+      - "--id"
+      - "0"
+      - "--secrets_path"
+      - "/run/secrets"
+      - "--test"
+      - "--testnet"
+      
+    secrets:
+      - producer_private_host_name
+      - relay0_private_host_name
+      - relay0_public_host_name
+      - relay1_private_host_name
+      - relay1_public_host_name
+
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.producer0 == true
+
+  #---------------------------------------------------------------------------------          
+  monitor:
+    image: adakailabs/cardano-monitor:21.01.02
+    depends_on:
+      - "relay0"
+      - "relay1"
+    command:
+      - "2" # 2 relays
+      - "1" # 1 producer
+    ports:
+      - "8666:8666"
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.monitor == true
+
+  #---------------------------------------------------------------------------------          
+  prometheus:
+    image: adakailabs/cardano-prometheus:latest
+    depends_on:
+      - "relay0"
+      - "relay1"
+    command:
+      - "2" # 2 relays
+      - "1" # 1 producer
+      - "no" #not a producer
+    ports:
+      - "9090:9090"
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.monitor == true
+          
+  #---------------------------------------------------------------------------------          
+  grafana:
+    image: grafana/grafana:latest
+    depends_on:
+      - "relay0"
+      - "relay1"    
+    secrets:
+      - grafana_admin_password
+    user: 1000:1000
+    ports:
+      - "3100:3100"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
+      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.monitor == true
+

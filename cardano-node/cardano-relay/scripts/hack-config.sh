@@ -56,6 +56,70 @@ MAP_BACKENDS='
  ]	  
 }
 '
+MAP_SUBTRACE='
+{
+    "#ekgview": {
+	"contents": [
+	    [
+		{
+		    "contents": "cardano.epoch-validation.benchmark",
+		    "tag": "Contains"
+		},
+		[
+		    {
+			"contents": ".monoclock.basic.",
+			"tag": "Contains"
+		    }
+		]
+	    ],
+	    [
+		{
+		    "contents": "cardano.epoch-validation.benchmark",
+		    "tag": "Contains"
+		},
+		[
+		    {
+			"contents": "diff.RTS.cpuNs.timed.",
+			"tag": "Contains"
+		    }
+		]
+	    ],
+	    [
+		{
+		    "contents": "#ekgview.#aggregation.cardano.epoch-validation.benchmark",
+		    "tag": "StartsWith"
+		},
+		[
+		    {
+			"contents": "diff.RTS.gcNum.timed.",
+			"tag": "Contains"
+		    }
+		]
+	    ]
+	],
+	"subtrace": "FilterTrace"
+    },
+    "benchmark": {
+	"contents": [
+	    "GhcRtsStats",
+	    "MonotonicClock"
+	],
+	"subtrace": "ObservableTrace"
+    },
+    "cardano.epoch-validation.utxo-stats": {
+	"subtrace": "NoTrace"
+    },
+    "cardano.node-metrics": {
+	"subtrace": "Neutral"
+    },
+    "cardano.node.metrics": {
+	"subtrace": "Neutral"
+    }
+}'
+
+SETUP_BACKENDS='"TraceForwarderBK"'
+
+
 
 i=mainnet-config.json
 
@@ -77,7 +141,7 @@ jq ".hasPrometheus = $HAS_PROMETHEUS"      /tmp/$i > $CONFIG_DST/$i
 
 cp $CONFIG_DST/$i /tmp/$i
 
-jq ".TraceForwardTo = $TRACE_FORWARD_TO"   /tmp/$i > $CONFIG_DST/$i
+jq ".traceForwardTo = $TRACE_FORWARD_TO"   /tmp/$i > $CONFIG_DST/$i
 
 cp $CONFIG_DST/$i /tmp/$i
 
@@ -85,8 +149,16 @@ jq ".options.mapBackends = $MAP_BACKENDS"  /tmp/$i > $CONFIG_DST/$i
 
 cp $CONFIG_DST/$i /tmp/$i
 
+jq ".options.mapSubtrace = $MAP_SUBTRACE"  /tmp/$i > $CONFIG_DST/$i
+
+cp $CONFIG_DST/$i /tmp/$i
+
 jq ".setupScribes[1] |= . + $SETUP_SCRIBES_EXTRA" /tmp/$i > $CONFIG_DST/$i
-    
+
+cp $CONFIG_DST/$i /tmp/$i
+
+jq ".setupBackends[0] =   $SETUP_BACKENDS" /tmp/$i > $CONFIG_DST/$i
+
 rm -rf /tmp/$i
     
 echo "hacking config file: $CONFIG_DST/$i"

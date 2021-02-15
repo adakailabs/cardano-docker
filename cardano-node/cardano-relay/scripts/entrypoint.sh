@@ -2,6 +2,7 @@
 #set -x
 set -e
 
+export PATH="$PATH:$PWD"
 export SECRETS_PATH=/etc/cardano/testsecrets/
 export NETWORK=mainnet
 export ID=0
@@ -128,6 +129,7 @@ if [[ $TYPE == $PRODUCER_TYPE ]];then
     NAME=$TYPE
     RT_VIEW_PORT=6602
     PROMETHEUS_PORT=12792
+
 else
     NAME="${TYPE}${ID}"
     RT_VIEW_PORT=$(printf '66%02d' ${ID})
@@ -212,17 +214,17 @@ echo "topology                        : $topology"
 
 if [[ $TYPE == $PRODUCER_TYPE ]];then
   
-echo "shelley_kes_key                 : $shelley_kes_key"
-echo "shelley-vrf-key                 : $shelley_vrf_key"
-echo "shelley_operational_certificate : $shelley_operational_certificate"
-echo "--------------------------------------------------------------------------"
-
-
-cmd_args="$database_path $socket_path $port $host_address $config $topology $shelley_kes_key $shelley_vrf_key $shelley_operational_certificate"
-#ls -rtl $secrets_path
-
+    echo "shelley_kes_key                 : $shelley_kes_key"
+    echo "shelley-vrf-key                 : $shelley_vrf_key"
+    echo "shelley_operational_certificate : $shelley_operational_certificate"
+    echo "--------------------------------------------------------------------------"
+    
+    sleep 1m
+    cmd_args="$database_path $socket_path $port $host_address $config $topology $shelley_kes_key $shelley_vrf_key $shelley_operational_certificate"
+    #ls -rtl $secrets_path
+    
 else
-cmd_args="$database_path $socket_path $port $host_address $config $topology"    
+    cmd_args="$database_path $socket_path $port $host_address $config $topology"    
 fi     
 
 if [ $TEST_MODE = true ]
