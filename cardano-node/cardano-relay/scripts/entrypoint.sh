@@ -2,7 +2,7 @@
 #set -x
 set -e
 
-export SECRETS_PATH=../secrets/
+export SECRETS_PATH=/etc/cardano/testsecrets/
 export NETWORK=mainnet
 export ID=0
 export TYPE
@@ -15,7 +15,7 @@ export RELAY_THIS_PRIVATE_ADDR
 export RELAY_OTHER_PRIVATE_ADDR
 export ERA1=shelley
 export ERA2=byron
-export PROMETHEUS_PORT="66666"
+export PROMETHEUS_PORT=66666
 export CARDANO_PORT="3001"
 export PROMETHEUS_NODE_EXPORT_PORT="9100"
 export PRODUCER_TYPE="producer"
@@ -126,12 +126,12 @@ printf -v argsparse_usage_description "%s\n" \
 
 if [[ $TYPE == $PRODUCER_TYPE ]];then
     NAME=$TYPE
-    RT_VIEW_PORT="6602"
-    PROMETHEUS_PORT="12792"
+    RT_VIEW_PORT=6602
+    PROMETHEUS_PORT=12792
 else
     NAME="${TYPE}${ID}"
-    RT_VIEW_PORT=$(printf '66%02d' "${ID}")
-    PROMETHEUS_PORT=$(printf '1279%d' "${ID}")
+    RT_VIEW_PORT=$(printf '66%02d' ${ID})
+    PROMETHEUS_PORT=$(printf '1279%d' ${ID})
 fi    
 
 
@@ -155,7 +155,7 @@ TOPOLOGY_ETC=/etc/cardano/config/${NETWORK}-topology.json
 CONFIG=$CARDANO_CONFIG_DIR/${NETWORK}-config.json
 
 
-source ./hack-secrets.sh 
+source hack-secrets.sh 
 
 echo "
 -----------------------------------------------
@@ -172,10 +172,11 @@ Relay Other Private : $RELAY_OTHER_PRIVATE_ADDR
 -----------------------------------------------
 "
 
-./hack-config.sh
+hack-config.sh
 
-./hack-topology.sh 
+hack-topology.sh 
 
+hack-genesis.sh
 
 # Start prometheus monitoring in the background
 echo "Starting node_exporter..."

@@ -2,6 +2,10 @@ ARG CARDANO_NODE_BASE=adakailabs/cardano-base:latest
 FROM $CARDANO_NODE_BASE AS build
 LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
 
+USER root
+RUN apt-get update && apt-get install jq -y 
+USER lovelace
+
 # Build the final stage and copy the build artifacts from the previous stage.
 FROM adakailabs/ubuntu-base:latest
 COPY --from=build /usr/local/lib/libsodium* /usr/local/lib/
@@ -20,9 +24,13 @@ COPY config /etc/cardano/config
 
 COPY scripts/* /usr/local/bin/
 
+
+
 # Expose prometheus monitoring ports
 USER root
-RUN chown -R lovelace:lovelace /usr/local/cardano/
+RUN chown -R lovelace:lovelace /usr/local/cardano/ && mkdir -p /etc/cardano/testsecrets 
+COPY secrets/* /etc/cardano/testsecrets/
+RUN apt-get update && apt-get install jq -y 
 USER lovelace
 
 # Set cardano-node as the entrypoint and by default just print the version.
