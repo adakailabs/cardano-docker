@@ -120,6 +120,11 @@ services:
       - relay0_public_host_name
       - relay1_private_host_name
       - relay1_public_host_name
+      - node.cert
+      - node_kes.key
+      - node_kes.vkey
+      - node_vrf.key
+      - node_vrf.vkey
 
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
