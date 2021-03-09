@@ -93,18 +93,47 @@ services:
       - "relay0"
       - "relay1"
     secrets:
-      - source: kes_key.skey
+      - source: node_kes.key
         uid: '1000'
         gid: '1000'
         mode: 0400
-      - source: vrf_skey.skey
+      - source: node_vrf.key
         uid: '1000'
         gid: '1000'
         mode: 0400
-      - source: operational_certificate.cert
+      - source: node.cert
         uid: '1000'
         gid: '1000'
         mode: 0400
+      - source: node_kes.vkey
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: node_vrf.vkey
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: producer_private_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: relay0_private_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      - source: relay0_public_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+      - source: relay1_private_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+      - source: relay1_public_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+ 
     command:
       - "--type"
       - "producer"
@@ -115,16 +144,6 @@ services:
       - "--testnet"
       
     secrets:
-      - producer_private_host_name
-      - relay0_private_host_name
-      - relay0_public_host_name
-      - relay1_private_host_name
-      - relay1_public_host_name
-      - node.cert
-      - node_kes.key
-      - node_kes.vkey
-      - node_vrf.key
-      - node_vrf.vkey
 
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
