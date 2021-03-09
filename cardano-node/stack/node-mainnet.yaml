@@ -10,11 +10,11 @@ secrets:
   grafana_admin_password:
     file: ./secrets/grafana_admin_password.txt	
   kes_key.skey:
-    file: ./secrets/pool_kes.skey
+    file: ./secrets/node_kes.key
   vrf_skey.skey:
-    file: ./secrets/pool_vrf.skey
+    file: ./secrets/node_vrf.key
   operational_certificate.cert:
-    file: ./secrets/pool.cert
+    file: ./secrets/node.cert
   producer_private_host_name:
     file: ./secrets/producer_private_host_name
   relay0_private_host_name:
@@ -91,15 +91,15 @@ services:
       - "relay0"
       - "relay1"
     secrets:
-      - source: kes_key.skey
+      - source: node_kes.key
         uid: '1000'
         gid: '1000'
         mode: 0400
-      - source: vrf_skey.skey
+      - source: node_vrf.key
         uid: '1000'
         gid: '1000'
         mode: 0400
-      - source: operational_certificate.cert
+      - source: node.cert
         uid: '1000'
         gid: '1000'
         mode: 0400

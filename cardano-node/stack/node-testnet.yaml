@@ -97,38 +97,47 @@ services:
         uid: '1000'
         gid: '1000'
         mode: 0400
+
       - source: node_vrf.key
         uid: '1000'
         gid: '1000'
         mode: 0400
+
       - source: node.cert
         uid: '1000'
         gid: '1000'
         mode: 0400
+
       - source: node_kes.vkey
         uid: '1000'
         gid: '1000'
         mode: 0400
+
       - source: node_vrf.vkey
         uid: '1000'
         gid: '1000'
         mode: 0400
+
       - source: producer_private_host_name
         uid: '1000'
         gid: '1000'
         mode: 0400
+
       - source: relay0_private_host_name
         uid: '1000'
         gid: '1000'
         mode: 0400
+
       - source: relay0_public_host_name
         uid: '1000'
         gid: '1000'
         mode: 0400        
+
       - source: relay1_private_host_name
         uid: '1000'
         gid: '1000'
         mode: 0400        
+
       - source: relay1_public_host_name
         uid: '1000'
         gid: '1000'
