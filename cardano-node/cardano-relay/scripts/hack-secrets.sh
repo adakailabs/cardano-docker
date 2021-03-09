@@ -19,10 +19,10 @@ else
     RELAY_OTHER_PRIVATE_ADDR=` cat $SECRETS_PATH/relay0_private_host_name`
 fi
 
-
-SHELLEY_KES_KEY_FILE="$SECRETS_PATH/kes_key.skey"
-SHELLEY_VRF_KEY_FILE="$SECRETS_PATH/vrf_skey.skey"
-SHELLEY_OPERATIONAL_CERTIFICATE_FILE="$SECRETS_PATH/operational_certificate.cert"
+// node.cert  node_kes.key  node_kes.vkey  node_vrf.key  node_vrf.vkey
+SHELLEY_KES_KEY_FILE="$SECRETS_PATH/node_kes.key"
+SHELLEY_VRF_KEY_FILE="$SECRETS_PATH/node_vrf.key"
+SHELLEY_OPERATIONAL_CERTIFICATE_FILE="$SECRETS_PATH/node.cert"
 
 
 
