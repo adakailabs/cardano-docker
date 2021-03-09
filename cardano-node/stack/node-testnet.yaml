@@ -10,11 +10,11 @@ secrets:
   grafana_admin_password:
     file: ./secrets/grafana_admin_password.txt	
   kes_key.skey:
-    file: ./secrets/pool_kes.skey
+    file: ./secrets/node_kes.key
   vrf_skey.skey:
-    file: ./secrets/pool_vrf.skey
+    file: ./secrets/node_vrf.key
   operational_certificate.cert:
-    file: ./secrets/pool.cert
+    file: ./secrets/node.cert
   producer_private_host_name:
     file: ./secrets/producer_private_host_name
   relay0_private_host_name:
@@ -112,7 +112,6 @@ services:
       - "0"
       - "--secrets_path"
       - "/run/secrets"
-      - "--test"
       - "--testnet"
       
     secrets:
