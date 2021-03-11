@@ -133,9 +133,9 @@ jq '.TraceBlockFetchDecisions = true'      $CONFIG_ETC/$i   > $CONFIG_DST/$i
 
 cp $CONFIG_DST/$i /tmp/$i
 
-jq ".defaultScribes = $DEFAULT_SCRIBES"    /tmp/$i > $CONFIG_DST/$i
+# jq ".defaultScribes = $DEFAULT_SCRIBES"    /tmp/$i > $CONFIG_DST/$i
 
-cp $CONFIG_DST/$i /tmp/$i
+# cp $CONFIG_DST/$i /tmp/$i
 
 jq ".hasPrometheus = $HAS_PROMETHEUS"      /tmp/$i > $CONFIG_DST/$i
 
@@ -153,9 +153,9 @@ jq ".options.mapSubtrace = $MAP_SUBTRACE"  /tmp/$i > $CONFIG_DST/$i
 
 cp $CONFIG_DST/$i /tmp/$i
 
-jq ".setupScribes[1] |= . + $SETUP_SCRIBES_EXTRA" /tmp/$i > $CONFIG_DST/$i
+# jq ".setupScribes[1] |= . + $SETUP_SCRIBES_EXTRA" /tmp/$i > $CONFIG_DST/$i
 
-cp $CONFIG_DST/$i /tmp/$i
+# cp $CONFIG_DST/$i /tmp/$i
 
 jq ".setupBackends[0] =   $SETUP_BACKENDS" /tmp/$i > $CONFIG_DST/$i
 
