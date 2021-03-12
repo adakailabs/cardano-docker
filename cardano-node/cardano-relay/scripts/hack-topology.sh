@@ -38,12 +38,38 @@ fi
 \"valency\": 1    
 }"	
 
-    TOPOLOGY_EXTRA='
+    TOPOLOGY_EXTRA_MAINNET1='
 {   	
 	"addr": "relays.stakepool247.eu",
     	"port": 3001,
 	"valency": 1        
 }'	
+
+    TOPOLOGY_EXTRA_TESTNET1='
+{   	
+      	"addr": "relays.cardano-testnet.uniquestaking.com",
+      	"port": 3001,
+      	"continent": "North America",
+      	"state": "Iowa"
+}'	
+
+    TOPOLOGY_EXTRA_TESTNET2='
+{   	
+	"addr": "relays.testnet.stakenuts.com",
+      	"port": 3001,
+      	"continent": "North America",
+      	"state": "New Jersey"
+}'	
+
+    TOPOLOGY_EXTRA_TESTNET3='
+{   	
+	 "addr": "testnet.adanorthpool.com",
+      	 "port": 9015,
+      	 "continent": "Europe",
+      	 "state": "NO"	
+}'	
+    
+
     
 #CONFIGS=(testnet-topology.json \
 #	     mainnet-topology.json)
@@ -66,9 +92,18 @@ if [[ $TYPE == $PRODUCER_TYPE ]];then
     
 else
     if [[ $i == "mainnet-topology.json" ]];then
-    	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
+    	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_MAINNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
     else
-	cp  $CONFIG_ETC/$i $CONFIG_DST/$i
+	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
+
+        cp $CONFIG_DST/$i /tmp/$i
+
+        jq ".Producers[2] |= . + $TOPOLOGY_EXTRA_TESTNET2"   /tmp/$i   > $CONFIG_DST/$i
+	
+        cp $CONFIG_DST/$i /tmp/$i
+
+        jq ".Producers[3] |= . + $TOPOLOGY_EXTRA_TESTNET3"   /tmp/$i   > $CONFIG_DST/$i
+	
     fi
 fi
 echo "hacking topology file: $CONFIG_DST/$i"
