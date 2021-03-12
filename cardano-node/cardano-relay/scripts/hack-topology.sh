@@ -38,19 +38,25 @@ fi
 \"valency\": 1    
 }"	
 
+
+    # https://explorer.cardano.org/relays/topology.json
+    
     TOPOLOGY_EXTRA_MAINNET1='
 {   	
 	"addr": "relays.stakepool247.eu",
     	"port": 3001,
 	"valency": 1        
-}'	
+}'
+
+    # https://explorer.cardano-testnet.iohkdev.io/relays/topology.json
 
     TOPOLOGY_EXTRA_TESTNET1='
 {   	
       	"addr": "relays.cardano-testnet.uniquestaking.com",
       	"port": 3001,
       	"continent": "North America",
-      	"state": "Iowa"
+      	"state": "Iowa",
+	"valency": 1    
 }'	
 
     TOPOLOGY_EXTRA_TESTNET2='
@@ -58,7 +64,8 @@ fi
 	"addr": "relays.testnet.stakenuts.com",
       	"port": 3001,
       	"continent": "North America",
-      	"state": "New Jersey"
+      	"state": "New Jersey",
+	"valency": 1    
 }'	
 
     TOPOLOGY_EXTRA_TESTNET3='
@@ -66,7 +73,8 @@ fi
 	 "addr": "testnet.adanorthpool.com",
       	 "port": 9015,
       	 "continent": "Europe",
-      	 "state": "NO"	
+      	 "state": "NO",
+	 "valency": 1    	
 }'	
     
 
