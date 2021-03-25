@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# docker node update --label-add com.adakailabs.monitor=true master00
-# docker node update --label-add com.adakailabs.relay0=true relay00
-# docker node update --label-add com.adakailabs.relay1=true relay01
-# docker node update --label-add com.adakailabs.producer0=true producer00
+docker node update --label-add com.adakailabs.monitor=true master00
+docker node update --label-add com.adakailabs.relay0=true relay00
+docker node update --label-add com.adakailabs.relay1=true relay01
+docker node update --label-add com.adakailabs.producer0=true producer00
 
 master00_ip="10.116.0.2"
 relay00_ip="10.116.0.3"
@@ -28,8 +28,6 @@ function set_docker {
 	echo sudo ufw allow from $i to any port 7946/tcp
 	echo sudo ufw allow from $i to any port 7946/udp
 	echo sudo ufw allow from $i to any port 4789/udp
-
-	echo sudo ufw allow from $i to any port 3001/tcp
 	
     done
 }
@@ -51,10 +49,10 @@ function master00 {
 	# Prometheus
 	sudo ufw allow 12700/tcp
 	sudo ufw allow 9100/tcp
+	sudo ufw allow 8666/tcp
 	# Grafana
 	ufw allow 3666/tcp
 	
-	sudo ufw enable
 }
 
 
@@ -65,7 +63,7 @@ function relay00 {
 
 	ufw allow 3000/tcp
 	
-	sudo ufw enable
+	
 }
 
 
@@ -84,8 +82,6 @@ function relay00 {
     	echo "this is ${HOSTNAME}"
 	set_all
 	set_docker
-	
-	sudo ufw enable
 }
 
 
@@ -121,6 +117,9 @@ do
 	    producer00
 	fi
     fi
+
+    sudo ufw enable
+    
 done
 
 
