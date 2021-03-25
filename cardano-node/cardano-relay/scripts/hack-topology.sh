@@ -93,7 +93,6 @@ if [[ $TYPE == $PRODUCER_TYPE ]];then
     cp $CONFIG_DST/$i /tmp/$i
     
     jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_OTHER"   /tmp/$i   > $CONFIG_DST/$i
-
    
     rm /tmp/$i
     
