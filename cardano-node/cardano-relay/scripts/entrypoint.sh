@@ -220,7 +220,7 @@ if [[ $TYPE == $PRODUCER_TYPE ]];then
     echo "shelley_operational_certificate : $shelley_operational_certificate"
     echo "--------------------------------------------------------------------------"
     
-    sleep 1m
+    #sleep 1m
     cmd_args="$database_path $socket_path $port $host_address $config $topology $shelley_kes_key $shelley_vrf_key $shelley_operational_certificate"
     #ls -rtl $secrets_path
     
