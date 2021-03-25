@@ -17,6 +17,8 @@ secrets:
     file: ./secrets/node.cert
   producer_private_host_name:
     file: ./secrets/producer_private_host_name
+  producer_public_host_name:
+    file: ./secrets/producer_public_host_name
   relay0_private_host_name:
     file: ./secrets/relay0_private_host_name
   relay0_public_host_name:
@@ -40,6 +42,7 @@ services:
       - "--testnet"
     secrets:
       - producer_private_host_name
+      - producer_public_host_name
       - relay0_private_host_name
       - relay0_public_host_name
       - relay1_private_host_name
@@ -69,6 +72,7 @@ services:
       - "--testnet"
     secrets:
       - producer_private_host_name
+      - producer_public_host_name      
       - relay0_private_host_name
       - relay0_public_host_name
       - relay1_private_host_name
@@ -89,6 +93,8 @@ services:
   producer0:
     image: adakailabs/cardano-relay:latest
     user: lovelace
+    ports:
+      - "3002:3001"
     depends_on:
       - "relay0"
       - "relay1"
@@ -123,6 +129,11 @@ services:
         gid: '1000'
         mode: 0400
 
+      - source: producer_public_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+        
       - source: relay0_private_host_name
         uid: '1000'
         gid: '1000'
