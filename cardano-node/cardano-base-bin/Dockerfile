@@ -46,8 +46,11 @@ ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 #	&& mv cabal /usr/local/bin/ \
 #	&& cabal update
 
-ARG CARDANO_VERSION=1.25.0
-ARG CARDANO_BUILD=5544808
+ARG CARDANO_VERSION=1.26.0
+ARG CARDANO_BUILD=5868764
+
+ARG CARDANO_NODE_URL=https://hydra.iohk.io/build/${CARDANO_BUILD}/download/1/cardano-node-${CARDANO_VERSION}-linux.tar.gz
+
 
 COPY scripts/* /usr/local/bin/	  
 
@@ -55,7 +58,7 @@ RUN mkdir -p ./ctmp \
 	&& cd ctmp \
 	&& mkdir -p /etc/cardano/config \
 	&& mkdir -p /opt/bin \
-	&& wget https://hydra.iohk.io/build/$CARDANO_BUILD/download/1/cardano-node-${CARDANO_VERSION}-linux.tar.gz \
+	&& wget ${CARDANO_NODE_URL} \
 	&& tar -xvzf cardano-node-${CARDANO_VERSION}-linux.tar.gz \
 	&& rm cardano-node-${CARDANO_VERSION}-linux.tar.gz \
 	&& mv * /opt/bin/ \

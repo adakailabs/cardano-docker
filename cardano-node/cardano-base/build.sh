@@ -8,5 +8,5 @@ VERSION=$(cat version)
 IMAGE="adakailabs/cardano-base:${VERSION}"
 
 docker login 
-docker build --file Dockerfile -t ${IMAGE} .
+docker build --build-arg TAG=${VERSION} --file Dockerfile -t ${IMAGE} .
 docker push ${IMAGE}

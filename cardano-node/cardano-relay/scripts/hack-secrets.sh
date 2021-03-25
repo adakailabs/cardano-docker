@@ -3,9 +3,12 @@
 set -e
 
 
+PRODUCER_PUBLIC_ADDR=`cat $SECRETS_PATH/producer_public_host_name`
+
 if [ $ID==0 ]
 then
     PRODUCER0_ADDR=`cat $SECRETS_PATH/producer_private_host_name`
+    PRODUCER_PUBLIC_ADDR=`cat $SECRETS_PATH/producer_public_host_name`
     RELAY_THIS_PUBLIC_ADDR=`cat $SECRETS_PATH/relay0_public_host_name`
     RELAY_OTHER_PUBLIC_ADDR=`cat $SECRETS_PATH/relay1_public_host_name`
     RELAY_THIS_PRIVATE_ADDR=`cat $SECRETS_PATH/relay0_private_host_name`
@@ -13,6 +16,7 @@ then
     
 else
     PRODUCER0_ADDR=`cat $SECRETS_PATH/producer_private_host_name`
+    PRODUCER_PUBLIC_ADDR=`cat $SECRETS_PATH/producer_public_host_name`
     RELAY_THIS_PUBLIC_ADDR=`cat $SECRETS_PATH/relay1_public_host_name`
     RELAY_OTHER_PUBLIC_ADDR=`cat $SECRETS_PATH/relay0_public_host_name`
     RELAY_THIS_PRIVATE_ADDR=`cat $SECRETS_PATH/relay1_private_host_name`

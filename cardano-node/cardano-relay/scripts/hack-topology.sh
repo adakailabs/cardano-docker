@@ -2,14 +2,6 @@
 
 set -e
 
-# FILES=( testnet-config.json \
-# 	   testnet-byron-genesis.json \
-# 	   testnet-shelley-genesis.json \
-# 	   testnet-topology.json \
-# 	   mainnet-config.json \
-# 	   mainnet-byron-genesis.json  \
-# 	   mainnet-shelley-genesis.json \ mainnet-topology.json )
-
 
 CARDANO_PORT="3001"
 
@@ -38,6 +30,12 @@ fi
 \"valency\": 1    
 }"	
 
+    TOPOLOGY_PRODUCER="
+{	
+\"addr\": \"$PRODUCER_PUBLIC_ADDR\",
+\"port\": 3002,
+\"valency\": 1    
+}"	
 
     # https://explorer.cardano.org/relays/topology.json
     
@@ -95,12 +93,18 @@ if [[ $TYPE == $PRODUCER_TYPE ]];then
     cp $CONFIG_DST/$i /tmp/$i
     
     jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_OTHER"   /tmp/$i   > $CONFIG_DST/$i
-    
+
+   
     rm /tmp/$i
     
 else
     if [[ $i == "mainnet-topology.json" ]];then
     	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_MAINNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
+
+	cp $CONFIG_DST/$i /tmp/$i
+
+	jq ".Producers[2] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
+	
     else
 	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
 
@@ -111,6 +115,10 @@ else
         cp $CONFIG_DST/$i /tmp/$i
 
         jq ".Producers[3] |= . + $TOPOLOGY_EXTRA_TESTNET3"   /tmp/$i   > $CONFIG_DST/$i
+
+	cp $CONFIG_DST/$i /tmp/$i
+
+        jq ".Producers[4] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
 	
     fi
 fi

@@ -17,6 +17,7 @@ export ERA1_JSON=${NETWORK}-${ERA1}-genesis.json
 export ERA2_JSON=${NETWORK}-${ERA2}-genesis.json
 
 export PRODUCER0_ADDR
+export PRODUCER_PUBLIC_ADDR
 export RELAY_THIS_PUBLIC_ADDR
 export RELAY_OTHER_PUBLIC_ADDR
 export RELAY_THIS_PRIVATE_ADDR
@@ -66,6 +67,7 @@ Prometheus Port     : $PROMETHEUS_PORT
 RT View Port        : $RT_VIEW_PORT
 Cardano Port        : $CARDANO_PORT
 Producer Addr       : $PRODUCER0_ADDR
+Producer Public     : $PRODUCER_PUBLIC_ADDR
 Relay This Public   : $RELAY_THIS_PUBLIC_ADDR
 Relay Other Public  : $RELAY_OTHER_PUBLIC_ADDR
 Relay This Private  : $RELAY_THIS_PRIVATE_ADDR
