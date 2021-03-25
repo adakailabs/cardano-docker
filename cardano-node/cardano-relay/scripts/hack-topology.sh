@@ -30,10 +30,25 @@ fi
 \"valency\": 1    
 }"	
 
+#     TOPOLOGY_EXTRA_THIS="
+# {	
+# \"addr\": \"$RELAY_THIS_PRIVATE_ADDR\",
+# \"port\": 3001,
+# \"valency\": 1    
+# }"	
+
+#     TOPOLOGY_EXTRA_OTHER="
+# {	
+# \"addr\": \"$RELAY_OTHER_PRIVATE_ADDR\",
+# \"port\": 3001,
+# \"valency\": 1    
+# }"	
+
+
     TOPOLOGY_PRODUCER="
 {	
-\"addr\": \"$PRODUCER_PUBLIC_ADDR\",
-\"port\": 3002,
+\"addr\": \"$PRODUCER0_ADDR\",
+\"port\": 3001,
 \"valency\": 1    
 }"	
 
@@ -46,6 +61,35 @@ fi
 	"valency": 1        
 }'
 
+    TOPOLOGY_EXTRA_MAINNET2='
+{   	
+	"addr": "relays.mainnet.stakenuts.com",
+    	"port": 3001,
+	"valency": 1        
+}'
+
+    TOPOLOGY_EXTRA_MAINNET3='
+{   	
+	"addr": "relays.stakepool.at",
+    	"port": 3001,
+	"valency": 1        
+}'
+
+    TOPOLOGY_EXTRA_MAINNET4='
+{   	
+	"addr": "cardano-mainnet-relays.eastus2.cloudapp.azure.com",
+    	"port": 3013,
+	"valency": 1        
+}'
+
+    TOPOLOGY_EXTRA_MAINNET5='
+{   	
+	"addr": "14.201.73.146",
+    	"port": 3001,
+	"valency": 1        
+}'
+    
+    
     # https://explorer.cardano-testnet.iohkdev.io/relays/topology.json
 
     TOPOLOGY_EXTRA_TESTNET1='
@@ -102,7 +146,23 @@ else
 
 	cp $CONFIG_DST/$i /tmp/$i
 
-	jq ".Producers[2] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
+	jq ".Producers[2] |= . + $TOPOLOGY_EXTRA_MAINNET2"   /tmp/$i   > $CONFIG_DST/$i
+
+	cp $CONFIG_DST/$i /tmp/$i
+
+	jq ".Producers[3] |= . + $TOPOLOGY_EXTRA_MAINNET3"   /tmp/$i   > $CONFIG_DST/$i
+
+	cp $CONFIG_DST/$i /tmp/$i
+
+	jq ".Producers[4] |= . + $TOPOLOGY_EXTRA_MAINNET4"   /tmp/$i   > $CONFIG_DST/$i
+
+	cp $CONFIG_DST/$i /tmp/$i
+
+	jq ".Producers[5] |= . + $TOPOLOGY_EXTRA_MAINNET5"   /tmp/$i   > $CONFIG_DST/$i
+
+	cp $CONFIG_DST/$i /tmp/$i
+
+	jq ".Producers[6] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
 	
     else
 	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i

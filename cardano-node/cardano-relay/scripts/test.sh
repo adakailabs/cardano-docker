@@ -5,7 +5,7 @@ export NAME
 export TYPE="relay"
 export PRODUCER_TYPE="producer"
 export ID=0
-export NETWORK=testnet
+export NETWORK=mainnet
 export ERA1=shelley
 export ERA2=byron
 export PROMETHEUS_PORT="66666"

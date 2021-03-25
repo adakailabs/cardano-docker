@@ -33,6 +33,8 @@ COPY secrets/* /etc/cardano/testsecrets/
 RUN apt-get update && apt-get install jq -y 
 USER lovelace
 
+EXPOSE 3001
+
 # Set cardano-node as the entrypoint and by default just print the version.
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["--standalone" ]
