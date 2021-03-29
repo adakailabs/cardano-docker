@@ -83,8 +83,7 @@ swapon /swapfile
 cp /etc/fstab /etc/fstab.back
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
-
-./firewall.sh 
+./node-setup.sh
 
 # Reboot
 shutdown -r 0                                                                                                                                                                                              
