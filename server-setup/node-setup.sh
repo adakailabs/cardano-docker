@@ -50,10 +50,10 @@ function Sankokai {
 
 function master00 {
 
-    docker node update --label-add com.adakailabs.monitor=true master00
-    docker node update --label-add com.adakailabs.relay0=true relay00
-    docker node update --label-add com.adakailabs.relay1=true relay01
-    docker node update --label-add com.adakailabs.producer0=true producer00
+    #docker node update --label-add com.adakailabs.monitor=true master00
+    #docker node update --label-add com.adakailabs.relay0=true relay00
+    #docker node update --label-add com.adakailabs.relay1=true relay01
+    #docker node update --label-add com.adakailabs.producer0=true producer00
     
     
     echo "this is ${HOSTNAME}"
