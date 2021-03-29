@@ -2,6 +2,20 @@
 
 set -e 
 
+GITHUB_USER="lagarciag"
+NEW_USER="lovelace"
+HOME="/home/${NEW_USER}"
+
+
+trap 'echo "$BASH_COMMAND"' DEBUG
+
+# Login as root
+if [ "$EUID" -ne 0 ]
+  then echo "Please run as root"
+  exit
+fi
+
+
 
 master00_ip="10.120.0.3"
 relay00_ip="10.120.0.6"
@@ -102,6 +116,15 @@ function producer00 {
 
 	ufw enable
 }
+
+
+# Setup SSH
+curl https://github.com/${GITHUB_USER}.keys | tee -a $HOME/.ssh/authorized_keys
+chown -R lovelace:lovelace $HOME/.ssh
+sed -i.bak1 's/#Port 22/Port 2222/g' /etc/ssh/sshd_config
+sed -i.bak2 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
+echo 'AllowUsers lovelace' >> /etc/ssh/sshd_config
+systemctl restart ssh
 
 
 for i in "${hosts[@]}"
