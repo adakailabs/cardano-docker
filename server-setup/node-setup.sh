@@ -114,25 +114,25 @@ do
     fi
 
     if [[ $i == $master00_ip ]];then
-	if [[ $HOSTNAME == "master00" ]];then
+	if [[ $HOSTNAME == "roci-master00" ]];then
 	    master00
 	fi
     fi
 
     if [[ $i == $relay00_ip ]];then
-	if [[ $HOSTNAME == "relay00" ]];then
+	if [[ $HOSTNAME == "roci-relay00" ]];then
 	    relay00
 	fi
     fi
 
     if [[ $i == $relay01_ip ]];then
-	if [[ $HOSTNAME == "relay01" ]];then
+	if [[ $HOSTNAME == "roci-relay01" ]];then
 	    relay01
 	fi
     fi
 
     if [[ $i == $producer_ip ]];then
-	if [[ $HOSTNAME == "producer00" ]];then
+	if [[ $HOSTNAME == "roci-producer00" ]];then
 	    producer00
 	fi
     fi
