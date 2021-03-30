@@ -31,7 +31,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   relay0:
-    image: adakailabs/cardano-relay:latest
+    image: adakailabs/cardano-relay:21.03.1
     command:
       - "--type"
       - "relay"
@@ -61,7 +61,7 @@ services:
           
   #---------------------------------------------------------------------------------
   relay1:
-    image: adakailabs/cardano-relay:latest
+    image: adakailabs/cardano-relay:21.03.1
     command:
       - "--type"
       - "relay"
@@ -91,7 +91,7 @@ services:
 
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/cardano-relay:latest
+    image: adakailabs/cardano-relay:21.03.1
     user: lovelace
     ports:
       - "3002:3001"

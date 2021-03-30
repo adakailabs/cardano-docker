@@ -7,8 +7,8 @@ set -o nounset
 echo "Provided arguments: $@"
 
 # Current version
-BASE_VERSION=$(cat ../cardano-base-bin/version)
-IMAGE_BASE="adakailabs/cardano-base-bin:${BASE_VERSION}"
+BASE_VERSION=$(cat ../cardano-base/version)
+IMAGE_BASE="adakailabs/cardano-base:${BASE_VERSION}"
 VERSION=$(cat version)
 IMAGE="adakailabs/cardano-relay:${VERSION}"
 
