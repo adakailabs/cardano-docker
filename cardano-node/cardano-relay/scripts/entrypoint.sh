@@ -189,7 +189,7 @@ then
     echo "              running in mocking mode"
     echo "*****************************************************"
 else
-nohup node_exporter --web.listen-address=":${PROETHEUS_NODE_EXPORT_PORT}" &
+nohup node_exporter --web.listen-address=":${PROMETHEUS_NODE_EXPORT_PORT}" &
 fi
 
 
