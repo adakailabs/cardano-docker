@@ -39,7 +39,6 @@ services:
       - "0"
       - "--secrets_path"
       - "/run/secrets"
-      - "--mainnet"
     secrets:
       - producer_private_host_name
       - producer_public_host_name
@@ -69,7 +68,6 @@ services:
       - "1"
       - "--secrets_path"
       - "/run/secrets"
-      - "--mainnet"
     secrets:
       - producer_private_host_name
       - producer_public_host_name      
