@@ -56,33 +56,26 @@ fi
     
     TOPOLOGY_EXTRA_MAINNET1='
 {   	
-	"addr": "relays.stakepool247.eu",
-    	"port": 3001,
+	"addr": "54.220.20.40",
+    	"port": 3002,
 	"valency": 1        
 }'
 
     TOPOLOGY_EXTRA_MAINNET2='
 {   	
-	"addr": "relays.mainnet.stakenuts.com",
-    	"port": 3001,
+	"addr": "95.217.220.249",
+    	"port": 6060,
 	"valency": 1        
 }'
 
     TOPOLOGY_EXTRA_MAINNET3='
 {   	
-	"addr": "relays.stakepool.at",
-    	"port": 3001,
-	"valency": 1        
-}'
-
-    TOPOLOGY_EXTRA_MAINNET4='
-{   	
-	"addr": "cardano-mainnet-relays.eastus2.cloudapp.azure.com",
+	"addr": "3.129.162.200",
     	"port": 3013,
 	"valency": 1        
 }'
 
-    TOPOLOGY_EXTRA_MAINNET5='
+    TOPOLOGY_EXTRA_MAINNET4='
 {   	
 	"addr": "14.201.73.146",
     	"port": 3001,
@@ -94,7 +87,7 @@ fi
 
     TOPOLOGY_EXTRA_TESTNET1='
 {   	
-      	"addr": "relays.cardano-testnet.uniquestaking.com",
+      	"addr": "t.uniquestaking.com",
       	"port": 3001,
       	"continent": "North America",
       	"state": "Iowa",
@@ -156,11 +149,11 @@ else
 
 	jq ".Producers[4] |= . + $TOPOLOGY_EXTRA_MAINNET4"   /tmp/$i   > $CONFIG_DST/$i
 
-	cp $CONFIG_DST/$i /tmp/$i
+	#cp $CONFIG_DST/$i /tmp/$i
 
-	jq ".Producers[5] |= . + $TOPOLOGY_EXTRA_MAINNET5"   /tmp/$i   > $CONFIG_DST/$i
+	#jq ".Producers[5] |= . + $TOPOLOGY_EXTRA_MAINNET5"   /tmp/$i   > $CONFIG_DST/$i
 
-	cp $CONFIG_DST/$i /tmp/$i
+	#cp $CONFIG_DST/$i /tmp/$i
 
 	jq ".Producers[6] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
 	
