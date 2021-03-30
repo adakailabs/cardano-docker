@@ -9,12 +9,12 @@ volumes:
 secrets:
   grafana_admin_password:
     file: ./secrets/grafana_admin_password.txt	
-#  node_kes.key:
-#    file: ./secrets/node_kes.key
-#  node_vrf.key:
-#    file: ./secrets/node_vrf.key
-#  node.cert:
-#    file: ./secrets/node.cert
+  # node_kes.key:
+  #   file: ./secrets/node_kes.key
+  # node_vrf.key:
+  #   file: ./secrets/node_vrf.key
+  # node.cert:
+  #   file: ./secrets/node.cert
   producer_private_host_name:
     file: ./secrets/producer_private_host_name
   producer_public_host_name:
@@ -151,7 +151,6 @@ services:
       - "0"
       - "--secrets_path"
       - "/run/secrets"
-      - "--mainnet"
       - "--test"
       
     volumes:
