@@ -16,6 +16,11 @@ else
     OTHER_PORT=0
 fi
 
+
+producer_ip=$(nslookup producer0 | grep Address: | grep -v \# | grep -v "::" | sed 's/Address: //g')
+
+echo $test
+
     TOPOLOGY_EXTRA_THIS="
 {	
 \"addr\": \"$RELAY_THIS_PUBLIC_ADDR\",
@@ -47,7 +52,7 @@ fi
 
     TOPOLOGY_PRODUCER="
 {	
-\"addr\": \"$PRODUCER0_ADDR\",
+\"addr\": \"$producer_ip\",
 \"port\": 3001,
 \"valency\": 1    
 }"	

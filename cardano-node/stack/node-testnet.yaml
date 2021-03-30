@@ -31,6 +31,8 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   relay0:
+    depends_on:
+      - "producer0"
     image: adakailabs/cardano-relay:latest
     command:
       - "--type"
@@ -61,6 +63,8 @@ services:
           
   #---------------------------------------------------------------------------------
   relay1:
+    depends_on:
+      - "producer0"
     image: adakailabs/cardano-relay:latest
     command:
       - "--type"
@@ -95,9 +99,6 @@ services:
     user: lovelace
     ports:
       - "3002:3001"
-    depends_on:
-      - "relay0"
-      - "relay1"
     secrets:
       - source: node_kes.key
         uid: '1000'
