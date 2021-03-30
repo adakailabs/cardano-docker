@@ -46,11 +46,10 @@ ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 #	&& mv cabal /usr/local/bin/ \
 #	&& cabal update
 
-ARG CARDANO_VERSION=1.26.0
-ARG CARDANO_BUILD=5868764
+ARG CARDANO_VERSION=1.25.1
+ARG CARDANO_BUILD=5926115
 
 ARG CARDANO_NODE_URL=https://hydra.iohk.io/build/${CARDANO_BUILD}/download/1/cardano-node-${CARDANO_VERSION}-linux.tar.gz
-
 
 COPY scripts/* /usr/local/bin/	  
 

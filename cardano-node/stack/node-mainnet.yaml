@@ -9,14 +9,16 @@ volumes:
 secrets:
   grafana_admin_password:
     file: ./secrets/grafana_admin_password.txt	
-  kes_key.skey:
-    file: ./secrets/node_kes.key
-  vrf_skey.skey:
-    file: ./secrets/node_vrf.key
-  operational_certificate.cert:
-    file: ./secrets/node.cert
+#  node_kes.key:
+#    file: ./secrets/node_kes.key
+#  node_vrf.key:
+#    file: ./secrets/node_vrf.key
+#  node.cert:
+#    file: ./secrets/node.cert
   producer_private_host_name:
     file: ./secrets/producer_private_host_name
+  producer_public_host_name:
+    file: ./secrets/producer_public_host_name
   relay0_private_host_name:
     file: ./secrets/relay0_private_host_name
   relay0_public_host_name:
@@ -37,8 +39,10 @@ services:
       - "0"
       - "--secrets_path"
       - "/run/secrets"
+      - "--mainnet"
     secrets:
       - producer_private_host_name
+      - producer_public_host_name
       - relay0_private_host_name
       - relay0_public_host_name
       - relay1_private_host_name
@@ -65,8 +69,10 @@ services:
       - "1"
       - "--secrets_path"
       - "/run/secrets"
+      - "--mainnet"
     secrets:
       - producer_private_host_name
+      - producer_public_host_name      
       - relay0_private_host_name
       - relay0_public_host_name
       - relay1_private_host_name
@@ -87,22 +93,57 @@ services:
   producer0:
     image: adakailabs/cardano-relay:latest
     user: lovelace
+    ports:
+      - "3002:3001"
     depends_on:
       - "relay0"
       - "relay1"
     secrets:
-      - source: node_kes.key
+      # - source: node_kes.key
+      #   uid: '1000'
+      #   gid: '1000'
+      #   mode: 0400
+
+      # - source: node_vrf.key
+      #   uid: '1000'
+      #   gid: '1000'
+      #   mode: 0400
+
+      # - source: node.cert
+      #   uid: '1000'
+      #   gid: '1000'
+      #   mode: 0400
+
+      - source: producer_private_host_name
         uid: '1000'
         gid: '1000'
         mode: 0400
-      - source: node_vrf.key
+
+      - source: producer_public_host_name
         uid: '1000'
         gid: '1000'
         mode: 0400
-      - source: node.cert
+        
+      - source: relay0_private_host_name
         uid: '1000'
         gid: '1000'
         mode: 0400
+
+      - source: relay0_public_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+
+      - source: relay1_private_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+
+      - source: relay1_public_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+ 
     command:
       - "--type"
       - "producer"
@@ -110,14 +151,9 @@ services:
       - "0"
       - "--secrets_path"
       - "/run/secrets"
-      - "--test" 
-    secrets:
-      - producer_private_host_name
-      - relay0_private_host_name
-      - relay0_public_host_name
-      - relay1_private_host_name
-      - relay1_public_host_name
-
+      - "--mainnet"
+      - "--test"
+      
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
@@ -178,7 +214,7 @@ services:
       - grafana_admin_password
     user: 1000:1000
     ports:
-      - "3100:3100"
+      - "3666:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
     environment:
