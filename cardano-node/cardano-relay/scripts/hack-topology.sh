@@ -48,7 +48,7 @@ fi
     TOPOLOGY_PRODUCER="
 {	
 \"addr\": \"$PRODUCER0_ADDR\",
-\"port\": 3002,
+\"port\": 3001,
 \"valency\": 1    
 }"	
 
