@@ -49,6 +49,8 @@ services:
       
     ports:
       - "3000:3001"
+      - "9100:9100"
+      - "12798:12798"
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
