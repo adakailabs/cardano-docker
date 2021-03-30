@@ -30,10 +30,12 @@ COPY scripts/* /usr/local/bin/
 USER root
 RUN chown -R lovelace:lovelace /usr/local/cardano/ && mkdir -p /etc/cardano/testsecrets 
 COPY secrets/* /etc/cardano/testsecrets/
-RUN apt-get update && apt-get install jq -y 
+RUN apt-get update && apt-get install jq netcat -y 
 USER lovelace
 
 EXPOSE 3001
+EXPOSE 9100
+EXPOSE 12798
 
 # Set cardano-node as the entrypoint and by default just print the version.
 ENTRYPOINT ["entrypoint.sh"]

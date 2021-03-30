@@ -39,7 +39,6 @@ services:
       - "0"
       - "--secrets_path"
       - "/run/secrets"
-      - "--mainnet"
     secrets:
       - producer_private_host_name
       - producer_public_host_name
@@ -50,6 +49,8 @@ services:
       
     ports:
       - "3000:3001"
+      - "9100:9100"
+      - "12798:12798"
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
@@ -69,7 +70,6 @@ services:
       - "1"
       - "--secrets_path"
       - "/run/secrets"
-      - "--mainnet"
     secrets:
       - producer_private_host_name
       - producer_public_host_name      

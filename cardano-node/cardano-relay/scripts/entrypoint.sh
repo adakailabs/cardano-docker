@@ -17,7 +17,7 @@ export RELAY_THIS_PRIVATE_ADDR
 export RELAY_OTHER_PRIVATE_ADDR
 export ERA1=shelley
 export ERA2=byron
-export PROMETHEUS_PORT=66666
+export PROMETHEUS_PORT="12798"
 export CARDANO_PORT="3001"
 export PROMETHEUS_NODE_EXPORT_PORT="9100"
 export PRODUCER_TYPE="producer"
@@ -129,12 +129,12 @@ printf -v argsparse_usage_description "%s\n" \
 if [[ $TYPE == $PRODUCER_TYPE ]];then
     NAME=$TYPE
     RT_VIEW_PORT=6602
-    PROMETHEUS_PORT=12792
+    #PROMETHEUS_PORT=12798
 
 else
     NAME="${TYPE}${ID}"
     RT_VIEW_PORT=$(printf '66%02d' ${ID})
-    PROMETHEUS_PORT=$(printf '1279%d' ${ID})
+    #PROMETHEUS_PORT=$(printf '12798' ${ID})
 fi    
 
 
