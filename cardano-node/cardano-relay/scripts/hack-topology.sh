@@ -155,7 +155,7 @@ else
 
 	#cp $CONFIG_DST/$i /tmp/$i
 
-	jq ".Producers[6] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
+	#jq ".Producers[6] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
 	
     else
 	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
