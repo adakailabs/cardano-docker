@@ -146,13 +146,13 @@ else
 
 	jq ".Producers[2] |= . + $TOPOLOGY_EXTRA_MAINNET2"   /tmp/$i   > $CONFIG_DST/$i
 
-	cp $CONFIG_DST/$i /tmp/$i
+	#cp $CONFIG_DST/$i /tmp/$i
 
-	jq ".Producers[3] |= . + $TOPOLOGY_EXTRA_MAINNET3"   /tmp/$i   > $CONFIG_DST/$i
+	#jq ".Producers[3] |= . + $TOPOLOGY_EXTRA_MAINNET3"   /tmp/$i   > $CONFIG_DST/$i
 
-	cp $CONFIG_DST/$i /tmp/$i
+	#cp $CONFIG_DST/$i /tmp/$i
 
-	jq ".Producers[4] |= . + $TOPOLOGY_EXTRA_MAINNET4"   /tmp/$i   > $CONFIG_DST/$i
+	#jq ".Producers[4] |= . + $TOPOLOGY_EXTRA_MAINNET4"   /tmp/$i   > $CONFIG_DST/$i
 
 	#cp $CONFIG_DST/$i /tmp/$i
 
@@ -160,7 +160,7 @@ else
 
 	cp $CONFIG_DST/$i /tmp/$i
 
-	jq ".Producers[5] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
+	jq ".Producers[3] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
 	
     else
 	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i

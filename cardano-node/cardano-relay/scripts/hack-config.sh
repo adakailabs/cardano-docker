@@ -37,22 +37,28 @@ HAS_PROMETHEUS="[\"0.0.0.0\",12798]"
 MAP_BACKENDS='
 {
  "cardano.node.metrics": [
-     "TraceForwarderBK"
+     "TraceForwarderBK",
+     "EKGViewBK"
  ],
  "cardano.node-metrics": [
-    "TraceForwarderBK"
+     "TraceForwarderBK",
+     "EKGViewBK"
  ],
  "cardano.node.Forge.metrics": [
-    "TraceForwarderBK"
+    "TraceForwarderBK",
+     "EKGViewBK"
  ],
  "cardano.node.BlockFetchDecision.peers": [
-    "TraceForwarderBK"
+    "TraceForwarderBK",
+     "EKGViewBK"
  ],
  "cardano.node.ChainDB.metrics": [
-    "TraceForwarderBK"
+    "TraceForwarderBK",
+     "EKGViewBK"
  ],
  "cardano.node.resources": [
-    "TraceForwarderBK"
+    "TraceForwarderBK",
+    "EKGViewBK"
  ]	  
 }
 '
@@ -117,8 +123,8 @@ MAP_SUBTRACE='
     }
 }'
 
-SETUP_BACKENDS='"TraceForwarderBK"'
-
+SETUP_BACKENDS0='"TraceForwarderBK"'
+SETUP_BACKENDS1='"EKGViewBK"'
 
 
 i=mainnet-config.json
@@ -157,7 +163,12 @@ cp $CONFIG_DST/$i /tmp/$i
 
 # cp $CONFIG_DST/$i /tmp/$i
 
-jq ".setupBackends[0] =   $SETUP_BACKENDS" /tmp/$i > $CONFIG_DST/$i
+jq ".setupBackends[0] =   $SETUP_BACKENDS0" /tmp/$i > $CONFIG_DST/$i
+
+cp $CONFIG_DST/$i /tmp/$i
+
+jq ".setupBackends[] =   $SETUP_BACKENDS1" /tmp/$i > $CONFIG_DST/$i
+
 
 rm -rf /tmp/$i
     
