@@ -30,7 +30,7 @@ COPY scripts/* /usr/local/bin/
 USER root
 RUN chown -R lovelace:lovelace /usr/local/cardano/ && mkdir -p /etc/cardano/testsecrets 
 COPY secrets/* /etc/cardano/testsecrets/
-RUN apt-get update && apt-get install jq netcat dnsutils -y 
+RUN apt-get update && apt-get install jq netcat dnsutils  iotop iftop -y 
 USER lovelace
 
 EXPOSE 3001

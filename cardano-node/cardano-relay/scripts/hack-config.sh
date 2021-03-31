@@ -139,6 +139,10 @@ jq '.TraceBlockFetchDecisions = true'      $CONFIG_ETC/$i   > $CONFIG_DST/$i
 
 cp $CONFIG_DST/$i /tmp/$i
 
+jq ".TraceMempool = false"   /tmp/$i > $CONFIG_DST/$i
+
+cp $CONFIG_DST/$i /tmp/$i
+
 # jq ".defaultScribes = $DEFAULT_SCRIBES"    /tmp/$i > $CONFIG_DST/$i
 
 # cp $CONFIG_DST/$i /tmp/$i
