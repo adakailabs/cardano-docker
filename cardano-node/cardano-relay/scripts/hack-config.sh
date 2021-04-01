@@ -43,7 +43,37 @@ MAP_BACKENDS='
  "cardano.node.resources": [
     "TraceForwarderBK",
     "EKGViewBK"
- ]	  
+ ],
+ "cardano.node.AcceptPolicy": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.ChainDB": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.DnsResolver": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.DnsSubscription": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.ErrorPolicy": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.Handshake": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.IpSubscription": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.LocalErrorPolicy": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.LocalHandshake": [
+  "TraceForwarderBK"
+ ],
+ "cardano.node.Mux": [
+  "TraceForwarderBK"
+ ]
 }
 '
 MAP_SUBTRACE='
