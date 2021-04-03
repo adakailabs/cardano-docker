@@ -37,12 +37,10 @@ HAS_PROMETHEUS="[\"0.0.0.0\",12798]"
 MAP_BACKENDS='
 {
  "cardano.node.metrics": [
-     "TraceForwarderBK",
-     "EKGViewBK"
+   "TraceForwarderBK",
  ],
  "cardano.node.resources": [
-    "TraceForwarderBK",
-    "EKGViewBK"
+   "TraceForwarderBK",
  ],
  "cardano.node.AcceptPolicy": [
   "TraceForwarderBK"
