@@ -151,9 +151,6 @@ fi
 
 jq '.TraceBlockFetchDecisions = true'      $CONFIG_ETC/$i   > $CONFIG_DST/$i
 
-cp $CONFIG_DST/$i /tmp/$i
-
-jq ".TraceMempool = true"   /tmp/$i > $CONFIG_DST/$i
 
 cp $CONFIG_DST/$i /tmp/$i
 
@@ -187,6 +184,13 @@ cp $CONFIG_DST/$i /tmp/$i
 
 jq ".setupBackends[] =   $SETUP_BACKENDS1" /tmp/$i > $CONFIG_DST/$i
 
+if [[ $TYPE == $PRODUCER_TYPE ]];then
+    echo "trace mempool is true" 
+else
+    echo "trace mempool is false"
+    cp $CONFIG_DST/$i /tmp/$i
+    jq ".TraceMempool = false"   /tmp/$i > $CONFIG_DST/$i
+fi
 
 rm -rf /tmp/$i
     
