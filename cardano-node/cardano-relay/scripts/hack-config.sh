@@ -37,16 +37,19 @@ HAS_PROMETHEUS="[\"0.0.0.0\",12798]"
 MAP_BACKENDS='
 {
  "cardano.node.metrics": [
-   "TraceForwarderBK"
+   "TraceForwarderBK",
+   "EKGViewBK"
  ],
  "cardano.node.resources": [
-   "TraceForwarderBK"
+   "TraceForwarderBK",
+   "EKGViewBK"
  ],
  "cardano.node.AcceptPolicy": [
   "TraceForwarderBK"
  ],
  "cardano.node.ChainDB": [
-  "TraceForwarderBK"
+  "TraceForwarderBK",
+  "EKGViewBK"
  ],
  "cardano.node.DnsResolver": [
   "TraceForwarderBK"
@@ -70,7 +73,8 @@ MAP_BACKENDS='
   "TraceForwarderBK"
  ],
  "cardano.node.Mux": [
-  "TraceForwarderBK"
+  "TraceForwarderBK",
+  "EKGViewBK"
  ]
 }
 '
@@ -183,7 +187,9 @@ cp $CONFIG_DST/$i /tmp/$i
 jq ".setupBackends[] =   $SETUP_BACKENDS1" /tmp/$i > $CONFIG_DST/$i
 
 if [[ $TYPE == $PRODUCER_TYPE ]];then
-    echo "trace mempool is true" 
+    echo "trace mempool is true"
+    cp $CONFIG_DST/$i /tmp/$i
+    jq ".TraceMempool = true"   /tmp/$i > $CONFIG_DST/$i
 else
     echo "trace mempool is false"
     cp $CONFIG_DST/$i /tmp/$i

@@ -2,7 +2,7 @@
 
 set -e
 export NAME
-export TYPE="relay"
+export TYPE="producer"
 export PRODUCER_TYPE="producer"
 export ID=0
 export NETWORK=mainnet
