@@ -30,77 +30,6 @@ secrets:
 
 services:
   #---------------------------------------------------------------------------------
-  producer0:
-    image: adakailabs/cardano-relay:21.03.1
-    user: lovelace
-    ports:
-      - "3002:3001"
-    secrets:
-      - source: node_kes.key
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-
-      - source: node_vrf.key
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-
-      - source: node.cert
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-        
-      - source: producer_private_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-
-      - source: producer_public_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-        
-      - source: relay0_private_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-
-      - source: relay0_public_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400        
-
-      - source: relay1_private_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400        
-
-      - source: relay1_public_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400        
- 
-    command:
-      - "--type"
-      - "producer"
-      - "--id"
-      - "0"
-      - "--secrets_path"
-      - "/run/secrets"
-      - "--test"
-      - "--testnet"
-      
-    volumes:
-      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-    deploy:
-      restart_policy:
-        condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.producer0 == true
-
-  #---------------------------------------------------------------------------------          
   relay0:
     depends_on:
       - "producer0"
@@ -164,36 +93,87 @@ services:
         constraints:
           - node.labels.com.adakailabs.relay1 == true
 
-  # relay3:
-  #   image: adakailabs/cardano-relay:21.04.1
-  #   command:
-  #     - "--type"
-  #     - "relaystd"
-  #     - "--id"
-  #     - "3"
-  #     - "--secrets_path"
-  #     - "/run/secrets"
-  #   secrets:
-  #     - producer_private_host_name
-  #     - producer_public_host_name      
-  #     - relay0_private_host_name
-  #     - relay0_public_host_name
-  #     - relay1_private_host_name
-  #     - relay1_public_host_name
-          
-  #   ports:
-  #     - "3001:3001"
-  #   volumes:
-  #     - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-  #   deploy:
-  #     restart_policy:
-  #       condition: any
-  #     placement:
-  #       constraints:
-  #         - node.labels.com.adakailabs.relay3 == true
-          
   #---------------------------------------------------------------------------------
+  producer0:
+    image: adakailabs/cardano-relay:21.03.1
+    user: lovelace
+    ports:
+      - "3002:3001"
+    secrets:
+      - source: node_kes.key
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
 
+      - source: node_vrf.key
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+
+      - source: node.cert
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+
+#      - source: node_kes.vkey
+#        uid: '1000'
+#        gid: '1000'
+#        mode: 0400
+
+#      - source: node_vrf.vkey
+#        uid: '1000'
+#        gid: '1000'
+#        mode: 0400
+
+      - source: producer_private_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+
+      - source: producer_public_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+        
+      - source: relay0_private_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+
+      - source: relay0_public_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+
+      - source: relay1_private_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+
+      - source: relay1_public_host_name
+        uid: '1000'
+        gid: '1000'
+        mode: 0400        
+ 
+    command:
+      - "--type"
+      - "producer"
+      - "--id"
+      - "0"
+      - "--secrets_path"
+      - "/run/secrets"
+      - "--testnet"
+      
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.producer0 == true
+
+  #---------------------------------------------------------------------------------          
   monitor:
     image: adakailabs/cardano-monitor:21.01.02
     depends_on:
