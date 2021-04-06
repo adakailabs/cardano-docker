@@ -37,11 +37,16 @@ ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 # Install cabal
-RUN wget https://downloads.haskell.org/~cabal/cabal-install-3.2.0.0/cabal-install-3.2.0.0-x86_64-unknown-linux.tar.xz \
-	&& tar -xf cabal-install-3.2.0.0-x86_64-unknown-linux.tar.xz \
-	&& rm cabal-install-3.2.0.0-x86_64-unknown-linux.tar.xz cabal.sig \
-	&& mv cabal /usr/local/bin/ \
-	&& cabal update
+ARG CABAL_VER="3.4.0.0"
+
+RUN wget https://downloads.haskell.org/~cabal/cabal-install-3.4.0.0/cabal-install-$CABAL_VER-x86_64-ubuntu-16.04.tar.xz \
+	&& tar -xvf cabal-install-$CABAL_VER-x86_64-ubuntu-16.04.tar.xz \
+	&& rm cabal-install-$CABAL_VER-x86_64-ubuntu-16.04.tar.xz \
+	&& ls -rtl cabal \
+	&& mv cabal /usr/local/bin/ 
+
+RUN 	cabal update && cabal --version
+
 
 # Install GHC
 RUN wget https://downloads.haskell.org/ghc/8.10.2/ghc-8.10.2-x86_64-deb9-linux.tar.xz \
@@ -52,11 +57,13 @@ RUN wget https://downloads.haskell.org/ghc/8.10.2/ghc-8.10.2-x86_64-deb9-linux.t
 	&& make install
 
 # Install cardano node
-ARG TAG=1.25.1
+ARG TAG=1.26.1
 RUN git clone https://github.com/input-output-hk/cardano-node.git \
 	&& cd cardano-node \
 	&& git fetch --all --recurse-submodules --tags \
-	&& git tag && git checkout tags/$TAG \
+	&& git tag && git checkout tags/$TAG
+
+RUN cd cardano-node \
 	&& cabal configure --with-compiler=ghc-8.10.2 \
 	&& echo "package cardano-crypto-praos" >>  cabal.project.local \
 	&& echo "  flags: -external-libsodium-vrf" >>  cabal.project.local \

@@ -48,8 +48,7 @@ MAP_BACKENDS='
   "TraceForwarderBK"
  ],
  "cardano.node.ChainDB": [
-  "TraceForwarderBK",
-  "EKGViewBK"
+  "TraceForwarderBK"
  ],
  "cardano.node.DnsResolver": [
   "TraceForwarderBK"
@@ -73,8 +72,7 @@ MAP_BACKENDS='
   "TraceForwarderBK"
  ],
  "cardano.node.Mux": [
-  "TraceForwarderBK",
-  "EKGViewBK"
+  "TraceForwarderBK"
  ]
 }
 '

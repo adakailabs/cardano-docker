@@ -19,11 +19,6 @@ COPY --from=build /usr/local/cardano/ /usr/local/cardano/
 ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
 ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
-# Copy over other resources from the build context.
-COPY config /etc/cardano/config
-
-COPY scripts/* /usr/local/bin/
-
 
 
 # Expose prometheus monitoring ports
@@ -31,6 +26,15 @@ USER root
 RUN chown -R lovelace:lovelace /usr/local/cardano/ && mkdir -p /etc/cardano/testsecrets 
 COPY secrets/* /etc/cardano/testsecrets/
 RUN apt-get update && apt-get install jq netcat dnsutils  iotop iftop -y 
+
+# Copy over other resources from the build context.
+COPY config /etc/cardano/config
+
+COPY scripts/* /usr/local/bin/
+
+RUN chown -R lovelace:lovelace /usr/local/cardano/
+
+
 USER lovelace
 
 EXPOSE 3001
