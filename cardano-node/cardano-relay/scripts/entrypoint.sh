@@ -21,6 +21,7 @@ export PROMETHEUS_PORT="12798"
 export CARDANO_PORT="3001"
 export PROMETHEUS_NODE_EXPORT_PORT="9100"
 export PRODUCER_TYPE="producer"
+export RELAY_STD="relaystd"
 export RT_VIEW_PORT="6600"
 export NAME
 export STANDALONE=false

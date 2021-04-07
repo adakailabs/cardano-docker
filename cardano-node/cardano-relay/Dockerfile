@@ -1,4 +1,4 @@
-ARG CARDANO_NODE_BASE=adakailabs/cardano-base:latest
+ARG CARDANO_NODE_BASE
 FROM $CARDANO_NODE_BASE AS build
 LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
 

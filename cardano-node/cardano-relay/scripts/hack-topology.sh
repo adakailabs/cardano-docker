@@ -19,6 +19,9 @@ fi
 if [[ $TYPE == $PRODUCER_TYPE ]];then
     echo "this is a producer" 
 else
+    if [[ $TYPE == $RELAY_STD ]];then
+	echo "this is a relay std"
+    fi
     echo "this is a relay"
     sleep 10
 fi
@@ -164,9 +167,13 @@ else
 
 	#jq ".Producers[5] |= . + $TOPOLOGY_EXTRA_MAINNET5"   /tmp/$i   > $CONFIG_DST/$i
 
-	cp $CONFIG_DST/$i /tmp/$i
+	if [[ $TYPE == $RELAY_STD ]];then
+	    echo "ntd" 
+	else 
+	    cp $CONFIG_DST/$i /tmp/$i
 
-	jq ".Producers[3] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
+	    jq ".Producers[3] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
+	fi
 	
     else
 	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i

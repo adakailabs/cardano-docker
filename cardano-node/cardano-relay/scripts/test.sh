@@ -2,9 +2,10 @@
 
 set -e
 export NAME
-export TYPE="producer"
+export TYPE="relaystd"
 export PRODUCER_TYPE="producer"
-export ID=0
+export RELAY_STD="relaystd"
+export ID=3
 export NETWORK=mainnet
 export ERA1=shelley
 export ERA2=byron
