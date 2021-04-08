@@ -5,7 +5,8 @@ version: '3.7'
 
 volumes:
   grafana-storage:
-  grafana-share:  
+  grafana-share:
+  prometheus-storage:
 
 secrets:
   grafana_admin_password:
@@ -228,8 +229,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-      - /home/lovelace/prometheus:/prometheus
+      - prometheus-storage:/prometheus
 
     deploy:
       restart_policy:
