@@ -18,7 +18,7 @@ fi
 
 PRODUCER_INSTANCES=$2
 
-CONFIG_DIR="/prometheus/"
+CONFIG_DIR="/home/lovelace/prometheus/"
 CONFIG_FILE_ETC=/etc/prometheus/prometheus.yml
 CONFIG_FILE_LOCAL="$CONFIG_DIR/prometheus.yml"
 CONFIG_FILE_TMP=/tmp/prometheus.yml
