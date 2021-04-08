@@ -228,7 +228,9 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/lovelace/:/home/lovelace/
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      - /home/lovelace/prometheus:/prometheus
+
     deploy:
       restart_policy:
         condition: any     
