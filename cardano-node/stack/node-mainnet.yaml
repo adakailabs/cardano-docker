@@ -5,6 +5,9 @@ version: '3.7'
 
 volumes:
   grafana-storage:
+  grafana-share:
+  prometheus-storage:
+
 
 secrets:
   grafana_admin_password:
@@ -195,7 +198,8 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/lovelace/:/home/lovelace/
+      - prometheus-storage:/prometheus
+
     deploy:
       restart_policy:
         condition: any     
@@ -216,6 +220,7 @@ services:
       - "3666:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+      - grafana-share:/var/share/grafana      
     environment:
       #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
