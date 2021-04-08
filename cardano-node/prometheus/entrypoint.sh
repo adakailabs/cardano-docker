@@ -53,9 +53,11 @@ PROMETHEUS_NODE_EXPORT_PORT="9100"
 for (( i=0; i<$RELAY_INSTANCES; i++ ))
 do
     
-    #PROMETHEUS_PORT=$(printf '127%02d' "${i}")
-    #PROMETHEUS_NODE_EXPORT_PORT=$(printf '91%02d' "${i}")
-    HOST_NAME="relay${i}"
+    if [[ $i -eq 2 ]] ; then
+	HOST_NAME="relay3"
+    else
+	HOST_NAME="relay${i}"
+    fi
     NAME_NODE="${HOST_NAME}-exporter"
     NAME_CARDANO="${HOST_NAME}-cardano"
 
@@ -73,8 +75,6 @@ for (( i=0; i<$PRODUCER_INSTANCES; i++ ))
 do
     j=$(($RELAY_INSTANCES+$i))
 
-    #PROMETHEUS_PORT=$(printf '127%02d' "${j}")
-    #PROMETHEUS_NODE_EXPORT_PORT=$(printf '91%02d' "${j}")
     HOST_NAME="producer${i}"
     NAME_NODE="${HOST_NAME}-exporter"
     NAME_CARDANO="${HOST_NAME}-cardano"

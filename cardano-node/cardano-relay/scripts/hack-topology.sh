@@ -99,14 +99,14 @@ echo $test
     
     # https://explorer.cardano-testnet.iohkdev.io/relays/topology.json
 
-    TOPOLOGY_EXTRA_TESTNET1='
-{   	
-      	"addr": "t.uniquestaking.com",
-      	"port": 3001,
-      	"continent": "North America",
-      	"state": "Iowa",
-	"valency": 1    
-}'	
+#     TOPOLOGY_EXTRA_TESTNET1='
+# {   	
+#       	"addr": "t.uniquestaking.com",
+#       	"port": 3001,
+#       	"continent": "North America",
+#       	"state": "Iowa",
+# 	"valency": 1    
+# }'	
 
     TOPOLOGY_EXTRA_TESTNET2='
 {   	
@@ -176,19 +176,19 @@ else
 	fi
 	
     else
-	jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
+	#jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET1"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
 
-        cp $CONFIG_DST/$i /tmp/$i
+        #cp $CONFIG_DST/$i /tmp/$i
 
-        jq ".Producers[2] |= . + $TOPOLOGY_EXTRA_TESTNET2"   /tmp/$i   > $CONFIG_DST/$i
+        jq ".Producers[1] |= . + $TOPOLOGY_EXTRA_TESTNET2"   $CONFIG_ETC/$i   > $CONFIG_DST/$i
 	
         cp $CONFIG_DST/$i /tmp/$i
 
-        jq ".Producers[3] |= . + $TOPOLOGY_EXTRA_TESTNET3"   /tmp/$i   > $CONFIG_DST/$i
+        jq ".Producers[2] |= . + $TOPOLOGY_EXTRA_TESTNET3"   /tmp/$i   > $CONFIG_DST/$i
 
 	cp $CONFIG_DST/$i /tmp/$i
 
-        jq ".Producers[4] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
+        jq ".Producers[3] |= . + $TOPOLOGY_PRODUCER"   /tmp/$i   > $CONFIG_DST/$i
 	
     fi
 fi

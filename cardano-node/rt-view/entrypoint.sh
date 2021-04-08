@@ -46,9 +46,14 @@ echo "----------------------------------------"
 
 for (( i=0; i<$RELAY_INSTANCES; i++ ))
 do
-
     RT_VIEW_PORT=$(printf '66%02d' "${i}")
     C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"${RT_VIEW_PORT}\"]},\"nodeName\": \"relay$i\"}"
+    
+    if  [[ $i -eq 2 ]] ; then
+	RT_VIEW_PORT=$(printf '66%02d' "3")
+	    C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"${RT_VIEW_PORT}\"]},\"nodeName\": \"relay3\"}"
+	echo "XXXXXXX"
+    fi
 
     if [[ $i -eq 0 ]]
     then
@@ -66,14 +71,27 @@ do
 
 	if [[ $i -eq $(($RELAY_INSTANCES-1)) ]]
 	then
-
+	    
 	    if [[ 0 -eq $PRODUCER_INSTANCES ]]
             then
-		CONFIG="$CONFIG, $C ]"
-		echo "RELAY NAME         : relay$i"
+		
+		if [[ $i -eq 2 ]]
+		then
+		    CONFIG="$CONFIG, $C ]"
+		    echo "RELAY NAME         : relay3"
+		else
+		    CONFIG="$CONFIG, $C ]"
+		    echo "RELAY NAME         : relay$i"
+		fi
 	    else
-		CONFIG="$CONFIG, $C "
-		echo "RELAY NAME         : relay$i"
+		if [[ $i -eq 2 ]]
+		then
+		    CONFIG="$CONFIG, $C "
+		    echo "RELAY NAME         : relay3"
+		else
+		    CONFIG="$CONFIG, $C "
+		    echo "RELAY NAME         : relay$i"
+		fi
 	    fi
 	else
 	    CONFIG="$CONFIG , $C"
@@ -89,7 +107,7 @@ if [[ 0 -ne $PRODUCER_INSTANCES ]]
        for (( i=0; i<$PRODUCER_INSTANCES; i++ ))
        do
 	   j=$(($RELAY_INSTANCES+$i))
-	   RT_VIEW_PORT=$(printf '66%02d' "${j}")
+	   RT_VIEW_PORT=$(printf '66%02d' "2")
 	   C="{\"remoteAddr\": {\"tag\": \"RemoteSocket\",\"contents\": [\"0.0.0.0\",\"${RT_VIEW_PORT}\"]},\"nodeName\": \"producer$i\"}"
 	   
 	   if [[ $i -eq 0 ]]
