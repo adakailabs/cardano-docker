@@ -36,7 +36,7 @@ services:
     image: adakailabs/cardano-relay:21.04.01
     user: lovelace
     ports:
-      - "3002:3001"
+      - "3100:3001"
     secrets:
       - source: node_kes.key
         uid: '1000'
@@ -52,36 +52,6 @@ services:
         uid: '1000'
         gid: '1000'
         mode: 0400
-        
-      - source: producer_private_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-
-      - source: producer_public_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-        
-      - source: relay0_private_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-
-      - source: relay0_public_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400        
-
-      - source: relay1_private_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400        
-
-      - source: relay1_public_host_name
-        uid: '1000'
-        gid: '1000'
-        mode: 0400        
  
     command:
       - "--type"
