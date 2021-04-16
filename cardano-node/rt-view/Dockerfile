@@ -14,13 +14,12 @@ ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 # Copy over other resources from the build context.
 COPY rt-view-config /etc/cardano/rt-view
 
-COPY entrypoint.sh /usr/local/bin/
-
-
 # Expose prometheus monitoring ports
+
+COPY gocnode /usr/local/bin/
 
 USER lovelace
 
 # Set cardano-node as the entrypoint and by default just print the version.
-ENTRYPOINT ["entrypoint.sh"]
-CMD ["--version"]
+ENTRYPOINT ["gocnode"]
+

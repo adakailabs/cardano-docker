@@ -23,7 +23,7 @@ else
 	echo "this is a relay std"
     fi
     echo "this is a relay"
-    sleep 10
+    sleep 60
 fi
 
 producer_ip=$(nslookup producer0 | grep Address: | grep -v \# | grep -v "::" | sed 's/Address: //g')

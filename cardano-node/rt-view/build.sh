@@ -11,6 +11,8 @@ IMAGE="adakailabs/cardano-monitor:${VERSION}"
 
 echo "building cardano image: ${IMAGE_BASE}"
 
+cp ../gocnode . 
+
 docker login 
 docker build  --file Dockerfile --build-arg CARDANO_NODE_BASE=${IMAGE_BASE} -t ${IMAGE} .
 docker push ${IMAGE}

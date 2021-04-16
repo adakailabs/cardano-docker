@@ -3,9 +3,9 @@ LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
 
 USER root
 
-RUN groupadd --system prometheus \
-	&& useradd -s /sbin/nologin --system -g prometheus prometheus \
- 	&& mkdir /var/lib/prometheus
+#RUN groupadd --system prometheus \
+#	&& useradd -s /sbin/nologin --system -g prometheus prometheus \
+# 	&& mkdir /var/lib/prometheus
 
 RUN mkdir -p /tmp/prometheus \
  	&& cd /tmp/prometheus \
@@ -16,36 +16,24 @@ RUN mkdir -p /tmp/prometheus \
 	&& mkdir /etc/prometheus \
 	&& mv console_libraries/ /etc/prometheus/ \
 	&& mv consoles/ /etc/prometheus/ \
- 	&& mkdir -p /usr/local/opt/prometheus \
-	&& chown prometheus /usr/local/opt/prometheus 
+	&& mkdir -p /usr/local/opt/prometheus \
+	&& mkdir /var/lib/prometheus \
+	&& chown lovelace:lovelace /usr/local/opt/prometheus \
+	&& chown lovelace:lovelace /var/lib/prometheus 
 
 RUN 	mkdir -p /prometheus \
-        && chown prometheus:prometheus /prometheus
+        && chown lovelace:lovelace /prometheus
 
 COPY prometheus.yml /etc/prometheus/
-COPY entrypoint.sh /usr/local/bin
+#COPY entrypoint.sh /usr/local/bin
 
 EXPOSE 9090
 
-USER prometheus
+COPY gocnode /usr/local/bin/
 
-# # Set cardano-node as the entrypoint and by default just print the version.
-
-# CMD ["echo invalid"]
-#FROM        quay.io/prometheus/busybox:latest
-#FROM adakailabs/ubuntu-base:latest
-#MAINTAINER  The Prometheus Authors <prometheus-developers@googlegroups.com>
-
-#COPY prometheus/prometheus                             /bin/prometheus
-#COPY prometheus/promtool                               /bin/promtool
-#COPY prometheus/console_libraries/                     /etc/prometheus/
-#COPY prometheus/consoles/                              /etc/prometheus/
-
-
+USER lovelace
 
 EXPOSE     9090
-#VOLUME     [ "/prometheus" ]
-#WORKDIR    /prometheus
 
+ENTRYPOINT ["gocnode"]
 
-ENTRYPOINT ["entrypoint.sh"]
