@@ -1,0 +1,3 @@
+[submodule "cardano-node/gocnode"]
+	path = cardano-node/gocnode
+	url = git@github.com:adakailabs/gocnode.git
