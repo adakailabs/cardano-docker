@@ -14,10 +14,10 @@ IMAGE="adakailabs/cardano-pool:${VERSION}"
 
 echo "cardano relay image: ${IMAGE_BASE}"
 
-#go install -v  github.com/adakailabs/gocnode@latest
+make -C ../gocnode gocnode
+mkdir -p tmp/ 
+cp ../gocnode/gocnode tmp/
 
-#cp ~/go/bin/gocnode . 
-cp ../gocnode . 
 
 docker login 
 
@@ -26,5 +26,5 @@ docker build  \
        --build-arg CARDANO_NODE_BASE=${IMAGE_BASE} \
        -t ${IMAGE} .
 docker push ${IMAGE}
-
+rm -rf tmp
 

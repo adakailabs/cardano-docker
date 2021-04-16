@@ -9,9 +9,12 @@ IMAGE="adakailabs/cardano-prometheus:${VERSION}"
 
 echo "prometheus image: ${IMAGE}"
 
-cp ../gocnode . 
+make -C ../gocnode gocnode
+mkdir -p tmp/ 
+cp ../gocnode/gocnode tmp/
 
 docker login 
 docker build  --file Dockerfile -t ${IMAGE}  . 
 docker push ${IMAGE}
 
+rm -rf tmp

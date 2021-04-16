@@ -29,7 +29,7 @@ COPY prometheus.yml /etc/prometheus/
 
 EXPOSE 9090
 
-COPY gocnode /usr/local/bin/
+COPY tmp/gocnode /usr/local/bin/
 
 USER lovelace
 

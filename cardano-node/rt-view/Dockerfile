@@ -16,7 +16,7 @@ COPY rt-view-config /etc/cardano/rt-view
 
 # Expose prometheus monitoring ports
 
-COPY gocnode /usr/local/bin/
+COPY tmp/gocnode /usr/local/bin/
 
 USER lovelace
 

@@ -34,7 +34,7 @@ COPY scripts/* /usr/local/bin/
 
 RUN chown -R lovelace:lovelace /usr/local/cardano/
 
-COPY gocnode /usr/local/bin/
+COPY tmp/gocnode /usr/local/bin/
 
 USER lovelace
 
