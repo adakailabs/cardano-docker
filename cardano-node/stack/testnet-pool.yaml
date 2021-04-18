@@ -126,7 +126,7 @@ services:
     command:
       - "start-node"
       - "--id"
-      - "1"
+      - "2"
     secrets:
       - source: gocnode.yaml
         uid: '1000'
