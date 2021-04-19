@@ -1,0 +1,38 @@
+secrets_path: "/run/secrets"
+
+producers:
+  - pool: "dulcinea"
+    host: "rocinante.mooo.com"
+    ip: "192.168.100.48"
+    network: "testnet"
+    secrets: "/run/secrets"
+    era: "shelley"
+    is_producer: true
+    test_mode: false
+ 
+
+relays:
+  - pool: "dulcinea"
+    host: "rocinante.mooo.com"
+    ip: "192.168.100.46"
+    network: "testnet"
+    era: "shelley"
+    test_mode: false
+    peers: 10
+    
+  - pool: "dulcinea"
+    host: "rocinante.mooo.com"
+    ip: "192.168.100.47"
+    network: "testnet"
+    era: "shelley"
+    peers: 10
+
+  - pool: "rocinante"
+    host: "rocinante.mooo.com"
+    ip: "192.168.100.49"
+    network: "mainnet"
+    era: "shelley"
+#    ext_producer:
+#      host: "roci-relay02.adakailabs.com"
+#      port: 3002
+    peers: 10
