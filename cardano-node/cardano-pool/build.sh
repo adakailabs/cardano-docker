@@ -19,12 +19,13 @@ mkdir -p tmp/
 cp ../gocnode/gocnode tmp/
 
 
-docker login 
-
 docker build  \
        --file Dockerfile \
        --build-arg CARDANO_NODE_BASE=${IMAGE_BASE} \
        -t ${IMAGE} .
+
+docker login 
 docker push ${IMAGE}
+
 rm -rf tmp
 
