@@ -93,8 +93,8 @@ services:
           
   #---------------------------------------------------------------------------------
   relay1:
-    depends_on:
-      - "producer0"
+    #depends_on:
+    #  - "producer0"
     image: adakailabs/cardano-pool:21.04.01
     command:
       - "start-node"
