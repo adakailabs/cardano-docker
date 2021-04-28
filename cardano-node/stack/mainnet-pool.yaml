@@ -118,34 +118,6 @@ services:
           - node.labels.com.adakailabs.relay1 == true
   
   #---------------------------------------------------------------------------------
-
-  # relay2:
-  #   depends_on:
-  #     - "producer0"
-  #   image: adakailabs/cardano-pool:21.04.01
-  #   command:
-  #     - "start-node"
-  #     - "--id"
-  #     - "2"
-  #   secrets:
-  #     - source: gocnode.yaml
-  #       uid: '1000'
-  #       gid: '1000'
-  #       mode: 0400
-        
-  #   ports:
-  #     - "3002:3001"
-  #   volumes:
-  #     - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-  #   deploy:
-  #     restart_policy:
-  #       condition: any
-  #     placement:
-  #       constraints:
-  #         - node.labels.com.adakailabs.relay3 == true
-  
-  #---------------------------------------------------------------------------------
-
   
   monitor:
     image: adakailabs/cardano-monitor:21.01.02

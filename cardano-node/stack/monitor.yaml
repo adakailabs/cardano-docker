@@ -1,0 +1,73 @@
+#./entrypoint.sh 
+
+
+version: '3.7'
+
+
+services:
+
+  monitor:
+    image: adakailabs/cardano-monitor:21.01.02
+    depends_on:
+      - "relay0"
+      - "relay1"
+    command:
+      - "2" # 2 relays
+      - "1" # 1 producer
+    ports:
+      - "8666:8666"
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.monitor == true
+
+  # #---------------------------------------------------------------------------------          
+  # prometheus:
+  #   image: adakailabs/cardano-prometheus:latest
+  #   depends_on:
+  #     - "relay0"
+  #     - "relay1"
+  #   command:
+  #     - "2" # 2 relays
+  #     - "1" # 1 producer
+  #     - "no" #not a producer
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - prometheus-storage:/prometheus
+
+  #   deploy:
+  #     restart_policy:
+  #       condition: any     
+  #     placement:
+  #       constraints:
+  #         - node.labels.com.adakailabs.monitor == true
+          
+  # #---------------------------------------------------------------------------------          
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   depends_on:
+  #     - "relay0"
+  #     - "relay1"    
+  #   secrets:
+  #     - grafana_admin_password
+  #   user: 1000:1000
+  #   ports:
+  #     - "3666:3000"
+  #   volumes:
+  #     - grafana-storage:/var/lib/grafana
+  #     - grafana-share:/var/share/grafana      
+  #   environment:
+  #     #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
+  #     - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+  #   deploy:
+  #     restart_policy:
+  #       condition: any     
+  #     placement:
+  #       constraints:
+  #         - node.labels.com.adakailabs.monitor == true
+
