@@ -6,16 +6,14 @@
 set -e 
 
 # Login as root
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
-  exit
-fi
+#if [ "$EUID" -ne 0 ]
+#  then echo "Please run as root"
+#  exit
+#fi
 
 GITHUB_USER="lagarciag"
-NEW_USER="lovelace"
+NEW_USER="ubuntu"
 HOME="/home/${NEW_USER}"
-
-
 
 echo "This script was developed on Ubuntu 20.04"
 echo "You are running the following version of Linux:"

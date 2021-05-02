@@ -25,7 +25,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/cardano-pool:21.04.02
+    image: adakailabs/multi_cardano_pool:21.04.04
     user: lovelace
     ports:
        - "5100:3001"
@@ -55,6 +55,8 @@ services:
       - "--id"
       - "0"
       - "--is-producer"
+      - "--log-min-severity"
+      - "Info"
       
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
@@ -69,11 +71,14 @@ services:
   relay0:
     depends_on:
       - "producer0"
-    image: adakailabs/cardano-pool:21.04.02
+    image: adakailabs/multi_cardano_pool:21.04.04
     command:
       - "start-node"
       - "--id"
       - "0"
+      - "--log-min-severity"
+      - "Info"
+      
     secrets:
       - source: gocnode.yaml
         uid: '1000'
@@ -90,9 +95,38 @@ services:
       placement:
         constraints:
           - node.labels.com.adakailabs.relay0 == true
-  
+
+  relay1:
+    depends_on:
+      - "producer0"
+    image: adakailabs/multi_cardano_pool:21.04.04
+    command:
+      - "start-node"
+      - "--id"
+      - "1"
+      - "--log-min-severity"
+      - "Info"
+      
+    secrets:
+      - source: gocnode.yaml
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+        
+    ports:
+      - "5001:3001"
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.relay1 == true
+
+
   monitor:
-    image: adakailabs/cardano-monitor:21.01.02
+    image: adakailabs/cardano-monitor:21.05.01
     depends_on:
       - "relay0"
     command:

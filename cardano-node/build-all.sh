@@ -12,6 +12,8 @@ set -o nounset
 #cd ../cardano-relay 
 #./build.sh &&
 
+
+
 cd cardano-pool && ./build.sh 
 
 cd ../rt-view && ./build.sh &&

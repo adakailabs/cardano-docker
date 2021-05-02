@@ -1,6 +1,11 @@
+FROM golang:latest as golang
+
+
 FROM ubuntu:latest
 LABEL maintainer="Adakailabs (info@adakailabs.com)"
 ARG DEBIAN_FRONTEND=noninteractive
+
+COPY --from=golang /usr/local/go /usr/local/go
 
 RUN apt-get update \
         && apt-get upgrade -y \
@@ -11,7 +16,13 @@ RUN apt-get update \
 	emacs-nox \
 	curl \
 	python \
-        jq \
+	jq \
+	make \
+	netcat \
+	dnsutils \
+	iotop \
+	iftop \
+        libnuma-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Setup default user environment
@@ -25,7 +36,6 @@ RUN groupadd -g $GROUPID -r $USERNAME \
 	&& mkdir /home/$USERNAME \
 	&& echo "added new user" 
 
-
 RUN git clone https://github.com/lagarciag/dotfiles.git /home/$USERNAME/.dotfiles \
 	&& cd /home/$USERNAME/.dotfiles \
 	&& USER=${USERNAME} ./setup.sh
@@ -34,6 +44,14 @@ RUN chown -R ${USERNAME}:${USERNAME} /home/${USERNAME} \
 	&& chown -R ${USERNAME}:${USERNAME} /usr/local \
 	&& echo ${USERNAME}:${USERNAME} | chpasswd \
 	&& chsh -s /bin/bash ${USERNAME}
+
+#RUN test $(uname -m) != x86_64 || { \
+#	wget -O go.tar.gz https://golang.org/dl/go1.16.3.linux-amd64.tar.gz;}
+
+#RUN test $(uname -m) != aarch64 || { \
+#	wget -O go.tar.gz https://golang.org/dl/go1.16.3.linux-arm64.tar.gz;}
+
+#RUN tar -xvzf go.tar.gz && rm go.tar.gz && mv go /usr/local/go
 
 SHELL ["/bin/bash", "-c"]
 
