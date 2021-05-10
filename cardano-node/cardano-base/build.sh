@@ -36,10 +36,9 @@ fi
 
 docker login 
 
-docker buildx build --builder cardano --build-arg TAG=${VERSION} --file Dockerfile  \
+docker buildx build --builder cardano --build-arg TAG=${VERSION}  \
        --push \
        --platform linux/amd64,linux/arm64 \
-       --platform ${ARCH} \
        --tag ${IMAGE} .
 
 

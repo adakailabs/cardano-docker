@@ -1,8 +1,8 @@
-FROM adakailabs/multi_cardano_base:1.26.1 AS build
+FROM adakailabs/multi_cardano_base:1.26.2 AS build
 LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
 
 # Build the final stage and copy the build artifacts from the previous stage.
-FROM adakailabs/multi_ubuntu_base:21.04.01
+FROM adakailabs/multi_ubuntu_base:latest
 COPY --from=build /usr/local/lib/libsodium* /usr/local/lib/
 COPY --from=build /opt/bin/cardano-cli /usr/local/bin/
 COPY --from=build /opt/bin/cardano-node /usr/local/bin/

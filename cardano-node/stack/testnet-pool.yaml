@@ -8,10 +8,13 @@ volumes:
   grafana-storage:
   grafana-share:
   prometheus-storage:
+  redis-storage:
 
 secrets:
   grafana_admin_password:
-    file: ./secrets/grafana_admin_password.txt	
+    file: ./secrets/grafana_admin_password.txt
+  redis.conf:
+    file: ./secrets/redis.conf
   node_kes.key:
     file: ./secrets/node_kes.key
   node_vrf.key:
@@ -25,7 +28,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/multi_cardano_pool:21.04.04
+    image: adakailabs/multi_cardano_pool:21.05.00
     user: lovelace
     ports:
        - "5100:3001"
@@ -71,7 +74,7 @@ services:
   relay0:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.04.04
+    image: adakailabs/multi_cardano_pool:21.05.00
     command:
       - "start-node"
       - "--id"
@@ -99,7 +102,7 @@ services:
   relay1:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.04.04
+    image: adakailabs/multi_cardano_pool:21.05.00
     command:
       - "start-node"
       - "--id"
@@ -191,6 +194,30 @@ services:
     environment:
       #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.relay0 == true
+
+  #---------------------------------------------------------------------------------          
+  redis:
+    image: redis:latest
+    #depends_on:
+    #  - "relay0"
+    command:
+      - /run/secrets/redis.conf
+             
+    secrets:
+      - redis.conf
+    user: 1000:1000
+    #ports:
+    #  - "3666:3000"
+    volumes:
+      - redis-storage:/var/lib/redis
+    #environment:
+      #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
     deploy:
       restart_policy:
         condition: any     
