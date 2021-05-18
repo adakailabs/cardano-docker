@@ -75,7 +75,7 @@ RUN tar -xf ghc.tar.xz \
 	&& make -j4 install
 
 # Install cardano node
-ARG TAG=1.26.2
+ARG TAG=1.27.0
 RUN git clone https://github.com/input-output-hk/cardano-node.git \
 	&& cd cardano-node \
 	&& git fetch --all --recurse-submodules --tags \
@@ -118,15 +118,5 @@ RUN test $(uname -m) != x86_64 || { \
 	&& mkdir /usr/local/rt-view \
 	&& tar -C /usr/local/rt-view -xzf cardano-rt-view-${RTVIEWVERSION}-linux-x86_64.tar.gz \
 	&& rm cardano-rt-view-${RTVIEWVERSION}-linux-x86_64.tar.gz ;}
-
-# RUN cd /tmp && \
-# 	wget http://argsparse.livna.org/bash-argsparse-1.8.tar.gz \
-# 	&& tar -xvzf bash-argsparse-1.8.tar.gz \
-# 	&& cp bash-argsparse-1.8/argsparse-completion.sh /usr/local/bin \
-# 	&& cp bash-argsparse-1.8/argsparse.sh /usr/local/bin \
-# 	&& rm -rf  bash-argsparse* 
-
-# RUN git clone https://gitlab.com/viper-staking/cardano-tools.git cardano \
-# 	&& mv cardano /usr/local
 
 RUN mkdir -p /etc/cardano
