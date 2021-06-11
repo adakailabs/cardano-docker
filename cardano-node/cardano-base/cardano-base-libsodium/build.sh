@@ -1,12 +1,13 @@
 #!/bin/bash
 
-set -e 
-#set -o errexit
-#set -o nounset
+set -o errexit
+set -o nounset
 
 # Current version
 VERSION=$(cat version)
-IMAGE="adakailabs/multi_cardano_base:${VERSION}"
+IMAGE="adakailabs/multi_cardano_base_libsodium:${VERSION}"
+
+echo "version: ${VERSION}"
 
 MACHINE_TYPE=`uname -m`
 
@@ -28,27 +29,23 @@ else
     wget -O ~/.docker/cli-plugins/docker-buildx  ${BUILDX_URI}
     chmod a+x ~/.docker/cli-plugins/docker-buildx
     docker buildx create --use
-#    docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
 fi
 
 #docker buildx rm  cardano
 #docker buildx create --platform amd64 --name cardano --use 
 #docker buildx create --platform arm64 --name cardano --append ssh://lovelace@192.168.100.40:2222
 
-cd cardano-base-pkgs      && ./build.sh && cd ..
-cd cardano-base-libsodium && ./build.sh && cd ..
-cd cardano-base-ghs       && ./build.sh && cd ..
-cd cardano-base-cabal     && ./build.sh && cd ..
-cd cardano-base-exporter  && ./build.sh && cd ..
-
 docker login 
 
-docker buildx build --builder cardano --build-arg TAG=${VERSION}  \
+
+docker buildx build  \
+       --builder cardano \
        --push \
        --platform linux/amd64,linux/arm64 \
        --tag ${IMAGE} .
 
-docker build --build-arg TAG=${VERSION} --tag ${IMAGE} . 
+
+#docker build --build-arg TAG=${VERSION} --tag ${IMAGE} .  
 
 
 
