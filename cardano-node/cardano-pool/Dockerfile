@@ -33,7 +33,7 @@ USER root
 
 # RUN git clone https://github.com/adakailabs/gocnode.git && cd gocnode && PATH=${PATH}:/usr/local/go/bin make gocnode && mv gocnode /usr/local/bin 
 
-RUN apt-get update -y && apt-get install libnuma-dev -y 
+#RUN apt-get update -y && apt-get install libnuma-dev -y 
 
 COPY tmp/gocnode_* /tmp
 
