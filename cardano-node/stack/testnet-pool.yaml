@@ -28,7 +28,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/multi_cardano_pool:21.05.00
+    image: adakailabs/multi_cardano_pool:21.05.02
     user: lovelace
     ports:
        - "5100:3001"
@@ -74,7 +74,7 @@ services:
   relay0:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.05.00
+    image: adakailabs/multi_cardano_pool:21.05.02
     command:
       - "start-node"
       - "--id"
@@ -102,7 +102,7 @@ services:
   relay1:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.05.00
+    image: adakailabs/multi_cardano_pool:21.05.02
     command:
       - "start-node"
       - "--id"
@@ -129,7 +129,7 @@ services:
 
 
   monitor:
-    image: adakailabs/cardano-monitor:21.05.01
+    image: adakailabs/cardano-monitor:21.05.02
     depends_on:
       - "relay0"
     command:
