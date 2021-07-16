@@ -59,44 +59,6 @@ RUN cabal --version
 
 RUN ghci-8.10.2 --version
 
-# # Install cabal
-# ARG CABAL_VER="3.4.0.0"
-
-# #RUN apt-get install libnuma-dev llvmx -y 
-
-
-# RUN test $(uname -m) != x86_64 || { \
-# 	wget -O cabal-install.tar.xz https://downloads.haskell.org/~cabal/cabal-install-$CABAL_VER/cabal-install-$CABAL_VER-x86_64-ubuntu-16.04.tar.xz ; }
-
-
-# RUN test $(uname -m) != aarch64 || { \
-# 	wget -O cabal-install.tar.xz https://downloads.haskell.org/~cabal/cabal-install-$CABAL_VER/cabal-install-$CABAL_VER-aarch64-ubuntu-18.04.tar.xz  ; }
-
-# RUN tar -xvf cabal-install.tar.xz \
-# 	&& rm cabal-install.tar.xz \
-# 	&& ls -rtl cabal \
-# 	&& mv cabal /usr/local/bin/ 
-
-# RUN cabal update
-# RUN cabal --version
-
-
-# Install GHC
-# 
-# RUN test $(uname -m) != x86_64 || { \
-# 	wget -O ghc.tar.xz  https://downloads.haskell.org/ghc/8.10.2/ghc-8.10.2-x86_64-deb9-linux.tar.xz ; }
-
-# RUN test $(uname -m) != aarch64 || { \
-# 	wget -O ghc.tar.xz  https://downloads.haskell.org/~ghc/8.10.2/ghc-8.10.2-aarch64-deb10-linux.tar.xz ; }
-
-
-# RUN tar -xf ghc.tar.xz \
-#         && ls -rtl \
-# 	&& rm ghc.tar.xz \
-# 	&& cd ghc-8.10.2 \
-# 	&& ./configure \
-# 	&& make -j4 install
-
 # Install cardano node
 ARG TAG=1.27.0
 RUN git clone https://github.com/input-output-hk/cardano-node.git \

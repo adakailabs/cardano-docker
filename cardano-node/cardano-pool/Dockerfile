@@ -14,27 +14,6 @@ ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 USER root
 
-#RUN mkdir -p /etc/cardano/testsecrets 
-
-#COPY secrets/* /etc/cardano/testsecrets/
-
-# Copy over other resources from the build context.
-#COPY config /etc/cardano/config
-
-# RUN test $(uname -m) != x86_64 || { \
-#  	wget -O go.tar.gz https://golang.org/dl/go1.16.3.linux-amd64.tar.gz;}
-
-# RUN test $(uname -m) != aarch64 || { \
-# 	wget -O go.tar.gz https://golang.org/dl/go1.16.3.linux-arm64.tar.gz;}
-
-# RUN tar -xvzf go.tar.gz && rm go.tar.gz && mv go /usr/local/go
-
-# RUN apt-get update -y && apt-get install make -y 
-
-# RUN git clone https://github.com/adakailabs/gocnode.git && cd gocnode && PATH=${PATH}:/usr/local/go/bin make gocnode && mv gocnode /usr/local/bin 
-
-#RUN apt-get update -y && apt-get install libnuma-dev -y 
-
 COPY tmp/gocnode_* /tmp
 
 RUN test $(uname -m) != x86_64 || { \
