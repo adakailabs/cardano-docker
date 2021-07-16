@@ -28,7 +28,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/multi_cardano_pool:21.05.02
+    image: adakailabs/multi_cardano_pool:21.06.00
     user: lovelace
     ports:
        - "5100:3001"
@@ -74,7 +74,7 @@ services:
   relay0:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.05.02
+    image: adakailabs/multi_cardano_pool:21.06.00
     command:
       - "start-node"
       - "--id"
@@ -102,7 +102,7 @@ services:
   relay1:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.05.02
+    image: adakailabs/multi_cardano_pool:21.06.00
     command:
       - "start-node"
       - "--id"
@@ -127,6 +127,21 @@ services:
         constraints:
           - node.labels.com.adakailabs.relay1 == true
 
+  netalizer:
+    depends_on:
+      - "producer0"
+    command:
+      - "ping -c 1000000 www.hpe.com" 
+    image: adakailabs/multi_netalizer:latest 
+    #command:
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.relay1 == true
 
   monitor:
     image: adakailabs/cardano-monitor:21.05.02
