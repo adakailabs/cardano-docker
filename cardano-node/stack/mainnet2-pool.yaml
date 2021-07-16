@@ -22,38 +22,11 @@ services:
   relay0:
     #depends_on:
     #  - "producer0"
-    image: adakailabs/cardano-pool:21.04.01
+    image: adakailabs/multi_cardano_pool:21.07.00
     command:
       - "start-node"
       - "--id"
       - "0"
-    secrets:
-      - source: gocnode.yaml
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-        
-    ports:
-      - "3001:3000"
-    volumes:
-      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-    deploy:
-      restart_policy:
-        condition: any
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay1 == true
-  
-  #---------------------------------------------------------------------------------
-
-  relay1:
-    #depends_on:
-    #  - "producer0"
-    image: adakailabs/cardano-pool:21.04.01
-    command:
-      - "start-node"
-      - "--id"
-      - "1"
     secrets:
       - source: gocnode.yaml
         uid: '1000'
@@ -69,8 +42,61 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay3 == true
+          - node.labels.com.adakailabs.relay1 == true
   
+  #---------------------------------------------------------------------------------
+
+  relay1:
+    #depends_on:
+    #  - "producer0"
+    image: adakailabs/multi_cardano_pool:21.07.00
+    command:
+      - "start-node"
+      - "--id"
+      - "1"
+    secrets:
+      - source: gocnode.yaml
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+        
+    ports:
+      - "3003:3001"
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.relay3 == true
+  #---------------------------------------------------------------------------------
+
+  relay2:
+    #depends_on:
+    #  - "producer0"
+    image: adakailabs/multi_cardano_pool:21.07.00
+    command:
+      - "start-node"
+      - "--id"
+      - "2"
+    secrets:
+      - source: gocnode.yaml
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+        
+    ports:
+      - "3004:3001"
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.raspberry1 == true
+
   #---------------------------------------------------------------------------------
   
   monitor:
