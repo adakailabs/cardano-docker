@@ -35,11 +35,11 @@ fi
 #docker buildx create --platform amd64 --name cardano --use 
 #docker buildx create --platform arm64 --name cardano --append ssh://lovelace@192.168.100.40:2222
 
-cd cardano-base-pkgs      && ./build.sh && cd ..
-cd cardano-base-libsodium && ./build.sh && cd ..
-cd cardano-base-ghs       && ./build.sh && cd ..
-cd cardano-base-cabal     && ./build.sh && cd ..
-cd cardano-base-exporter  && ./build.sh && cd ..
+#cd cardano-base-pkgs      && ./build.sh && cd ..
+#cd cardano-base-libsodium && ./build.sh && cd ..
+#cd cardano-base-ghs       && ./build.sh && cd ..
+#cd cardano-base-cabal     && ./build.sh && cd ..
+#cd cardano-base-exporter  && ./build.sh && cd ..
 
 docker login 
 
