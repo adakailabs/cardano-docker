@@ -22,7 +22,8 @@ RUN apt-get update \
 	dnsutils \
 	iotop \
 	iftop \
-        libnuma-dev \
+	libnuma-dev \
+	libcap2-bin \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Setup default user environment

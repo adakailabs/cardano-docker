@@ -1,4 +1,4 @@
-FROM adakailabs/multi_cardano_base:1.28.0 AS build
+FROM adakailabs/multi_cardano_base:1.27.0 AS build
 LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
 
 # Build the final stage and copy the build artifacts from the previous stage.
@@ -21,6 +21,12 @@ RUN test $(uname -m) != x86_64 || { \
 
 RUN test $(uname -m) != aarch64 || { \
   	mv /tmp/gocnode_arm64 /usr/local/bin/gocnode ;}
+
+RUN apt-get update && apt-get install libcap2-bin -y 
+
+RUN setcap 'cap_net_raw+eip' /usr/local/bin/gocnode
+
+#RUN chmod +s /usr/local/bin/gocnode
 
 USER lovelace
 
