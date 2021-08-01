@@ -117,6 +117,11 @@ function producer00 {
 	ufw enable
 }
 
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+sudo apt update
+sudo apt install gh
+
 
 # Setup SSH
 curl https://github.com/${GITHUB_USER}.keys | tee -a $HOME/.ssh/authorized_keys
@@ -126,40 +131,5 @@ sed -i.bak2 's/PermitRootLogin yes/PermitRootLogin no/g' /etc/ssh/sshd_config
 echo 'AllowUsers lovelace' >> /etc/ssh/sshd_config
 systemctl restart ssh
 
-
-# for i in "${hosts[@]}"
-# do
-
-#     if [[ $i == "Sankokai-studio" ]];then
-# 	if [[ $HOSTNAME == "Sankokai-studio" ]];then
-# 	    Sankokai
-# 	fi
-#     fi
-
-#     if [[ $i == $master00_ip ]];then
-# 	if [[ $HOSTNAME == "roci-master00" ]];then
-# 	    master00
-# 	fi
-#     fi
-
-#     if [[ $i == $relay00_ip ]];then
-# 	if [[ $HOSTNAME == "roci-relay00" ]];then
-# 	    relay00
-# 	fi
-#     fi
-
-#     if [[ $i == $relay01_ip ]];then
-# 	if [[ $HOSTNAME == "roci-relay01" ]];then
-# 	    relay01
-# 	fi
-#     fi
-
-#     if [[ $i == $producer_ip ]];then
-# 	if [[ $HOSTNAME == "roci-producer00" ]];then
-# 	    producer00
-# 	fi
-#     fi
-    
-# done
 
 
