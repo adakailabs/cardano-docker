@@ -41,6 +41,7 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
 RUN cd cardano-node \
 	&& cabal configure --with-compiler=ghc-$GHC_VER \
 	&& echo "package cardano-crypto-praos" >>  cabal.project.local \
+        #&& echo "  ghc-options: -rtsopts -threaded"
 	&& echo "  flags: -external-libsodium-vrf" >>  cabal.project.local \
 	&& cabal build -j4 all \
 	&& mkdir /opt/bin/
