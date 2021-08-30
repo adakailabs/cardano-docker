@@ -127,21 +127,28 @@ services:
         constraints:
           - node.labels.com.adakailabs.relay1 == true
 
-  netalizer:
+  optimizer:
+    image: adakailabs/cardano-optimizer:latest
     depends_on:
-      - "producer0"
+      - "redis"
     command:
-      - "ping -c 1000000 www.hpe.com" 
-    image: adakailabs/multi_netalizer:latest 
-    #command:
+      - "start-optimizer"
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+
+    secrets:
+      - source: gocnode.yaml
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+      
     deploy:
       restart_policy:
-        condition: any
+        condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay1 == true
+          - node.labels.com.adakailabs.relay0 == true
+         
 
   monitor:
     image: adakailabs/cardano-monitor:21.05.02

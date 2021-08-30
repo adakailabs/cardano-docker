@@ -17,11 +17,7 @@ RUN setcap 'cap_net_raw+eip' /usr/local/bin/gocnode
 
 #RUN chmod +s /usr/local/bin/gocnode
 
-EXPOSE 3001
-EXPOSE 9100
-EXPOSE 12798
-
 # Set cardano-node as the entrypoint and by default just print the version.
 ENTRYPOINT ["gocnode"]
-CMD ["--id","0" ]
+CMD ["start-optim" ]
 
