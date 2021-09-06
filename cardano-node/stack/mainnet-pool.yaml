@@ -8,6 +8,8 @@ volumes:
   grafana-storage:
   grafana-share:
   prometheus-storage:
+  redis-storage:
+  redis-data:
 
 secrets:
   grafana_admin_password:
@@ -20,12 +22,14 @@ secrets:
     file: ./secrets/node.cert
   gocnode.yaml:
     file: ./secrets/gocnode.yaml
-  
+  redis.conf:
+    file: ./secrets/redis.conf
+ 
 
 services:
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/cardano-pool:21.04.01
+    image: adakailabs/multi_cardano_pool:21.08.07
     user: lovelace
     ports:
        - "3100:3001"
@@ -69,7 +73,7 @@ services:
   relay0:
     depends_on:
       - "producer0"
-    image: adakailabs/cardano-pool:21.04.01
+    image: adakailabs/multi_cardano_pool:21.08.07
     command:
       - "start-node"
       - "--id"
@@ -91,36 +95,61 @@ services:
         constraints:
           - node.labels.com.adakailabs.relay0 == true
           
-  #---------------------------------------------------------------------------------
-  relay1:
+  # #---------------------------------------------------------------------------------
+  optimizer:
+    image: adakailabs/multi_cardano_optimizer:21.09.00
     depends_on:
-      - "producer0"
-    image: adakailabs/cardano-pool:21.04.01
+      - "redis"
     command:
-      - "start-node"
-      - "--id"
-      - "1"
+      - "start-optim"
+      
+    secrets:
+      - source: gocnode.yaml
+        
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+
     secrets:
       - source: gocnode.yaml
         uid: '1000'
         gid: '1000'
         mode: 0400
-        
-    ports:
-      - "3001:3001"
-    volumes:
-      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      
     deploy:
       restart_policy:
-        condition: any
+        condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay1 == true
-  
-  #---------------------------------------------------------------------------------
-  
+          - node.labels.com.adakailabs.monitor == true        
+
+#-----------------------------------------------------------------------          
+  redis:
+    image: redis:latest
+    #depends_on:
+    #  - "relay0"
+    command:
+      - /run/secrets/redis.conf
+             
+    secrets:
+      - redis.conf
+    #user: 1000:1000
+    ports:      
+       - "6379:6379"
+    volumes:
+      - redis-storage:/var/lib/redis
+      - redis-data:/data
+    #environment:
+      #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.monitor == true        
+
+  # #---------------------------------------------------------------------------------
   monitor:
-    image: adakailabs/cardano-monitor:21.01.02
+    image: adakailabs/cardano-monitor:21.05.03
     depends_on:
       - "relay0"
     command:
