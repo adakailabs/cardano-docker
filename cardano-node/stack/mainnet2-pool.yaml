@@ -8,12 +8,16 @@ volumes:
   grafana-storage:
   grafana-share:
   prometheus-storage:
+  redis-storage:
+  redis-data:
 
 secrets:
   grafana_admin_password:
     file: ./secrets/grafana_admin_password.txt	
   gocnode.yaml:
     file: ./secrets/gocnode.yaml
+  redis.conf:
+    file: ./secrets/redis.conf
   
 
 services:
@@ -22,7 +26,7 @@ services:
   relay0:
     #depends_on:
     #  - "producer0"
-    image: adakailabs/multi_cardano_pool:21.07.00
+    image: adakailabs/multi_cardano_pool:21.08.07
     command:
       - "start-node"
       - "--id"
@@ -49,7 +53,7 @@ services:
   relay1:
     #depends_on:
     #  - "producer0"
-    image: adakailabs/multi_cardano_pool:21.07.00
+    image: adakailabs/multi_cardano_pool:21.08.07
     command:
       - "start-node"
       - "--id"
@@ -72,33 +76,83 @@ services:
           - node.labels.com.adakailabs.relay3 == true
   #---------------------------------------------------------------------------------
 
-  relay2:
-    #depends_on:
-    #  - "producer0"
-    image: adakailabs/multi_cardano_pool:21.07.00
+  # relay2:
+  #   #depends_on:
+  #   #  - "producer0"
+  #   image: adakailabs/multi_cardano_pool:21.08.07
+  #   command:
+  #     - "start-node"
+  #     - "--id"
+  #     - "2"
+  #   secrets:
+  #     - source: gocnode.yaml
+  #       uid: '1000'
+  #       gid: '1000'
+  #       mode: 0400
+        
+  #   ports:
+  #     - "3004:3001"
+  #   volumes:
+  #     - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+  #   deploy:
+  #     restart_policy:
+  #       condition: any
+  #     placement:
+  #       constraints:
+  #         - node.labels.com.adakailabs.raspberry1 == true
+
+  #---------------------------------------------------------------------------------
+  # #---------------------------------------------------------------------------------                                                                                                                                                                                
+  optimizer:
+    image: adakailabs/multi_cardano_optimizer:21.09.00
+    depends_on:
+      - "redis"
     command:
-      - "start-node"
-      - "--id"
-      - "2"
+      - "start-optim"
+
+    secrets:
+      - source: gocnode.yaml
+
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+
     secrets:
       - source: gocnode.yaml
         uid: '1000'
         gid: '1000'
         mode: 0400
-        
-    ports:
-      - "3004:3001"
-    volumes:
-      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+
     deploy:
       restart_policy:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.raspberry1 == true
+          - node.labels.com.adakailabs.monitor == true
 
-  #---------------------------------------------------------------------------------
-  
+#-----------------------------------------------------------------------                                                                                                                                                                                              
+  redis:
+    image: redis:latest
+    #depends_on:                                                                                                                                                                                                                                                      
+    #  - "relay0"                                                                                                                                                                                                                                                     
+    command:
+      - /run/secrets/redis.conf
+
+    secrets:
+      - redis.conf
+    #user: 1000:1000                                                                                                                                                                                                                                                  
+    ports:
+       - "6379:6379"
+    volumes:
+      - redis-storage:/var/lib/redis
+      - redis-data:/data
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.monitor == true
+
+#--------------------------------------------------------------------------  
   monitor:
     image: adakailabs/cardano-monitor:21.01.02
     depends_on:
