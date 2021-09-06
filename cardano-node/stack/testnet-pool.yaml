@@ -30,7 +30,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/multi_cardano_pool:21.08.01
+    image: adakailabs/multi_cardano_pool:21.08.07
     user: lovelace
     ports:
        - "5100:3001"
@@ -77,7 +77,7 @@ services:
   relay0:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.08.01
+    image: adakailabs/multi_cardano_pool:21.08.07
     command:
       - "start-node"
       - "--id"
@@ -105,12 +105,7 @@ services:
   relay1:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.08.02
-#    cap_add:
-#      - ALL
-#      - NET_RAW
-#      - NET_BIND_SERVICE
-#      - NET_ADMIN
+    image: adakailabs/multi_cardano_pool:21.08.07
     command:
       - "start-node"
       - "--id"
@@ -137,18 +132,12 @@ services:
 
 
   optimizer:
-    image: adakailabs/cardano-optimizer:latest
+    image: adakailabs/multi_cardano_optimizer:21.09.00
     depends_on:
       - "redis"
-    cap_add:
-#      - ALL
-      - NET_RAW
-#      - NET_BIND_SERVICE
-#      - NET_ADMIN
     command:
       - "start-optim"
-#      - "--log-min-severity"
-#      - "Info"
+      - "--is-testnet"
       
     secrets:
       - source: gocnode.yaml
