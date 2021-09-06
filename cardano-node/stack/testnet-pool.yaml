@@ -156,32 +156,32 @@ services:
         condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay0 == true
+          - node.labels.com.adakailabs.raspberry1 == true
          
 
-  monitor:
-    image: adakailabs/cardano-monitor:21.05.02
-    depends_on:
-      - "relay0"
-    command:
-      - "start-rtview"
-    ports:
-      - "8666:8666"
-    volumes:
-      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+  # monitor:
+  #   image: adakailabs/cardano-monitor:21.05.02
+  #   depends_on:
+  #     - "relay0"
+  #   command:
+  #     - "start-rtview"
+  #   ports:
+  #     - "8666:8666"
+  #   volumes:
+  #     - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
 
-    secrets:
-      - source: gocnode.yaml
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
+  #   secrets:
+  #     - source: gocnode.yaml
+  #       uid: '1000'
+  #       gid: '1000'
+  #       mode: 0400
       
-    deploy:
-      restart_policy:
-        condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay0 == true
+  #   deploy:
+  #     restart_policy:
+  #       condition: any     
+  #     placement:
+  #       constraints:
+  #         - node.labels.com.adakailabs.relay0 == true
 
   #---------------------------------------------------------------------------------          
   prometheus:
@@ -206,7 +206,7 @@ services:
         condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay0 == true
+          - node.labels.com.adakailabs.raspberry1 == true
           
   #---------------------------------------------------------------------------------          
   grafana:
@@ -230,7 +230,7 @@ services:
         condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay0 == true
+          - node.labels.com.adakailabs.raspberry1 == true
 
   #---------------------------------------------------------------------------------          
   redis:
@@ -255,5 +255,5 @@ services:
         condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay0 == true
+          - node.labels.com.adakailabs.raspberry1 == true
 
