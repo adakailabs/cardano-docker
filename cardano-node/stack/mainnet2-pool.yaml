@@ -24,8 +24,17 @@ services:
           
   #---------------------------------------------------------------------------------
   relay0:
-    #depends_on:
-    #  - "producer0"
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 9G
+          #reservations:
+          #  cpus: 0.25
+          #  memory: 128M
+    depends_on:
+      - "redis"
+      - "optimizer"
     image: adakailabs/multi_cardano_pool:21.09.00
     command:
       - "start-node"
@@ -47,7 +56,6 @@ services:
       placement:
         constraints:
           - node.labels.com.adakailabs.raspberry1 == true
-  
   #---------------------------------------------------------------------------------
 
   relay1:
@@ -100,9 +108,8 @@ services:
       placement:
         constraints:
           - node.labels.com.adakailabs.adakai-vm00 == true
-
   #---------------------------------------------------------------------------------
-  # #---------------------------------------------------------------------------------                                                                                                                                                                                
+
   optimizer:
     image: adakailabs/multi_cardano_optimizer:21.09.00
     depends_on:
@@ -128,7 +135,6 @@ services:
       placement:
         constraints:
           - node.labels.com.adakailabs.adakai-tiny01 == true
-
 #-----------------------------------------------------------------------                                                                                                                                                                                              
   redis:
     image: redis:latest
