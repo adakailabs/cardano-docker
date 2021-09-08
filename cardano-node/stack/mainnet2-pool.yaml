@@ -46,7 +46,7 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay1 == true
+          - node.labels.com.adakailabs.raspberry1 == true
   
   #---------------------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.relay3 == true
+          - node.labels.com.adakailabs.adakai-swarm04 == true
   #---------------------------------------------------------------------------------
 
   relay2:
@@ -127,7 +127,7 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.monitor == true
+          - node.labels.com.adakailabs.adakai-tiny01 == true
 
 #-----------------------------------------------------------------------                                                                                                                                                                                              
   redis:
@@ -150,7 +150,7 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.monitor == true
+          - node.labels.com.adakailabs.adakai-tiny01 == true
 
 #--------------------------------------------------------------------------  
   # monitor:
