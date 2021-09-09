@@ -40,11 +40,11 @@ cp ../gocnode/gocnode_* tmp/
 docker system prune --force
 docker image prune -f
 docker container prune -f
-#docker buildx rm remote 
 
-#docker buildx create --use
-#docker run --rm --privileged docker/binfmt:820fdd95a9972a5308930a2bdfb8573dd4447ad3
-#docker buildx create --name remote --append ssh://lovelace@192.168.100.40:2222
+#docker buildx rm  cardano
+#docker buildx create --platform amd64 --name cardano --use
+#docker buildx create --platform arm64 --name cardano --append ssh://lovelace@192.168.100.40:2222
+
 
 docker login 
 

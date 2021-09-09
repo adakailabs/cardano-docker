@@ -1,15 +1,32 @@
-FROM adakailabs/ubuntu-base 
+FROM adakailabs/multi_ubuntu_base:latest
 LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
 
 USER root
+
+COPY tmp/gocnode_* /tmp/
 
 #RUN groupadd --system prometheus \
 #	&& useradd -s /sbin/nologin --system -g prometheus prometheus \
 # 	&& mkdir /var/lib/prometheus
 
-RUN mkdir -p /tmp/prometheus \
- 	&& cd /tmp/prometheus \
- 	&& curl -s  https://api.github.com/repos/prometheus/prometheus/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4 | wget -qi -  \
+RUN test $(uname -m) != x86_64 || { \
+	mv /tmp/gocnode_amd64 /usr/local/bin/gocnode ;}
+
+RUN test $(uname -m) != aarch64 || { \
+	mv /tmp/gocnode_arm64 /usr/local/bin/gocnode ;}
+
+RUN test $(uname -m) != x86_64 || { \
+	wget https://github.com/prometheus/prometheus/releases/download/v2.29.2/prometheus-2.29.2.linux-amd64.tar.gz ;}
+	#&& curl -s  https://api.github.com/repos/prometheus/prometheus/releases/latest | grep browser_download_url | grep linux-amd64 | cut -d '"' -f 4 | wget -qi - \
+
+RUN test $(uname -m) != aarch64 || { \
+        wget https://github.com/prometheus/prometheus/releases/download/v2.29.2/prometheus-2.29.2.linux-arm64.tar.gz ;}
+	#&& curl -s  https://api.github.com/repos/prometheus/prometheus/releases/latest | grep browser_download_url | grep linux-arm64 | cut -d '"' -f 4 | wget -qi - ;}
+
+
+RUN     mkdir -p /tmp/prometheus \
+	&& mv  prometheus*.tar.gz /tmp/prometheus \
+	&& cd /tmp/prometheus \
  	&& tar xvf prometheus*.tar.gz \
  	&& cd prometheus*/ \
 	&& mv prometheus promtool /usr/local/bin/ \
@@ -29,11 +46,7 @@ COPY prometheus.yml /etc/prometheus/
 
 EXPOSE 9090
 
-COPY tmp/gocnode /usr/local/bin/
-
 USER lovelace
-
-EXPOSE     9090
 
 ENTRYPOINT ["gocnode"]
 
