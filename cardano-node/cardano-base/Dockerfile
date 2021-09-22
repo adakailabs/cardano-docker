@@ -32,7 +32,7 @@ ARG GHC_VER=8.10.5
 
 RUN /usr/local/bin/ghci-$GHC_VER --version
 
-ARG TAG=1.29.0
+ARG TAG=1.30.0
 RUN git clone https://github.com/input-output-hk/cardano-node.git \
 	&& cd cardano-node \
 	&& git fetch --all --recurse-submodules --tags \
