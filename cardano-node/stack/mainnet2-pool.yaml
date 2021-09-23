@@ -13,29 +13,77 @@ volumes:
 
 secrets:
   grafana_admin_password:
-    file: ./secrets/grafana_admin_password.txt	
+    file: ./secrets/grafana_admin_password.txt
+  grafana.ini:
+    file: ./secrets/grafana.ini
   gocnode.yaml:
     file: ./secrets/gocnode.yaml
   redis.conf:
     file: ./secrets/redis.conf
+  node_kes.key:
+    file: ./secrets/node_kes.key
+  node_vrf.key:
+    file: ./secrets/node_vrf.key
+  node.cert:
+    file: ./secrets/node.cert
   
 
 services:
-          
+  #---------------------------------------------------------------------------------                                                                                                                        
+  producer0:
+    image: adakailabs/multi_cardano_pool:21.09.02
+    user: lovelace
+    ports:
+       - "3100:3001"
+    secrets:
+      - source: node_kes.key
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+
+      - source: node_vrf.key
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+
+      - source: node.cert
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+
+      - source: gocnode.yaml
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
+
+    command:
+      - "start-node"
+      - "--id"
+      - "0"
+      - "--is-producer"
+
+    volumes:
+      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+    deploy:
+      restart_policy:
+        condition: any
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.adakai-vm00 == true
   #---------------------------------------------------------------------------------
   relay0:
-    deploy:
-      resources:
-        limits:
-          cpus: 1
-          memory: 9G
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: 1
+    #       memory: 9G
           #reservations:
           #  cpus: 0.25
           #  memory: 128M
     depends_on:
       - "redis"
       - "optimizer"
-    image: adakailabs/multi_cardano_pool:21.09.00
+    image: adakailabs/multi_cardano_pool:21.09.02
     command:
       - "start-node"
       - "--id"
@@ -61,7 +109,7 @@ services:
   relay1:
     #depends_on:
     #  - "producer0"
-    image: adakailabs/multi_cardano_pool:21.09.00
+    image: adakailabs/multi_cardano_pool:21.09.02
     command:
       - "start-node"
       - "--id"
@@ -85,9 +133,9 @@ services:
   #---------------------------------------------------------------------------------
 
   relay2:
-    #depends_on:
-    #  - "producer0"
-    image: adakailabs/multi_cardano_pool:21.09.00
+    depends_on:
+      - "producer0"
+    image: adakailabs/multi_cardano_pool:21.09.02
     command:
       - "start-node"
       - "--id"
@@ -107,7 +155,7 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.adakai-vm00 == true
+          - node.labels.com.adakailabs.goku-proliant == true
   #---------------------------------------------------------------------------------
 
   optimizer:
@@ -222,13 +270,19 @@ services:
     volumes:
       - grafana-storage:/var/lib/grafana
       - grafana-share:/var/share/grafana
+      - /home/lovelace/:/home/lovelace
     environment:
-      #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
-      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+      #- GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
+      - GF_PATHS_CONFIG=/run/secrets/grafana.ini
     deploy:
       restart_policy:
         condition: any     
       placement:
         constraints:
           - node.labels.com.adakailabs.monitor == true
+    secrets:
+      - source: grafana.ini
+        uid: '1000'
+        gid: '1000'
+        mode: 0400
 
