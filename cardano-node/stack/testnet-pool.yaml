@@ -30,7 +30,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/multi_cardano_pool:21.08.07
+    image: adakailabs/multi_cardano_pool:21.09.03
     user: lovelace
     ports:
        - "5100:3001"
@@ -77,7 +77,7 @@ services:
   relay0:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.08.07
+    image: adakailabs/multi_cardano_pool:21.09.03
     command:
       - "start-node"
       - "--id"
@@ -105,7 +105,7 @@ services:
   relay1:
     depends_on:
       - "producer0"
-    image: adakailabs/multi_cardano_pool:21.08.07
+    image: adakailabs/multi_cardano_pool:21.09.03
     command:
       - "start-node"
       - "--id"
@@ -156,7 +156,7 @@ services:
         condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.raspberry1 == true
+          - node.labels.com.adakailabs.raspberry2 == true
          
 
   # monitor:
@@ -185,9 +185,9 @@ services:
 
   #---------------------------------------------------------------------------------          
   prometheus:
-    image: adakailabs/cardano-prometheus:latest
-    depends_on:
-      - "relay0"
+    image: adakailabs/multi_prometheus:21.09.00
+    #depends_on:
+    #  - "relay0"
     command:
       - "start-prometheus"
     ports:
@@ -204,10 +204,10 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry1 == true
-          
+      #placement:
+      #  constraints:
+      #    - node.labels.com.adakailabs.raspberry4 == true
+
   #---------------------------------------------------------------------------------          
   grafana:
     image: grafana/grafana:latest
@@ -230,7 +230,7 @@ services:
         condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.raspberry1 == true
+          - node.labels.com.adakailabs.raspberry4 == true
 
   #---------------------------------------------------------------------------------          
   redis:
@@ -255,5 +255,37 @@ services:
         condition: any     
       placement:
         constraints:
-          - node.labels.com.adakailabs.raspberry1 == true
+          - node.labels.com.adakailabs.raspberry3 == true
 
+
+  #---------------------------------------------------------------------------------          
+  telegraf:
+    image: telegraf:latest
+    depends_on:
+      - "influxdb"
+    ports:	
+       - "8125:8125"
+       - "8092:8092"
+       - "8094:8094"
+    volumes:
+      - /home/lovelace/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      - /usr/share/snmp/mibs:/usr/share/snmp/mibs
+      - /var/lib/snmp:/var/lib/snmp
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.raspberry4 == true
+
+  #---------------------------------------------------------------------------------          
+  influxdb:
+    image: influxdb:1.8.0 
+    ports:	
+       - "8086:8086"
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.raspberry4 == true

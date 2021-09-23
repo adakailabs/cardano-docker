@@ -1,3 +1,4 @@
+
 FROM adakailabs/multi_cardano_base_exporter as exporter
 FROM adakailabs/multi_cardano_base_ghs as ghs
 FROM adakailabs/multi_cardano_base_cabal as cabal
@@ -22,17 +23,22 @@ COPY --from=cabal /usr/local/bin /usr/local/bin
 COPY --from=ghs /usr/local/lib /usr/local/lib
 COPY --from=ghs /usr/local/bin /usr/local/bin
 
+############################
+ARG GHC_VER=8.10.5
+ARG TAG=1.30.1
+############################
+
 
 RUN cabal update
 RUN cabal --version
 
 
 # Install cardano node
-ARG GHC_VER=8.10.5
+
 
 RUN /usr/local/bin/ghci-$GHC_VER --version
 
-ARG TAG=1.30.0
+
 RUN git clone https://github.com/input-output-hk/cardano-node.git \
 	&& cd cardano-node \
 	&& git fetch --all --recurse-submodules --tags \

@@ -286,3 +286,35 @@ services:
         gid: '1000'
         mode: 0400
 
+  #---------------------------------------------------------------------------------          
+  telegraf:
+    image: telegraf:latest
+    depends_on:
+      - "influxdb"
+    ports:	
+       - "8125:8125"
+       - "8092:8092"
+       - "8094:8094"
+    volumes:
+      - /home/lovelace/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      - /usr/share/snmp/mibs:/usr/share/snmp/mibs
+      - /var/lib/snmp:/var/lib/snmp
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.raspberry4 == true
+
+  #---------------------------------------------------------------------------------          
+  influxdb:
+    image: influxdb:1.8.0 
+    ports:	
+       - "8086:8086"
+    deploy:
+      restart_policy:
+        condition: any     
+      placement:
+        constraints:
+          - node.labels.com.adakailabs.raspberry4 == true
+
