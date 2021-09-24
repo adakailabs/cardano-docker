@@ -28,7 +28,7 @@ export DEBIAN_FRONTEND=noninteractive
 # Update and install needed packages
 apt -y  update
 
-sudo apt -y  install nfs-nfs-common
+sudo apt -y  install nfs-common
 sudo mkdir -p  ${SHARE_CLIENT}
 sudo mount 192.168.100.57:${SHARE_SERVER} ${SHARE_CLIENT}
 
