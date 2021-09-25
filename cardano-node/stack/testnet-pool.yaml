@@ -5,9 +5,9 @@
 version: '3.9'
 
 volumes:
-  grafana-storage:
+  #grafana-storage:
   grafana-share:
-  prometheus-storage:
+  #prometheus-storage:
   redis-storage:
   redis-data:
 
@@ -227,9 +227,9 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry4 == true
+      #placement:
+      #  constraints:
+      #    - node.labels.com.adakailabs.raspberry4 == true
 
   #---------------------------------------------------------------------------------          
   redis:
