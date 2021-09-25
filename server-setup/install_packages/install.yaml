@@ -1,0 +1,47 @@
+---
+- hosts: all
+  become: yes
+  become_method: sudo
+  tasks:
+    - name: "Update Repository cache"
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+        force_apt_get: true
+    # - name: "Update cache & Full system update"
+    #   apt:
+    #     update_cache: true
+    #     upgrade: dist
+    #     cache_valid_time: 3600
+    #     force_apt_get: true
+    - name: "install packages"
+      apt:
+        update_cache: true
+        state: present
+        name:
+          - nfs-common
+          - tmux
+          - ufw
+          - htop
+          - chrony
+          - curl
+          - rsync
+          - emacs-nox
+          - wget
+    - name: "line insert"
+      lineinfile:
+        path: /etc/fstab
+        line: '192.168.100.57:/mnt/cardano-shares    /mnt/cardano_shares    nfs    defaults    0 0'
+        insertbefore: BOF
+
+    - name: create mount poing 
+      command: mkdir -p /mnt/cardano_shares
+      args:
+        warn: no
+      become: true
+        
+    - name: mount all
+      command: mount -a
+      args:
+        warn: no
+      become: true
