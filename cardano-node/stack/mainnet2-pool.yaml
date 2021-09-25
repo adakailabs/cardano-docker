@@ -83,7 +83,7 @@ services:
     depends_on:
       - "redis"
       - "optimizer"
-    image: adakailabs/multi_cardano_pool:21.09.02
+    image: adakailabs/multi_cardano_pool:21.09.03
     command:
       - "start-node"
       - "--id"
@@ -302,9 +302,9 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry4 == true
+  #    placement:
+  #      constraints:
+  #        - node.labels.com.adakailabs.raspberry4 == true
 
   #---------------------------------------------------------------------------------          
   influxdb:
