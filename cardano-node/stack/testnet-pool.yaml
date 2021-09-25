@@ -220,10 +220,9 @@ services:
     ports:
       - "3666:3000"
     volumes:
-      - grafana-storage:/var/lib/grafana
+      - /mnt/cardano_shares/testnet/grafana/lib/:/var/lib/grafana
       - grafana-share:/var/share/grafana
     environment:
-      #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
       - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
     deploy:
       restart_policy:
