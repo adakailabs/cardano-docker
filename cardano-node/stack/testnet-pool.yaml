@@ -237,7 +237,7 @@ services:
     #depends_on:
     #  - "relay0"
     command:
-      - /run/secrets/redis.conf
+      - /mnt/cardano_shares/testnet/redis/redis.conf
              
     secrets:
       - redis.conf
@@ -245,16 +245,16 @@ services:
     ports:	
        - "6379:6379"
     volumes:
-      - redis-storage:/var/lib/redis
-      - redis-data:/data
+      - /mnt/cardano_shares/testnet/redis/lib:/var/lib/redis
+      - /mnt/cardano_shares/testnet/redis/data:/data
     #environment:
       #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry3 == true
+    #placement:
+    #    constraints:
+    #      - node.labels.com.adakailabs.raspberry3 == true
 
 
   #---------------------------------------------------------------------------------          
