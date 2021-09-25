@@ -193,7 +193,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - prometheus-storage:/prometheus
+      - /mnt/cardano_shares/testnet/prometheus:/prometheus
 
     secrets:
       - source: gocnode.yaml
