@@ -189,7 +189,7 @@ services:
     #depends_on:                                                                                                                                                                                                                                                      
     #  - "relay0"                                                                                                                                                                                                                                                     
     command:
-      - /run/secrets/redis.conf
+      - /config/redis.conf
 
     secrets:
       - redis.conf
@@ -197,14 +197,15 @@ services:
     ports:
        - "6379:6379"
     volumes:
-      - redis-storage:/var/lib/redis
-      - redis-data:/data
+      - /mnt/cardano_shares/mainnet/redis/redis.conf:/config/redis.conf
+      - /mnt/cardano_shares/mainnet/redis/lib:/var/lib/redis
+      - /mnt/cardano_shares/mainnet/redis/data:/data      
     deploy:
       restart_policy:
         condition: any
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.adakai-tiny01 == true
+    #  placement:
+    #    constraints:
+    #      - node.labels.com.adakailabs.adakai-tiny01 == true
 
 #--------------------------------------------------------------------------  
   # monitor:
@@ -268,10 +269,10 @@ services:
     ports:
       - "3666:3000"
     volumes:
-      - grafana-storage:/var/lib/grafana
+      - /mnt/cardano_shares/mainnet/grafana/lib/:/var/lib/grafana
       - grafana-share:/var/share/grafana
-      - /home/lovelace/:/home/lovelace
-    environment:
+
+      environment:
       #- GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
       - GF_PATHS_CONFIG=/run/secrets/grafana.ini
     deploy:
@@ -296,15 +297,15 @@ services:
        - "8092:8092"
        - "8094:8094"
     volumes:
-      - /home/lovelace/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      - /mnt/cardano_shares/testnet/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
       - /usr/share/snmp/mibs:/usr/share/snmp/mibs
       - /var/lib/snmp:/var/lib/snmp
     deploy:
       restart_policy:
         condition: any     
-  #    placement:
-  #      constraints:
-  #        - node.labels.com.adakailabs.raspberry4 == true
+    #  placement:
+    #    constraints:
+    #      - node.labels.com.adakailabs.raspberry4 == true
 
   #---------------------------------------------------------------------------------          
   influxdb:
@@ -314,7 +315,7 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry4 == true
+    #  placement:
+    #    constraints:
+    #      - node.labels.com.adakailabs.raspberry4 == true
 

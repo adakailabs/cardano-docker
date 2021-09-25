@@ -5,18 +5,18 @@
 version: '3.9'
 
 volumes:
-  grafana-storage:
+  #grafana-storage:
   grafana-share:
-  prometheus-storage:
-  redis-storage:
-  redis-data:
+  #prometheus-storage:
+  #redis-storage:
+  #redis-data:
 
 
 secrets:
   grafana_admin_password:
     file: ./secrets/grafana_admin_password.txt
-  redis.conf:
-    file: ./secrets/redis.conf
+  #redis.conf:
+  #  file: ./secrets/redis.conf
   node_kes.key:
     file: ./secrets/node_kes.key
   node_vrf.key:
@@ -227,24 +227,26 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry4 == true
+      #placement:
+      #  constraints:
+      #    - node.labels.com.adakailabs.raspberry4 == true
 
   #---------------------------------------------------------------------------------          
   redis:
     image: redis:latest
+    user: 1000:1000
     #depends_on:
     #  - "relay0"
     command:
-      - /mnt/cardano_shares/testnet/redis/redis.conf
+      - /config/redis.conf
              
-    secrets:
-      - redis.conf
-    #user: 1000:1000
+    #secrets:
+    #  - redis.conf
+
     ports:	
        - "6379:6379"
     volumes:
+      - /mnt/cardano_shares/testnet/redis/redis.conf:/config/redis.conf
       - /mnt/cardano_shares/testnet/redis/lib:/var/lib/redis
       - /mnt/cardano_shares/testnet/redis/data:/data
     #environment:
@@ -267,7 +269,7 @@ services:
        - "8092:8092"
        - "8094:8094"
     volumes:
-      - /home/lovelace/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+      - /mnt/cardano_shares/testnet/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
       - /usr/share/snmp/mibs:/usr/share/snmp/mibs
       - /var/lib/snmp:/var/lib/snmp
     deploy:
