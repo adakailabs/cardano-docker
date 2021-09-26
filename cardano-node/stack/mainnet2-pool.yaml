@@ -83,7 +83,7 @@ services:
     depends_on:
       - "redis"
       - "optimizer"
-    image: adakailabs/multi_cardano_pool:21.09.03
+    image: adakailabs/multi_cardano_pool:21.09.02
     command:
       - "start-node"
       - "--id"
@@ -186,14 +186,9 @@ services:
 #-----------------------------------------------------------------------                                                                                                                                                                                              
   redis:
     image: redis:latest
-    #depends_on:                                                                                                                                                                                                                                                      
-    #  - "relay0"                                                                                                                                                                                                                                                     
+    user: 1000:1000
     command:
       - /config/redis.conf
-
-    secrets:
-      - redis.conf
-    #user: 1000:1000                                                                                                                                                                                                                                                  
     ports:
        - "6379:6379"
     volumes:
@@ -271,8 +266,7 @@ services:
     volumes:
       - /mnt/cardano_shares/mainnet/grafana/lib/:/var/lib/grafana
       - grafana-share:/var/share/grafana
-
-      environment:
+    environment:
       #- GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
       - GF_PATHS_CONFIG=/run/secrets/grafana.ini
     deploy:
