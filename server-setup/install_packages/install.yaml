@@ -28,13 +28,16 @@
           - rsync
           - emacs-nox
           - wget
+          - snmp-mibs-downloader
+          - snmp
     - name: "line insert"
       lineinfile:
-        path: /etc/fstab
+        path: "/etc/fstab"
+        backup: yes
         line: '192.168.100.57:/mnt/cardano-shares    /mnt/cardano_shares    nfs    defaults    0 0'
         insertbefore: BOF
 
-    - name: create mount poing 
+    - name: create mount point
       command: mkdir -p /mnt/cardano_shares
       args:
         warn: no

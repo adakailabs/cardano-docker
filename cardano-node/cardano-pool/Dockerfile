@@ -1,4 +1,4 @@
-FROM adakailabs/multi_cardano_base:1.30.0 AS build
+FROM adakailabs/multi_cardano_base:1.30.1 AS build
 LABEL maintainer="Adakailabs Team (info@adakailabs.com)"
 
 # Build the final stage and copy the build artifacts from the previous stage.
