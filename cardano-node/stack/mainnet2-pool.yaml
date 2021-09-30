@@ -13,21 +13,20 @@ volumes:
 
 secrets:
   grafana_admin_password:
-    file: ./secrets/grafana_admin_password.txt
+    file: ./secrets/mainnet/grafana_admin_password.txt
   grafana.ini:
-    file: ./secrets/grafana.ini
+    file: ./secrets/mainnet/grafana.ini
   gocnode.yaml:
-    file: ./secrets/gocnode.yaml
+    file: ./secrets/mainnet/gocnode.yaml
   redis.conf:
-    file: ./secrets/redis.conf
+    file: ./secrets/mainnet/redis.conf
   node_kes.key:
-    file: ./secrets/node_kes.key
+    file: ./secrets/mainnet/node_kes.key
   node_vrf.key:
-    file: ./secrets/node_vrf.key
+    file: ./secrets/mainnet/node_vrf.key
   node.cert:
-    file: ./secrets/node.cert
+    file: ./secrets/mainnet/node.cert
   
-
 services:
   #---------------------------------------------------------------------------------                                                                                                                        
   producer0:
