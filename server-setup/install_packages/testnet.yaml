@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: testnet
   become: yes
   become_method: sudo
   tasks:
@@ -108,8 +108,8 @@
     - name: Run a script with arguments (free form)
       shell: /usr/local/bin/docker-install.sh
       
-    #- name: Update and upgrade apt packages
-    #  apt:
-    #    update_cache: yes
-    #    upgrade: 'yes'
+    - name: Update and upgrade apt packages
+      apt:
+        update_cache: yes
+        upgrade: 'yes'
         

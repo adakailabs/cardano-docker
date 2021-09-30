@@ -267,18 +267,22 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry4 == true
+      #placement:
+      #  constraints:
+      #    - node.labels.com.adakailabs.raspberry4 == true
 
   #---------------------------------------------------------------------------------          
   influxdb:
-    image: influxdb:1.8.0 
+    image: influxdb:1.8.0
     ports:	
-       - "8086:8086"
+      - "8086:8086"
+    #/var/lib/influxdb/data
+    volumes:
+      - /mnt/cardano_shares/testnet/influxdb/data:/var/lib/influxdb/data
+
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry4 == true
+      #placement:
+      #  constraints:
+      #    - node.labels.com.adakailabs.raspberry4 == true

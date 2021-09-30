@@ -12,7 +12,7 @@ set -e
 #fi
 
 GITHUB_USER="lagarciag"
-NEW_USER="ubuntu"
+NEW_USER="lovelace"
 HOME="/home/${NEW_USER}"
 
 echo "This script was developed on Ubuntu 20.04"
@@ -34,7 +34,7 @@ docker --version
 
 # Add the current user to the docker group
 echo "Adding user ${NEW_USER} to the docker group"
-#sudo groupadd docker
+sudo groupadd -f docker
 sudo usermod -aG docker ${NEW_USER}
 
 echo "Docker installation has been completed. You must reboot before running the setup script."
