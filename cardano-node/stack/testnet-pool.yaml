@@ -14,17 +14,17 @@ volumes:
 
 secrets:
   grafana_admin_password:
-    file: ./secrets/grafana_admin_password.txt
+    file: ./secrets/testnet/grafana_admin_password.txt
   #redis.conf:
-  #  file: ./secrets/redis.conf
+  #  file: ./secrets/testnet/redis.conf
   node_kes.key:
-    file: ./secrets/node_kes.key
+    file: ./secrets/testnet/node_kes.key
   node_vrf.key:
-    file: ./secrets/node_vrf.key
+    file: ./secrets/testnet/node_vrf.key
   node.cert:
-    file: ./secrets/node.cert
+    file: ./secrets/testnet/node.cert
   gocnode.yaml:
-    file: ./secrets/gocnode.yaml
+    file: ./secrets/testnet/gocnode.yaml
   
 
 services:
