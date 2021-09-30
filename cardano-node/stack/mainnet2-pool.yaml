@@ -103,7 +103,7 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.raspberry1 == true
+          - node.labels.com.adakailabs.goku-proliant == true
   #---------------------------------------------------------------------------------
 
   relay1:
