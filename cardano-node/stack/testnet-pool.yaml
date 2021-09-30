@@ -154,9 +154,9 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.raspberry2 == true
+      #placement:
+      #  constraints:
+      #    - node.labels.com.adakailabs.raspberry2 == true
          
 
   # monitor:
