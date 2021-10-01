@@ -105,8 +105,8 @@
         dest: /usr/local/bin
         mode: a+x
         
-    - name: Run a script with arguments (free form)
-      shell: /usr/local/bin/docker-install.sh
+    #- name: Run a script with arguments (free form)
+    #  shell: /usr/local/bin/docker-install.sh
       
     #- name: Update and upgrade apt packages
     #  apt:

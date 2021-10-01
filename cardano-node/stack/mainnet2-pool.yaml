@@ -5,11 +5,11 @@
 version: '3.7'
 
 volumes:
-  grafana-storage:
+  #grafana-storage:
   grafana-share:
-  prometheus-storage:
-  redis-storage:
-  redis-data:
+  #prometheus-storage:
+  #redis-storage:
+  #redis-data:
 
 secrets:
   grafana_admin_password:
@@ -28,7 +28,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------                                                                                                                        
   producer0:
-    image: adakailabs/multi_cardano_pool:21.09.02
+    image: adakailabs/multi_cardano_pool:21.09.03
     user: lovelace
     ports:
        - "3100:3001"
@@ -126,7 +126,8 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.adakai-swarm04 == true
+          - node.labels.com.adakailabs.goku-proliant == true
+          #- node.labels.com.adakailabs.adakai-swarm04 == true
   #---------------------------------------------------------------------------------
 
   relay2:
@@ -180,26 +181,7 @@ services:
       placement:
         constraints:
           - node.labels.com.adakailabs.adakai-tiny01 == true
-#-----------------------------------------------------------------------                                                                                                                                                                                              
-  redis:
-    image: redis:latest
-    user: 1000:1000
-    command:
-      - /config/redis.conf
-    ports:
-       - "6379:6379"
-    volumes:
-      - /mnt/cardano_shares/mainnet/redis/redis.conf:/config/redis.conf
-      - /mnt/cardano_shares/mainnet/redis/lib:/var/lib/redis
-      - /mnt/cardano_shares/mainnet/redis/data:/data      
-    deploy:
-      restart_policy:
-        condition: any
-    #  placement:
-    #    constraints:
-    #      - node.labels.com.adakailabs.adakai-tiny01 == true
-
-#--------------------------------------------------------------------------  
+#-----------------------------------------------------------------------
   # monitor:
   #   image: adakailabs/cardano-monitor:21.01.02
   #   depends_on:
@@ -226,15 +208,13 @@ services:
 
   #---------------------------------------------------------------------------------          
   prometheus:
-    image: adakailabs/cardano-prometheus:latest
-    depends_on:
-      - "relay0"
+    image: adakailabs/multi_prometheus:21.09.00
     command:
       - "start-prometheus"
     ports:
       - "9090:9090"
     volumes:
-      - prometheus-storage:/prometheus
+      - /mnt/cardano_shares/mainnet/prometheus:/prometheus
 
     secrets:
       - source: gocnode.yaml
@@ -245,9 +225,6 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.monitor == true
           
   #---------------------------------------------------------------------------------          
   grafana:
@@ -255,30 +232,39 @@ services:
     depends_on:
       - "relay0"
       - "prometheus"
-    secrets:
-      - grafana_admin_password
     user: 1000:1000
     ports:
       - "3666:3000"
     volumes:
       - /mnt/cardano_shares/mainnet/grafana/lib/:/var/lib/grafana
       - grafana-share:/var/share/grafana
-    environment:
-      #- GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
-      - GF_PATHS_CONFIG=/run/secrets/grafana.ini
+    #environment:
+    #  - GF_PATHS_CONFIG=/run/secrets/grafana.ini
     deploy:
       restart_policy:
         condition: any     
+
+  #---------------------------------------------------------------------------------
+  redis:
+    image: redis:latest
+    user: 1000:1000
+    command:
+      - /config/redis.conf
+    ports:
+       - "6379:6379"
+    volumes:
+      - /mnt/cardano_shares/mainnet/redis/config:/config
+      - /mnt/cardano_shares/mainnet/redis/lib:/var/lib/redis
+      - /mnt/cardano_shares/mainnet/redis/data:/data
+      - /mnt/cardano_shares/mainnet/redis/log:/var/log/redis
+      
+    deploy:
+      restart_policy:
+        condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.monitor == true
-    secrets:
-      - source: grafana.ini
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-
-  #---------------------------------------------------------------------------------          
+          - node.labels.com.adakailabs.adakai-vm00 == true
+#--------------------------------------------------------------------------    
   telegraf:
     image: telegraf:latest
     depends_on:
@@ -300,13 +286,12 @@ services:
 
   #---------------------------------------------------------------------------------          
   influxdb:
-    image: influxdb:1.8.0 
+    image: influxdb:1.8.0
     ports:	
-       - "8086:8086"
+      - "8086:8086"
+    volumes:
+      - /mnt/cardano_shares/mainnet/influxdb/data:/var/lib/influxdb/data
+
     deploy:
       restart_policy:
         condition: any     
-    #  placement:
-    #    constraints:
-    #      - node.labels.com.adakailabs.raspberry4 == true
-
