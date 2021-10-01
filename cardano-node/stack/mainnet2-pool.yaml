@@ -100,7 +100,7 @@ services:
         condition: any
       placement:
         constraints:
-          - node.labels.com.adakailabs.goku-proliant == true
+          - node.labels.com.adakailabs.picolo-zbook == true
   #---------------------------------------------------------------------------------
 
   relay1:
