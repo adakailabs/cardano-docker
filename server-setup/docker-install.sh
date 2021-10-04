@@ -12,7 +12,7 @@ set -e
 #fi
 
 GITHUB_USER="lagarciag"
-NEW_USER="lovelace"
+NEW_USER="${USER}"
 HOME="/home/${NEW_USER}"
 
 echo "This script was developed on Ubuntu 20.04"

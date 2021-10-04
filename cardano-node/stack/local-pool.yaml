@@ -5,83 +5,84 @@
 version: '3.7'
 
 volumes:
-  grafana-storage:
+  #grafana-storage:
   grafana-share:
-  prometheus-storage:
-  redis-storage:
+  #prometheus-storage:
+  #redis-storage:
+  #redis-data:
 
 secrets:
-  grafana_admin_password:
-    file: ./secrets/grafana_admin_password.txt
-  redis.conf:
-    file: ./secrets/redis.conf
-  node_kes.key:
-    file: ./secrets/node_kes.key
-  node_vrf.key:
-    file: ./secrets/node_vrf.key
-  node.cert:
-    file: ./secrets/node.cert
+  #grafana_admin_password:
+  #  file: ./secrets/local/grafana_admin_password.txt
+  #grafana.ini:
+  #   file: ./secrets/local/grafana.ini
   gocnode.yaml:
-    file: ./secrets/gocnode.yaml
+    file: ./secrets/local/gocnode.yaml
+  #node_kes.key:
+  #  file: ./secrets/local/node_kes.key
+  #node_vrf.key:
+  #  file: ./secrets/local/node_vrf.key
+  #node.cert:
+  #  file: ./secrets/local/node.cert
   
-
 services:
-  #---------------------------------------------------------------------------------
+  #---------------------------------------------------------------------------------                                                                                                                        
   producer0:
-    image: adakailabs/multi_cardano_pool:21.06.00
+    image: adakailabs/multi_cardano_pool:21.09.03
     user: lovelace
     ports:
-       - "5100:3001"
-    secrets:
-      - source: node_kes.key
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
-        
-      - source: node_vrf.key
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
+       - "3100:3001"
+    # secrets:
+    #   - source: node_kes.key
+    #     uid: '1000'
+    #     gid: '1000'
+    #     mode: 0400
 
-      - source: node.cert
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
+    #   - source: node_vrf.key
+    #     uid: '1000'
+    #     gid: '1000'
+    #     mode: 0400
 
-      - source: gocnode.yaml
-        uid: '1000'
-        gid: '1000'
-        mode: 0400
- 
+    #   - source: node.cert
+    #     uid: '1000'
+    #     gid: '1000'
+    #     mode: 0400
+
+    #   - source: gocnode.yaml
+    #     uid: '1000'
+    #     gid: '1000'
+    #     mode: 0400
+
     command:
       - "start-node"
       - "--id"
       - "0"
       - "--is-producer"
-      - "--log-min-severity"
-      - "Info"
-      
+      - "--pasive"
+
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
       restart_policy:
-        condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay0 == true
-
-  #---------------------------------------------------------------------------------          
+        condition: any
+  #---------------------------------------------------------------------------------
   relay0:
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: 1
+    #       memory: 9G
+          #reservations:
+          #  cpus: 0.25
+          #  memory: 128M
     depends_on:
-      - "producer0"
-    image: adakailabs/multi_cardano_pool:21.06.00
+      - "redis"
+      - "optimizer"
+    image: adakailabs/multi_cardano_pool:21.09.03
     command:
       - "start-node"
       - "--id"
       - "0"
-      - "--log-min-severity"
-      - "Info"
-      
     secrets:
       - source: gocnode.yaml
         uid: '1000'
@@ -89,27 +90,21 @@ services:
         mode: 0400
         
     ports:
-      - "5000:3001"
+      - "3002:3001"
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
       restart_policy:
         condition: any
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay0 == true
-
+  #---------------------------------------------------------------------------------
   relay1:
-    depends_on:
-      - "producer0"
-    image: adakailabs/multi_cardano_pool:21.06.00
+    #depends_on:
+    #  - "producer0"
+    image: adakailabs/multi_cardano_pool:21.09.03
     command:
       - "start-node"
       - "--id"
       - "1"
-      - "--log-min-severity"
-      - "Info"
-      
     secrets:
       - source: gocnode.yaml
         uid: '1000'
@@ -117,40 +112,23 @@ services:
         mode: 0400
         
     ports:
-      - "5001:3001"
+      - "3003:3001"
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
     deploy:
       restart_policy:
         condition: any
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay1 == true
-
-  netalizer:
+  #---------------------------------------------------------------------------------
+  optimizer:
+    image: adakailabs/multi_cardano_optimizer:21.09.00
     depends_on:
-      - "producer0"
+      - "redis"
     command:
-      - "ping -c 1000000 www.hpe.com" 
-    image: adakailabs/multi_netalizer:latest 
-    #command:
-    volumes:
-      - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
-    deploy:
-      restart_policy:
-        condition: any
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay1 == true
+      - "start-optim"
 
-  monitor:
-    image: adakailabs/cardano-monitor:21.05.02
-    depends_on:
-      - "relay0"
-    command:
-      - "start-rtview"
-    ports:
-      - "8666:8666"
+    secrets:
+      - source: gocnode.yaml
+
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
 
@@ -159,25 +137,19 @@ services:
         uid: '1000'
         gid: '1000'
         mode: 0400
-      
+
     deploy:
       restart_policy:
-        condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay0 == true
-
-  #---------------------------------------------------------------------------------          
+        condition: any
+#------------------------------------------------------------------------
   prometheus:
-    image: adakailabs/cardano-prometheus:latest
-    depends_on:
-      - "relay0"
+    image: adakailabs/multi_prometheus:21.09.00
     command:
       - "start-prometheus"
     ports:
       - "9090:9090"
     volumes:
-      - prometheus-storage:/prometheus
+      - /mnt/cardano_shares/local/prometheus:/prometheus
 
     secrets:
       - source: gocnode.yaml
@@ -188,55 +160,36 @@ services:
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay0 == true
-          
   #---------------------------------------------------------------------------------          
   grafana:
     image: grafana/grafana:latest
     depends_on:
       - "relay0"
       - "prometheus"
-    secrets:
-      - grafana_admin_password
     user: 1000:1000
     ports:
       - "3666:3000"
     volumes:
-      - grafana-storage:/var/lib/grafana
+      - /mnt/cardano_shares/local/grafana/lib/:/var/lib/grafana
       - grafana-share:/var/share/grafana
-    environment:
-      #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
-      - GF_SECURITY_ADMIN_PASSWORD__FILE=/run/secrets/grafana_admin_password
     deploy:
       restart_policy:
         condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay0 == true
-
-  #---------------------------------------------------------------------------------          
+  #---------------------------------------------------------------------------------
   redis:
     image: redis:latest
-    #depends_on:
-    #  - "relay0"
-    command:
-      - /run/secrets/redis.conf
-             
-    secrets:
-      - redis.conf
     user: 1000:1000
-    #ports:
-    #  - "3666:3000"
+    command:
+      - /config/redis.conf
+    ports:
+       - "6379:6379"
     volumes:
-      - redis-storage:/var/lib/redis
-    #environment:
-      #  - GF_PATHS_DATA=/home/lovelace/grafana/var/lib/grafana
+      - /mnt/cardano_shares/local/redis/config:/config
+      - /mnt/cardano_shares/local/redis/lib:/var/lib/redis
+      - /mnt/cardano_shares/local/redis/data:/data
+      - /mnt/cardano_shares/local/redis/log:/var/log/redis
+      
     deploy:
       restart_policy:
-        condition: any     
-      placement:
-        constraints:
-          - node.labels.com.adakailabs.relay0 == true
-
+        condition: any
+#--------------------------------------------------------------------------    
