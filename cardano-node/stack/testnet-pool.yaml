@@ -263,7 +263,7 @@ services:
     ports:	
       - "8086:8086"
     volumes:
-      - /mnt/cardano_shares/testnet/influxdb/data:/var/lib/influxdb/data
+      - /mnt/cardano_shares/testnet/influxdb:/var/lib/influxdb
 
     deploy:
       restart_policy:
