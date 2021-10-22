@@ -30,7 +30,7 @@ docker login
 
 docker buildx build --builder cardano --build-arg TAG=${VERSION}   \
        --push \
-       --platform linux/arm64 \
+       --platform linux/amd64,linux/arm64 \
        --tag ${IMAGE} .
 
 rm -rf tmp

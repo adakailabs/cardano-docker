@@ -33,6 +33,7 @@ USER lovelace
 EXPOSE 3001
 EXPOSE 9100
 EXPOSE 12798
+EXPOSE 5001
 
 # Set cardano-node as the entrypoint and by default just print the version.
 ENTRYPOINT ["gocnode"]

@@ -5,18 +5,9 @@
 version: '3.9'
 
 volumes:
-  #grafana-storage:
   grafana-share:
-  #prometheus-storage:
-  #redis-storage:
-  #redis-data:
-
 
 secrets:
-  grafana_admin_password:
-    file: ./secrets/testnet/grafana_admin_password.txt
-  #redis.conf:
-  #  file: ./secrets/testnet/redis.conf
   node_kes.key:
     file: ./secrets/testnet/node_kes.key
   node_vrf.key:
@@ -30,7 +21,7 @@ secrets:
 services:
   #---------------------------------------------------------------------------------
   producer0:
-    image: adakailabs/multi_cardano_pool:21.09.03
+    image: adakailabs/multi_cardano_pool:21.09.04-test
     user: lovelace
     ports:
        - "5100:3001"
@@ -65,6 +56,7 @@ services:
       
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      - /mnt/cardano_shares/testnet/cardano_node/gocnode.yaml:/home/lovelace/cardano-node/gocnode.yaml      
     deploy:
       restart_policy:
         condition: any     
@@ -75,13 +67,13 @@ services:
 
   #---------------------------------------------------------------------------------          
   relay0:
-    depends_on:
-      - "producer0"
-    image: adakailabs/multi_cardano_pool:21.09.03
+    image: adakailabs/multi_cardano_pool:21.09.04-test
     command:
       - "start-node"
       - "--id"
       - "0"
+      #- "--pool"
+      #- "dulcinea"      
       - "--log-min-severity"
       - "Info"
       
@@ -95,6 +87,7 @@ services:
       - "5000:3001"
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      - /mnt/cardano_shares/testnet/cardano_node/gocnode.yaml:/home/lovelace/cardano-node/gocnode.yaml
     deploy:
       restart_policy:
         condition: any
@@ -103,9 +96,7 @@ services:
           - node.labels.com.adakailabs.raspberry3 == true
 
   relay1:
-    depends_on:
-      - "producer0"
-    image: adakailabs/multi_cardano_pool:21.09.03
+    image: adakailabs/multi_cardano_pool:21.09.04-test
     command:
       - "start-node"
       - "--id"
@@ -123,6 +114,7 @@ services:
       - "5001:3001"
     volumes:
       - /home/lovelace/cardano-node/:/home/lovelace/cardano-node/
+      - /mnt/cardano_shares/testnet/cardano_node/gocnode.yaml:/home/lovelace/cardano-node/gocnode.yaml      
     deploy:
       restart_policy:
         condition: any
@@ -207,7 +199,6 @@ services:
   grafana:
     image: grafana/grafana:latest
     depends_on:
-      - "relay0"
       - "prometheus"
     user: 1000:1000
     ports:
