@@ -21,7 +21,7 @@ RUN test $(uname -m) != aarch64 || { \
 RUN tar -xf ghc.tar.xz \
         && ls -rtl \
 	&& rm ghc.tar.xz \
-	&& cd ghc-8.10.5 \
+	&& cd ghc-$GHC_VER \
 	&& ./configure \
 	&& make -j4 install
 

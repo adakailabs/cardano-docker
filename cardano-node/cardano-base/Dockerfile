@@ -1,6 +1,6 @@
 
 FROM adakailabs/multi_cardano_base_exporter as exporter
-FROM adakailabs/multi_cardano_base_ghs as ghs
+FROM adakailabs/multi_cardano_base_ghs:8.10.5 as ghs
 FROM adakailabs/multi_cardano_base_cabal as cabal
 FROM adakailabs/multi_cardano_base_libsodium as libsodium
 FROM adakailabs/multi_cardano_base_pkgs
