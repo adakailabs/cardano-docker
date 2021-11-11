@@ -1,4 +1,3 @@
-
 FROM adakailabs/multi_cardano_base_exporter as exporter
 FROM adakailabs/multi_cardano_base_ghs:8.10.5 as ghs
 FROM adakailabs/multi_cardano_base_cabal as cabal
@@ -25,7 +24,7 @@ COPY --from=ghs /usr/local/bin /usr/local/bin
 
 ############################
 ARG GHC_VER=8.10.5
-ARG TAG=1.30.1
+ARG TAG=1.31.0
 ############################
 
 
@@ -45,12 +44,14 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git \
 	&& git tag && git checkout tags/$TAG
 
 RUN cd cardano-node \
-	&& cabal configure --with-compiler=ghc-$GHC_VER \
+	&& cabal configure --with-compiler=ghc-$GHC_VER
+
+RUN cd cardano-node \
 	&& echo "package cardano-crypto-praos" >>  cabal.project.local \
-        #&& echo "  ghc-options: -rtsopts -threaded"
 	&& echo "  flags: -external-libsodium-vrf" >>  cabal.project.local \
 	&& cabal build -j4 all \
 	&& mkdir /opt/bin/
+
 
 RUN test $(uname -m) != x86_64 || { \
 	cd cardano-node && cp -p dist-newstyle/build/x86_64-linux/ghc-$GHC_VER/cardano-node-$TAG/x/cardano-node/build/cardano-node/cardano-node /opt/bin/ \
